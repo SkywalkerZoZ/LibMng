@@ -16,8 +16,8 @@ class LibMngApplicationTests {
     @Test
     public void testAddUser() {
         User user = new User();
-        user.setUsername("testUser2");
-        user.setPassword("testPassword2");
+        user.setUsername("testUser");
+        user.setPassword("testPassword");
         user.setUserRole("user");
 //        user.setEmail("test@gmail.com");
 
