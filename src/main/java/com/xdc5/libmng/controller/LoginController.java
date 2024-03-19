@@ -19,7 +19,7 @@ public class LoginController {
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
         user=userService.auth(user);
-        if(user.getUserId()!=null)
+        if((user.getUserId() != null) && (user.getUsername() != null) && (user.getPassword() != null))
         {
             HashMap<String, Object> claims = new HashMap<>();
             claims.put("user_name",user.getUsername());
