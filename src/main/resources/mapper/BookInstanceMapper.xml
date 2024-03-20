@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xdc5.libmng.mapper.BookInstanceMapper">
         <insert id="addBookInstance" parameterType="com.xdc5.libmng.entity.BookInstance" useGeneratedKeys="true" keyProperty="instanceId">
-            INSERT INTO BookInstance (instanceId, isbn, addDate
+            INSERT INTO BookInstance (isbn, addDate
             <trim prefix="," suffixOverrides=",">
                 <if test="borrowStatus != null">
                     borrowStatus
@@ -12,7 +12,7 @@
             </trim>
             )
             VALUES (
-            #{instanceId}, #{isbn}, NOW()
+            #{isbn}, NOW()
             <trim prefix="," suffixOverrides=",">
                 <if test="borrowStatus != null">
                     #{borrowStatus}
@@ -30,7 +30,7 @@
         SELECT instanceId,isbn,borrowStatus,addDate
         FROM BookInstance
         <where>
-            <if test="instanceId != 0">
+            <if test="instanceId != null">
                 AND instanceId=#{instanceId}
             </if>
             <if test="isbn != null">

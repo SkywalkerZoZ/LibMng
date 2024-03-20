@@ -2,13 +2,17 @@ package com.xdc5.libmng;
 
 import com.xdc5.libmng.entity.BookCatalog;
 import com.xdc5.libmng.entity.BookInstance;
+import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.entity.User;
 import com.xdc5.libmng.mapper.BookCatalogMapper;
 import com.xdc5.libmng.mapper.BookInstanceMapper;
+import com.xdc5.libmng.mapper.BorrowingMapper;
 import com.xdc5.libmng.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -128,6 +132,46 @@ class LibMngApplicationTests {
         for (BookInstance bookInstance : bookInstances) {
             System.out.println(bookInstance);
         }
+    }
+
+    @Autowired
+    private BorrowingMapper borrowingMapper;
+
+    @Test
+    public void testAddBorrowing() {
+        Borrowing borrowing = new Borrowing();
+        borrowing.setUserId(1L);
+        borrowing.setInstanceId(2L);
+        borrowing.setBorrowDate(LocalDate.now());
+        borrowing.setDueDate(LocalDate.now().plusDays(7));
+        // 设置其他属性值
+        int rowsAffected = borrowingMapper.addBorrowing(borrowing);
+    }
+
+    @Test
+    public void testDelBorrowingByRecordId() {
+        long recordId = 1L; // 假设存在此借阅记录的ID
+        int rowsAffected = borrowingMapper.delBorrowingByRecordId(recordId);
+    }
+
+    @Test
+    public void testGetBorrowing() {
+        Borrowing borrowing = new Borrowing();
+        borrowing.setUserId(1L);
+        // 设置其他查询条件
+        List<Borrowing> borrowings = borrowingMapper.getBorrowing(borrowing);
+        for (Borrowing b : borrowings) {
+            System.out.println(b);
+        }
+    }
+
+    @Test
+    public void testUpdateBorrowing() {
+        Borrowing borrowing = new Borrowing();
+        borrowing.setRecordId(1L);
+        borrowing.setLateRetDate(LocalDate.now().plusDays(9));
+        // 设置其他属性值
+        int rowsAffected = borrowingMapper.updateBorrowing(borrowing);
     }
 
 }

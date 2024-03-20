@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class BookInstance {
-    private long instanceId;
+    private Long instanceId;
     private String isbn;
     // 借阅状态, 0为未借阅, 1为已借阅
     private Integer borrowStatus;
