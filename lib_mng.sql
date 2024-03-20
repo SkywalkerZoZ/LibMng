@@ -27,7 +27,7 @@ CREATE TABLE BookInstance (
     isbn VARCHAR(17),
     # 借阅状态, 0为未借阅, 1为已借阅
     borrowStatus INT DEFAULT 0,
-    addDate DATE,
+    addDate DATETIME,
     FOREIGN KEY (isbn) REFERENCES BookCatalog(isbn)
 );
 

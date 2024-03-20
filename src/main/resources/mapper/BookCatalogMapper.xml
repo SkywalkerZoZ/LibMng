@@ -44,7 +44,7 @@
         DELETE FROM BookCatalog WHERE isbn=#{isbn}
     </delete>
 
-    <select id="getBooks" parameterType="com.xdc5.libmng.entity.BookCatalog" resultType="com.xdc5.libmng.entity.BookCatalog">
+    <select id="getBookCatalogs" parameterType="com.xdc5.libmng.entity.BookCatalog" resultType="com.xdc5.libmng.entity.BookCatalog">
         SELECT isbn,title,author,cover,description
         FROM BookCatalog
         <where>

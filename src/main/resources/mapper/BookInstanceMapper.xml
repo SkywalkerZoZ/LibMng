@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdc5.libmng.mapper.BookInstanceMapper">
+        <insert id="addBookInstance" parameterType="com.xdc5.libmng.entity.BookInstance" useGeneratedKeys="true" keyProperty="instanceId">
+            INSERT INTO BookInstance (instanceId, isbn, addDate
+            <trim prefix="," suffixOverrides=",">
+                <if test="borrowStatus != null">
+                    borrowStatus
+                </if>
+            </trim>
+            )
+            VALUES (
+            #{instanceId}, #{isbn}, NOW()
+            <trim prefix="," suffixOverrides=",">
+                <if test="borrowStatus != null">
+                    #{borrowStatus}
+                </if>
+            </trim>
+
+            )
+        </insert>
+
+    <delete id="delBookInstanceByInstanceId">
+        DELETE FROM BookInstance WHERE instanceId=#{instanceId}
+    </delete>
+
+    <select id="getBookInstances" parameterType="com.xdc5.libmng.entity.BookInstance" resultType="com.xdc5.libmng.entity.BookInstance">
+        SELECT instanceId,isbn,borrowStatus,addDate
+        FROM BookInstance
+        <where>
+            <if test="instanceId != 0">
+                AND instanceId=#{instanceId}
+            </if>
+            <if test="isbn != null">
+                AND isbn=#{isbn}
+            </if>
+            <if test="borrowStatus!= null">
+                AND borrowStatus=#{borrowStatus}
+            </if>
+            <if test="addDate !=null">
+                AND addDate=#{addDate}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface BookCatalogMapper {
-    List<BookCatalog> getBooks(BookCatalog bookCatalog);
+    List<BookCatalog> getBookCatalogs(BookCatalog bookCatalog);
     //返回影响的行数
     int delBookCatalogByISBN(@Param("isbn") String isbn);
     //返回影响的行数

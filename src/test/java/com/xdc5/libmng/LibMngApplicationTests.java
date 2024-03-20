@@ -1,8 +1,10 @@
 package com.xdc5.libmng;
 
 import com.xdc5.libmng.entity.BookCatalog;
+import com.xdc5.libmng.entity.BookInstance;
 import com.xdc5.libmng.entity.User;
 import com.xdc5.libmng.mapper.BookCatalogMapper;
+import com.xdc5.libmng.mapper.BookInstanceMapper;
 import com.xdc5.libmng.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +85,7 @@ class LibMngApplicationTests {
     @Test
     public void testGetBooks() {
         // Assuming there are some books in the database
-        List<BookCatalog> books = bookCatalogMapper.getBooks(new BookCatalog());
+        List<BookCatalog> books = bookCatalogMapper.getBookCatalogs(new BookCatalog());
         System.out.println("获取到的书籍目录信息：");
         for (BookCatalog book : books) {
             System.out.println(book);
@@ -99,6 +101,33 @@ class LibMngApplicationTests {
         book.setDescription("Updated Test Description");
         int rowsAffected = bookCatalogMapper.updateBookCatalog(book);
         System.out.println("更新书籍目录成功，受影响的行数：" + rowsAffected);
+    }
+
+
+    @Autowired
+    private BookInstanceMapper bookInstanceMapper;
+
+    @Test
+    public void testAddBookInstance() {
+        BookInstance bookInstance = new BookInstance();
+        bookInstance.setIsbn("123456789");
+        bookInstance.setBorrowStatus(0);
+        int rowsAffected = bookInstanceMapper.addBookInstance(bookInstance);
+    }
+
+    @Test
+    public void testDelBookInstanceByInstanceId() {
+        long instanceId = 1; // Assuming the book instance with this ID exists
+        int rowsAffected = bookInstanceMapper.delBookInstanceByInstanceId(instanceId);
+    }
+
+    @Test
+    public void testGetBookInstances() {
+        // Assuming there are some book instances in the database
+        List<BookInstance> bookInstances = bookInstanceMapper.getBookInstances(new BookInstance());
+        for (BookInstance bookInstance : bookInstances) {
+            System.out.println(bookInstance);
+        }
     }
 
 }
