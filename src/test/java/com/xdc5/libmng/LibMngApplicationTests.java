@@ -1,6 +1,8 @@
 package com.xdc5.libmng;
 
+import com.xdc5.libmng.entity.BookCatalog;
 import com.xdc5.libmng.entity.User;
+import com.xdc5.libmng.mapper.BookCatalogMapper;
 import com.xdc5.libmng.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,49 @@ class LibMngApplicationTests {
         for (User user : users) {
             System.out.println(user);
         }
+    }
+
+
+    @Autowired
+    private BookCatalogMapper bookCatalogMapper;
+
+    @Test
+    public void testAddBookCatalog() {
+        BookCatalog book = new BookCatalog();
+        book.setIsbn("123456789");
+        book.setTitle("Test Book");
+        book.setAuthor("Test Author");
+        book.setDescription("Test Description");
+        int rowsAffected = bookCatalogMapper.addBookCatalog(book);
+        System.out.println("添加书籍目录成功，受影响的行数：" + rowsAffected);
+    }
+
+    @Test
+    public void testDelBookCatalogByISBN() {
+        String isbn = "123456789"; // Assuming the book with this ISBN exists
+        int rowsAffected = bookCatalogMapper.delBookCatalogByISBN(isbn);
+        System.out.println("删除书籍目录成功，受影响的行数：" + rowsAffected);
+    }
+
+    @Test
+    public void testGetBooks() {
+        // Assuming there are some books in the database
+        List<BookCatalog> books = bookCatalogMapper.getBooks(new BookCatalog());
+        System.out.println("获取到的书籍目录信息：");
+        for (BookCatalog book : books) {
+            System.out.println(book);
+        }
+    }
+
+    @Test
+    public void testUpdateBookCatalog() {
+        BookCatalog book = new BookCatalog();
+        book.setIsbn("123456789"); // Assuming the book with this ISBN exists
+        book.setTitle("Updated Test Book");
+        book.setAuthor("Updated Test Author");
+        book.setDescription("Updated Test Description");
+        int rowsAffected = bookCatalogMapper.updateBookCatalog(book);
+        System.out.println("更新书籍目录成功，受影响的行数：" + rowsAffected);
     }
 
 }

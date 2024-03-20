@@ -1,3 +1,4 @@
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
 DROP DATABASE lib_mng;
 CREATE DATABASE lib_mng;
 USE lib_mng;
@@ -26,6 +27,7 @@ CREATE TABLE BookInstance (
     isbn VARCHAR(17),
     # 借阅状态, 0为未借阅, 1为已借阅
     borrowStatus INT DEFAULT 0,
+    addDate DATE,
     FOREIGN KEY (isbn) REFERENCES BookCatalog(isbn)
 );
 

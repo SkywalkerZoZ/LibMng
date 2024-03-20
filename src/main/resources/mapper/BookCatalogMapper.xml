@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdc5.libmng.mapper.BookCatalogMapper">
+        <insert id="addBookCatalog" parameterType="com.xdc5.libmng.entity.BookCatalog" keyProperty="isbn">
+            INSERT INTO BookCatalog (isbn, title
+            <trim prefix="," suffixOverrides=",">
+                <if test="author != null">
+                    author
+                </if>
+            </trim>
+            <trim prefix="," suffixOverrides=",">
+                <if test="cover != null">
+                    cover
+                </if>
+            </trim>
+            <trim prefix="," suffixOverrides=",">
+                <if test="description != null">
+                    description
+                </if>
+            </trim>
+            )
+            VALUES (
+            #{isbn}, #{title}
+            <trim prefix="," suffixOverrides=",">
+                <if test="author != null">
+                    #{author}
+                </if>
+            </trim>
+            <trim prefix="," suffixOverrides=",">
+                <if test="cover != null">
+                    #{cover}
+                </if>
+            </trim>
+            <trim prefix="," suffixOverrides=",">
+                <if test="description != null">
+                    #{description}
+                </if>
+            </trim>
+            )
+        </insert>
+    <delete id="delBookCatalogByISBN">
+        DELETE FROM BookCatalog WHERE isbn=#{isbn}
+    </delete>
+
+    <select id="getBooks" parameterType="com.xdc5.libmng.entity.BookCatalog" resultType="com.xdc5.libmng.entity.BookCatalog">
+        SELECT isbn,title,author,cover,description
+        FROM BookCatalog
+        <where>
+            <if test="isbn != null">
+                AND isbn=#{isbn}
+            </if>
+            <if test="title != null">
+                AND title=#{title}
+            </if>
+            <if test="author!= null">
+                AND author=#{author}
+            </if>
+            <if test="description !=null">
+                AND description=#{description}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateBookCatalog" parameterType="com.xdc5.libmng.entity.BookCatalog">
+        UPDATE BookCatalog
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="description != null">description = #{description},</if>
+        </set>
+        WHERE isbn = #{isbn}
+    </update>
+</mapper>
