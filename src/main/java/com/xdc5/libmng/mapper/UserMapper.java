@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserMapper {
     List<User> getUsers(User user);
     //返回影响的行数
-    int delUserById(@Param("userId") Long userId);
+    int delUserById(@Param("userId") Integer userId);
     //返回影响的行数
     int delUserByName(@Param("username") String username);
     //返回影响的行数

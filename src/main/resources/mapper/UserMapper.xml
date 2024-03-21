@@ -45,7 +45,7 @@
         SELECT userId,username,password,email,avatar,borrowPerms,userRole
         FROM user
         <where>
-            <if test="userId != 0">
+            <if test="userId != null">
                 AND userId=#{userId}
             </if>
             <if test="username != null">

@@ -1,14 +1,12 @@
 package com.xdc5.libmng;
 
-import com.xdc5.libmng.entity.BookCatalog;
-import com.xdc5.libmng.entity.BookInstance;
-import com.xdc5.libmng.entity.User;
-import com.xdc5.libmng.mapper.BookCatalogMapper;
-import com.xdc5.libmng.mapper.BookInstanceMapper;
-import com.xdc5.libmng.mapper.UserMapper;
+import com.xdc5.libmng.entity.*;
+import com.xdc5.libmng.mapper.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -42,7 +40,7 @@ class LibMngApplicationTests {
 
     @Test
     public void testDeleteUserById() {
-        int rowsAffected = userMapper.delUserById(1L);
+        int rowsAffected = userMapper.delUserById(1);
         System.out.println("删除用户成功，受影响的行数：" + rowsAffected);
     }
 
@@ -67,7 +65,8 @@ class LibMngApplicationTests {
     @Test
     public void testAddBookCatalog() {
         BookCatalog book = new BookCatalog();
-        book.setIsbn("123456789");
+        //book.setIsbn("123456789");
+        book.setIsbn("987654321");
         book.setTitle("Test Book");
         book.setAuthor("Test Author");
         book.setDescription("Test Description");
@@ -95,7 +94,7 @@ class LibMngApplicationTests {
     @Test
     public void testUpdateBookCatalog() {
         BookCatalog book = new BookCatalog();
-        book.setIsbn("123456789"); // Assuming the book with this ISBN exists
+        book.setIsbn("123456789"); // Assuming the book with this ISBN exist
         book.setTitle("Updated Test Book");
         book.setAuthor("Updated Test Author");
         book.setDescription("Updated Test Description");
@@ -110,14 +109,15 @@ class LibMngApplicationTests {
     @Test
     public void testAddBookInstance() {
         BookInstance bookInstance = new BookInstance();
-        bookInstance.setIsbn("123456789");
+        bookInstance.setIsbn("987654321");
+        //bookInstance.setIsbn("123456789");
         bookInstance.setBorrowStatus(0);
         int rowsAffected = bookInstanceMapper.addBookInstance(bookInstance);
     }
 
     @Test
     public void testDelBookInstanceByInstanceId() {
-        long instanceId = 1; // Assuming the book instance with this ID exists
+        int instanceId = 1; // Assuming the book instance with this ID exists
         int rowsAffected = bookInstanceMapper.delBookInstanceByInstanceId(instanceId);
     }
 
@@ -128,6 +128,83 @@ class LibMngApplicationTests {
         for (BookInstance bookInstance : bookInstances) {
             System.out.println(bookInstance);
         }
+    }
+
+    @Autowired
+    private BorrowingMapper borrowingMapper;
+
+    @Test
+    public void testAddBorrowing() {
+        Borrowing borrowing = new Borrowing();
+        borrowing.setUserId(1);
+        borrowing.setInstanceId(2);
+        borrowing.setBorrowDate(LocalDate.now());
+        borrowing.setDueDate(LocalDate.now().plusDays(7));
+        // 设置其他属性值
+        int rowsAffected = borrowingMapper.addBorrowing(borrowing);
+    }
+
+    @Test
+    public void testDelBorrowingByRecordId() {
+        int borrowingId = 1; // 假设存在此借阅记录的ID
+        int rowsAffected = borrowingMapper.delBorrowingByBorrowingId(borrowingId);
+    }
+
+    @Test
+    public void testGetBorrowing() {
+        Borrowing borrowing = new Borrowing();
+        borrowing.setUserId(1);
+        // 设置其他查询条件
+        List<Borrowing> borrowings = borrowingMapper.getBorrowing(borrowing);
+        for (Borrowing b : borrowings) {
+            System.out.println(b);
+        }
+    }
+
+    @Test
+    public void testUpdateBorrowing() {
+        Borrowing borrowing = new Borrowing();
+        borrowing.setBorrowingId(1);
+        borrowing.setLateRetDate(LocalDate.now().plusDays(9));
+        // 设置其他属性值
+        int rowsAffected = borrowingMapper.updateBorrowing(borrowing);
+    }
+
+    @Autowired
+    private ReservationMapper reservationMapper;
+
+    @Test
+    public void testAddReservation() {
+        Reservation reservation = new Reservation();
+        reservation.setUserId(1);
+        reservation.setIsbn("123456789"); // 假设需要预订的图书的 ISBN 号
+        int rowsAffected = reservationMapper.addReservation(reservation);
+
+    }
+
+    @Test
+    public void testDelReservationByRsvId() {
+        int rsvId = 1; // 假设存在此预订记录的ID
+        int rowsAffected = reservationMapper.delReservationByRsvId(rsvId);
+    }
+
+    @Test
+    public void testGetReservation() {
+        Reservation reservation = new Reservation();
+        reservation.setUserId(1);
+        // 设置其他查询条件
+        List<Reservation> reservations = reservationMapper.getReservation(reservation);
+        for (Reservation r : reservations) {
+            System.out.println(r);
+        }
+    }
+
+    @Test
+    public void testUpdateReservation() {
+        Reservation reservation = new Reservation();
+        reservation.setRsvId(1); // 假设需要更新的预订记录ID
+        reservation.setIsbn("123456789"); // 假设需要更新的 ISBN 号
+        int rowsAffected = reservationMapper.updateReservation(reservation);
     }
 
 }

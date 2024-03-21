@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdc5.libmng.mapper.BorrowingMapper">
+
+    <insert id="addBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing" useGeneratedKeys="true" keyProperty="borrowingId">
+        INSERT INTO Borrowing (userId,instanceId,borrowDate,dueDate
+        )
+        VALUES (
+        #{userId}, #{instanceId}, now(), #{dueDate}
+        )
+    </insert>
+
+    <delete id="delBorrowingByBorrowingId">
+        DELETE FROM Borrowing WHERE borrowingId=#{borrowingId}
+    </delete>
+
+    <select id="getBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing" resultType="com.xdc5.libmng.entity.Borrowing">
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus
+        FROM Borrowing
+        <where>
+            <if test="borrowingId != null">
+                AND borrowingId=#{borrowingId}
+            </if>
+            <if test="userId != null">
+                AND userId=#{userId}
+            </if>
+            <if test="instanceId!= null">
+                AND instanceId=#{instanceId}
+            </if>
+            <if test="borrowDate !=null">
+                AND borrowDate=#{borrowDate}
+            </if>
+            <if test="dueDate !=null">
+                AND dueDate=#{dueDate}
+            </if>
+            <if test="lateRetDate !=null">
+                AND lateRetDate=#{lateRetDate}
+            </if>
+            <if test="borrowAprvStatus !=null">
+                AND borrowAprvStatus=#{borrowAprvStatus}
+            </if>
+            <if test="lateRetAprvStatus !=null">
+                AND lateRetAprvStatus=#{lateRetAprvStatus}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing">
+        UPDATE Borrowing
+        <set>
+            <if test="lateRetDate != null">lateRetDate = #{lateRetDate},</if>
+            <if test="borrowAprvStatus != null">borrowAprvStatus = #{borrowAprvStatus},</if>
+            <if test="lateRetAprvStatus != null">lateRetAprvStatus = #{lateRetAprvStatus},</if>
+        </set>
+        WHERE borrowingId = #{borrowingId}
+    </update>
+</mapper>
