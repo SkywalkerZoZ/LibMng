@@ -5,9 +5,9 @@ import java.time.LocalDate;
 
 @Data
 public class Borrowing {
-    private Long recordId;
-    private Long userId;
-    private Long instanceId;
+    private Integer borrowingId;
+    private Integer userId;
+    private Integer instanceId;
     private LocalDate borrowDate;
     private LocalDate dueDate;
     private LocalDate lateRetDate;

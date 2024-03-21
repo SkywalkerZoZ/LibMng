@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xdc5.libmng.mapper.BorrowingMapper">
 
-    <insert id="addBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing" useGeneratedKeys="true" keyProperty="recordId">
+    <insert id="addBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing" useGeneratedKeys="true" keyProperty="borrowingId">
         INSERT INTO Borrowing (userId,instanceId,borrowDate,dueDate
         )
         VALUES (
@@ -12,16 +12,16 @@
         )
     </insert>
 
-    <delete id="delBorrowingByRecordId">
-        DELETE FROM Borrowing WHERE recordId=#{recordId}
+    <delete id="delBorrowingByBorrowingId">
+        DELETE FROM Borrowing WHERE borrowingId=#{borrowingId}
     </delete>
 
     <select id="getBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing" resultType="com.xdc5.libmng.entity.Borrowing">
-        SELECT recordId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus
         FROM Borrowing
         <where>
-            <if test="recordId != null">
-                AND recordId=#{recordId}
+            <if test="borrowingId != null">
+                AND borrowingId=#{borrowingId}
             </if>
             <if test="userId != null">
                 AND userId=#{userId}
@@ -54,6 +54,6 @@
             <if test="borrowAprvStatus != null">borrowAprvStatus = #{borrowAprvStatus},</if>
             <if test="lateRetAprvStatus != null">lateRetAprvStatus = #{lateRetAprvStatus},</if>
         </set>
-        WHERE recordId = #{recordId}
+        WHERE borrowingId = #{borrowingId}
     </update>
 </mapper>

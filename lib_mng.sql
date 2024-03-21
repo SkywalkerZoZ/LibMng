@@ -1,4 +1,4 @@
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
+# ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
 DROP DATABASE lib_mng;
 CREATE DATABASE lib_mng;
 USE lib_mng;
@@ -27,12 +27,12 @@ CREATE TABLE BookInstance (
     isbn VARCHAR(17),
     # 借阅状态, 0为未借阅, 1为已借阅
     borrowStatus INT DEFAULT 0,
-    addDate DATETIME,
+    addTime DATETIME,
     FOREIGN KEY (isbn) REFERENCES BookCatalog(isbn)
 );
 
 CREATE TABLE Borrowing (
-    recordId INT AUTO_INCREMENT PRIMARY KEY,
+    borrowingId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
     instanceId INT,
     # 借阅日期
@@ -49,13 +49,14 @@ CREATE TABLE Borrowing (
     FOREIGN KEY (instanceId) REFERENCES BookInstance(instanceId) ON DELETE CASCADE
 );
 CREATE TABLE Reservation (
+    rsvId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
     isbn VARCHAR(17),
     FOREIGN KEY (userId) REFERENCES User(userId),
     FOREIGN KEY (isbn) REFERENCES BookCatalog(isbn) ON DELETE CASCADE
 );
 CREATE TABLE Penalty (
-    recordId INT AUTO_INCREMENT PRIMARY KEY,
+    penaltyId INT AUTO_INCREMENT PRIMARY KEY,
     adminId INT,
     userId INT,
     reason VARCHAR(255),

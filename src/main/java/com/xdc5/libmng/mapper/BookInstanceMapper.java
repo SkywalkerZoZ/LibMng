@@ -11,7 +11,7 @@ import java.util.List;
 public interface BookInstanceMapper {
     List<BookInstance> getBookInstances(BookInstance bookInstance);
     //返回影响的行数
-    int delBookInstanceByInstanceId(@Param("instanceId") Long instanceId);
+    int delBookInstanceByInstanceId(@Param("instanceId") Integer instanceId);
     //返回影响的行数
     int addBookInstance(BookInstance bookInstance);
 
