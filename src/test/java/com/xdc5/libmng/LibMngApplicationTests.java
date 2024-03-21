@@ -21,6 +21,7 @@ class LibMngApplicationTests {
         user.setUsername("testUser");
         user.setPassword("testPassword");
         user.setUserRole("user");
+//        user.setUserRole("admin");
 //        user.setEmail("test@gmail.com");
 
         int rowsAffected = userMapper.addUser(user);
@@ -205,6 +206,44 @@ class LibMngApplicationTests {
         reservation.setRsvId(1); // 假设需要更新的预订记录ID
         reservation.setIsbn("123456789"); // 假设需要更新的 ISBN 号
         int rowsAffected = reservationMapper.updateReservation(reservation);
+    }
+
+    @Autowired
+    private PenaltyMapper penaltyMapper;
+
+    @Test
+    public void testAddPenalty() {
+        Penalty penalty = new Penalty();
+        penalty.setAdminId(1);
+        penalty.setUserId(1);
+        penalty.setEndDate(LocalDate.now().plusDays(7)); // 设置处罚结束日期为当前日期的7天后
+        int rowsAffected = penaltyMapper.addPenalty(penalty);
+    }
+
+    @Test
+    public void testDelPenaltyByPenaltyId() {
+        int penaltyId = 1; // 假设存在此处罚记录的ID
+        int rowsAffected = penaltyMapper.delPenaltyByPenaltyId(penaltyId);
+    }
+
+    @Test
+    public void testGetPenalty() {
+        Penalty penalty = new Penalty();
+        penalty.setUserId(1);
+        // 设置其他查询条件
+        List<Penalty> penalties = penaltyMapper.getPenalty(penalty);
+        for (Penalty p : penalties) {
+            System.out.println(p);
+        }
+    }
+
+    @Test
+    public void testUpdatePenalty() {
+        Penalty penalty = new Penalty();
+        penalty.setPenaltyId(1); // 假设需要更新的处罚记录ID
+        penalty.setReason("Test Reason");
+        penalty.setEndDate(LocalDate.now().plusDays(14)); // 假设需要更新的处罚结束日期为当前日期的14天后
+        int rowsAffected = penaltyMapper.updatePenalty(penalty);
     }
 
 }

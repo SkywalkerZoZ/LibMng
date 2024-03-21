@@ -1,7 +1,6 @@
 package com.xdc5.libmng.mapper;
 
 import com.xdc5.libmng.entity.Reservation;
-import com.xdc5.libmng.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
