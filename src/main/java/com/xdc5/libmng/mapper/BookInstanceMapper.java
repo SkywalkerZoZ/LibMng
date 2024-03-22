@@ -1,6 +1,5 @@
 package com.xdc5.libmng.mapper;
 
-import com.xdc5.libmng.entity.BookCatalog;
 import com.xdc5.libmng.entity.BookInstance;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
