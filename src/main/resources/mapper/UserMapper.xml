@@ -59,4 +59,9 @@
             </if>
         </where>
     </select>
+    <select id="getUserById" resultType="com.xdc5.libmng.entity.User">
+        SELECT userId,username,password,email,avatar,borrowPerms,userRole
+        FROM user
+        WHERE userId=#{userId}
+    </select>
 </mapper>

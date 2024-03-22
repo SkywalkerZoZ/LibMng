@@ -32,7 +32,7 @@ class LibMngApplicationTests {
     @Test
     public void testUpdateUser() {
         User user=new User();
-        user.setUsername("testUser");
+        user.setUsername("testUser2");
         user = userMapper.getUsers(user).get(0);
         user.setPassword("newPassword666");
         int rowsAffected = userMapper.updateUser(user);
