@@ -22,8 +22,8 @@ public class LoginController {
         if((user.getUserId() != null) && (user.getUsername() != null) && (user.getPassword() != null))
         {
             HashMap<String, Object> claims = new HashMap<>();
-            claims.put("user_name",user.getUsername());
-            claims.put("user_id",user.getUserId());
+            claims.put("username",user.getUsername());
+            claims.put("userId",user.getUserId());
             String jwt= JwtUtils.generateToken(claims);
             return Result.success(jwt);
         }
