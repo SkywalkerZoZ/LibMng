@@ -22,7 +22,7 @@
             )
         </insert>
 
-    <delete id="delBookInstanceByInstanceId">
+    <delete id="delBookInstanceById">
         DELETE FROM BookInstance WHERE instanceId=#{instanceId}
     </delete>
 

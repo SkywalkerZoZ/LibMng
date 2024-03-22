@@ -48,7 +48,7 @@
         </where>
     </select>
 
-    <delete id="delPenaltyByPenaltyId">
+    <delete id="delPenaltyById">
         DELETE FROM Penalty WHERE penaltyId=#{penaltyId}
     </delete>
 

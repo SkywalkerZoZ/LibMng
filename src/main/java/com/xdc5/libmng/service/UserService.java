@@ -31,38 +31,25 @@ public class UserService {
             return new User();
         }
     }
-    /*
-    *方法名：User_Info
-    *创建者：wwh
-    *创建时间：2024年3月22日17:28:52
-    *用途描述：通过id获取用户信息
-    * */
-    public User User_Info(Integer userId){
-         User user = null;
-         user = userMapper.getUserById(userId);
-         return user;
+
+    //通过id获取用户信息
+    public User userInfo(Integer userId){
+        return userMapper.getUserById(userId);
     }
-    /*
-    *方法名：Change_xxx_Byid
-    * 创建者：wwh
-    * 修改时间：2024年3月22日20:35:28
-    * 详情：提供根据id修改对应xxx的方法。
-    * */
-    public void Change_Email_Byid(Integer userId,String email){
-        User user = null;
-        user = userMapper.getUserById(userId);
+
+    //提供根据id修改对应xxx的方法。
+    public void changeEmailById(Integer userId, String email){
+        User user = userMapper.getUserById(userId);
         user.ChangeEmail(email);
         userMapper.updateUser(user);
     }
-    public void Change_password_Byid(Integer userId,String password){
-        User user = null;
-        user = userMapper.getUserById(userId);
+    public void changePasswordById(Integer userId, String password){
+        User user = userMapper.getUserById(userId);
         user.ChangePassword(password);
         userMapper.updateUser(user);
     }
-    public void Change_avatar_Byid(Integer userId,byte[] avatar){
-        User user = null;
-        user = userMapper.getUserById(userId);
+    public void changeAvatarById(Integer userId, byte[] avatar){
+        User user = userMapper.getUserById(userId);
         user.ChangeAvatar(avatar);
         user.Base64toAvatar();
         userMapper.updateUser(user);

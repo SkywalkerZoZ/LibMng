@@ -10,7 +10,7 @@ import java.util.List;
 public interface BorrowingMapper {
     List<Borrowing> getBorrowing(Borrowing borrowing);
     //返回影响的行数
-    int delBorrowingByBorrowingId(@Param("borrowingId") Integer borrowingId);
+    int delBorrowingById(@Param("borrowingId") Integer borrowingId);
     //返回影响的行数
     int addBorrowing(Borrowing borrowing);
     int updateBorrowing(Borrowing borrowing);

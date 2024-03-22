@@ -12,7 +12,7 @@
         )
     </insert>
 
-    <delete id="delBorrowingByBorrowingId">
+    <delete id="delBorrowingById">
         DELETE FROM Borrowing WHERE borrowingId=#{borrowingId}
     </delete>
 

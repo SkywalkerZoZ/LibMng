@@ -20,7 +20,7 @@
         </where>
     </select>
 
-    <delete id="delReservationByRsvId">
+    <delete id="delReservationById">
         DELETE FROM Reservation WHERE rsvId=#{rsvId}
     </delete>
 

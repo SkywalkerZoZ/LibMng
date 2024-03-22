@@ -10,7 +10,7 @@ import java.util.List;
 public interface PenaltyMapper {
     List<Penalty> getPenalty(Penalty penalty);
     //返回影响的行数
-    int delPenaltyByPenaltyId(@Param("penaltyId") Integer penaltyId);
+    int delPenaltyById(@Param("penaltyId") Integer penaltyId);
     //返回影响的行数
     int addPenalty(Penalty penalty);
     int updatePenalty(Penalty penalty);

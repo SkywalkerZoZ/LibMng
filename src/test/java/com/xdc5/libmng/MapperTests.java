@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
-class LibMngApplicationTests {
+class MapperTests {
 
     @Autowired
     private UserMapper userMapper;
@@ -32,7 +32,7 @@ class LibMngApplicationTests {
     @Test
     public void testUpdateUser() {
         User user=new User();
-        user.setUsername("testUser2");
+        user.setUsername("testUser");
         user = userMapper.getUsers(user).get(0);
         user.setPassword("newPassword666");
         int rowsAffected = userMapper.updateUser(user);
@@ -110,8 +110,7 @@ class LibMngApplicationTests {
     @Test
     public void testAddBookInstance() {
         BookInstance bookInstance = new BookInstance();
-        bookInstance.setIsbn("987654321");
-        //bookInstance.setIsbn("123456789");
+        bookInstance.setIsbn("123456789");
         bookInstance.setBorrowStatus(0);
         int rowsAffected = bookInstanceMapper.addBookInstance(bookInstance);
     }
@@ -119,7 +118,7 @@ class LibMngApplicationTests {
     @Test
     public void testDelBookInstanceByInstanceId() {
         int instanceId = 1; // Assuming the book instance with this ID exists
-        int rowsAffected = bookInstanceMapper.delBookInstanceByInstanceId(instanceId);
+        int rowsAffected = bookInstanceMapper.delBookInstanceById(instanceId);
     }
 
     @Test
@@ -148,7 +147,7 @@ class LibMngApplicationTests {
     @Test
     public void testDelBorrowingByRecordId() {
         int borrowingId = 1; // 假设存在此借阅记录的ID
-        int rowsAffected = borrowingMapper.delBorrowingByBorrowingId(borrowingId);
+        int rowsAffected = borrowingMapper.delBorrowingById(borrowingId);
     }
 
     @Test
@@ -186,7 +185,7 @@ class LibMngApplicationTests {
     @Test
     public void testDelReservationByRsvId() {
         int rsvId = 1; // 假设存在此预订记录的ID
-        int rowsAffected = reservationMapper.delReservationByRsvId(rsvId);
+        int rowsAffected = reservationMapper.delReservationById(rsvId);
     }
 
     @Test
@@ -223,7 +222,7 @@ class LibMngApplicationTests {
     @Test
     public void testDelPenaltyByPenaltyId() {
         int penaltyId = 1; // 假设存在此处罚记录的ID
-        int rowsAffected = penaltyMapper.delPenaltyByPenaltyId(penaltyId);
+        int rowsAffected = penaltyMapper.delPenaltyById(penaltyId);
     }
 
     @Test
