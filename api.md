@@ -343,6 +343,18 @@ export default {
 
 
 
+```json
+{
+	"code": 400,
+	"message": "Fail: duplicate email",
+	"data": null
+}
+```
+
+
+
+
+
 # 管理员
 
 
@@ -583,6 +595,7 @@ export default {
 
 ```json
 {
+    "method":"title",
     "keyword": "SPM"
 }
 ```

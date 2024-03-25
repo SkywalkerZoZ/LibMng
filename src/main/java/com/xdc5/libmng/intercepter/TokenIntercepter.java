@@ -37,6 +37,7 @@ public class TokenIntercepter implements HandlerInterceptor {
             String userIdStr = JwtUtils.extractAttribute(jwt, "userId");
             String userRole= JwtUtils.extractAttribute(jwt,"userRole");
             Integer userId = Integer.parseInt(userIdStr);
+            // 放入HttpServletRequest
             request.setAttribute("userId", userId);
             request.setAttribute("userRole",userRole);
             log.info("parsed userId: "+userId);

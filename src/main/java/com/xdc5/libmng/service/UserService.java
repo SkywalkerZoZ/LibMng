@@ -1,5 +1,6 @@
 package com.xdc5.libmng.service;
 
+import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.entity.User;
 import com.xdc5.libmng.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +34,23 @@ public class UserService {
         }
     }
 
+    //重复返回true
+    public boolean checkNameDuplicate(String username)
+    {
+        User user=new User();
+        user.setUsername(username);
+        List<User> users = userMapper.getUsers(user);
+        return !users.isEmpty();
+    }
 
+    //重复返回true
+    public boolean checkEmailDuplicate(String email){
 
-
+        User user=new User();
+        user.setEmail(email);
+        List<User> users=userMapper.getUsers(user);
+        return !users.isEmpty();
+    }
     // 通过id获取用户信息
     public User getUserInfo(Integer userId) {
         return userMapper.getUserById(userId);
@@ -44,5 +59,7 @@ public class UserService {
     public void updateUserInfo(User user) {
         userMapper.updateUser(user);
     }
-
+    public void addUser(User user){
+        userMapper.addUser(user);
+    }
 }

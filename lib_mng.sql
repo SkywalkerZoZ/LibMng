@@ -4,9 +4,9 @@ CREATE DATABASE lib_mng;
 USE lib_mng;
 CREATE TABLE User (
     userId INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    email VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
     avatar MEDIUMBLOB,
     # 借阅权限, 1表示正常,0表示不能借阅所有书籍
     borrowPerms INT DEFAULT 1,
