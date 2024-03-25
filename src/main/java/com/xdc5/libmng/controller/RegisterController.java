@@ -15,6 +15,6 @@ public class RegisterController {
     @PostMapping("/register")
     public Result registerUser(Integer userId){
 
-        return Result.success();
+        return Result.success("Success: post /register");
     }
 }

@@ -326,7 +326,7 @@ export default {
 ```json
 {
 	"code": 200,
-	"message" : "Success: regist",
+	"message" : "Success: post /register",
 	"data": null
 }
 ```
