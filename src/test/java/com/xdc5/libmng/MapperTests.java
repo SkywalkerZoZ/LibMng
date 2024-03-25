@@ -58,7 +58,11 @@ class MapperTests {
             System.out.println(user);
         }
     }
-
+    @Test
+    public void testGetUserById(){
+        User user=userMapper.getUserById(3);
+        System.out.println(user);
+    }
 
     @Autowired
     private BookCatalogMapper bookCatalogMapper;

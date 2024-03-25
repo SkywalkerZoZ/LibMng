@@ -12,7 +12,8 @@ import java.util.HashMap;
 
 public class JwtUtils {
     private static final String SECRET_KEY = "skywalker@gmail.com_herobrinex@163.com_qwer4396";
-    private static final long EXPIRATION_TIME = 100_000;
+    //30天
+    private static final long EXPIRATION_TIME = 1000L *60*60*24*30;
 
     public static String generateToken(HashMap<String,Object> claims) {
         Date now = new Date();
@@ -43,7 +44,7 @@ public class JwtUtils {
         }
     }
 
-    public static String extractSubject(String token) {
+    public static String extractAttribute(String token,String attr) {
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
         Jws<Claims> claimsJws = Jwts.parserBuilder()
@@ -51,8 +52,9 @@ public class JwtUtils {
                 .build()
                 .parseClaimsJws(token);
 
-        return claimsJws.getBody().getSubject();
+        return claimsJws.getBody().get(attr).toString();
     }
+
     public static void main(String[] args) {
         HashMap<String,Object> claims=new HashMap<>();
         claims.put("username","skywalker");
@@ -62,8 +64,8 @@ public class JwtUtils {
 
         if (JwtUtils.validateToken(token)) {
             System.out.println("Token is valid");
-            String extractedSubject = JwtUtils.extractSubject(token);
-            System.out.println("Extracted Subject: " + extractedSubject);
+            String extracted = JwtUtils.extractAttribute(token,"username");
+            System.out.println("Extracted : " + extracted);
         } else {
             System.out.println("Token is invalid");
         }

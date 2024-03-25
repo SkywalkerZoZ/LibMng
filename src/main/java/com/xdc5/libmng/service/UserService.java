@@ -14,44 +14,34 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
-    public List<User> getAllUsers(){
-        return  userMapper.getUsers(null);
+
+    public List<User> getAllUsers() {
+        return userMapper.getUsers(null);
     }
-    public User auth(User user){
+
+    public User auth(User user) {
+        // 通过用户名密码找
         List<User> users = userMapper.getUsers(user);
         int size = users.size();
-        if(size==0)
-        {
+        if (size == 0) {
             return new User();
-        } else if (size==1) {
+        } else if (size == 1) {
             return users.get(0);
-        }
-        else {
-            log.info("duplicated username "+users.get(0).getUsername());
+        } else {
+            log.info("duplicated username " + users.get(0).getUsername());
             return new User();
         }
     }
 
-    //通过id获取用户信息
-    public User userInfo(Integer userId){
+
+
+
+    // 通过id获取用户信息
+    public User getUserInfo(Integer userId) {
         return userMapper.getUserById(userId);
     }
 
-    //提供根据id修改对应xxx的方法。
-    public void changeEmailById(Integer userId, String email){
-        User user = userMapper.getUserById(userId);
-        user.ChangeEmail(email);
-        userMapper.updateUser(user);
-    }
-    public void changePasswordById(Integer userId, String password){
-        User user = userMapper.getUserById(userId);
-        user.ChangePassword(password);
-        userMapper.updateUser(user);
-    }
-    public void changeAvatarById(Integer userId, byte[] avatar){
-        User user = userMapper.getUserById(userId);
-        user.ChangeAvatar(avatar);
-        user.Base64toAvatar();
+    public void updateUserInfo(User user) {
         userMapper.updateUser(user);
     }
 

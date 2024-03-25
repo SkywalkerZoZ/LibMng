@@ -24,10 +24,11 @@ public class LoginController {
             HashMap<String, Object> claims = new HashMap<>();
             claims.put("username",user.getUsername());
             claims.put("userId",user.getUserId());
+            claims.put("userRole",user.getUserRole());
             String jwt= JwtUtils.generateToken(claims);
-            return Result.success(jwt);
+            return Result.success(jwt,"Success: post /login");
         }
-        return Result.error("invalid username or password");
+        return Result.error("Fail: invalid username or password");
     }
 
 }

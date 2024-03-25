@@ -4,56 +4,66 @@ package com.xdc5.libmng.controller;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.entity.User;
 import com.xdc5.libmng.service.UserService;
+import com.xdc5.libmng.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+import java.util.Base64;
 
 @Slf4j
 @RestController
 public class UserInfoController {
     @Autowired
     private UserService userService;
+    private final long MAX_SIZE = 5 * 1024 * 1024;
 
-    //用来响应查询个人信息的请求。在方法中，如果传进来的userId不为空
-    //TODO 将api.md文档中的请求参数从无，改为Integer userId
-
-    @RequestMapping(value = "/user/profile",method = RequestMethod.GET)
-    public Result showUserInfo(Integer userId){
-        if(userId!=null){
-            log.info("查询个人信息");
-            User user=userService.userInfo(userId);
-            user.avatarToBase64();
-            return Result.success(user);
+    @GetMapping("/user/profile")
+    public Result showUserInfo(HttpServletRequest request) {
+        Integer userId= (Integer) request.getAttribute("userId");
+        log.info("request userId: "+userId);
+        User user = userService.getUserInfo(userId);
+        if(user == null)
+        {
+            return Result.error("Fail: no such user");
         }
-        return Result.error("No userid");
+        // avatar会自动转为base64编码格式
+        return Result.success(user,"Success: get /user/profile");
     }
 
 
-    @RequestMapping(value = "/user/profile",method = RequestMethod.PUT)
+    @PutMapping("/user/profile")
+    public Result updateUserInfo(HttpServletRequest request, @RequestBody Map<String, Object> requestBody) {
+        Integer userId= (Integer) request.getAttribute("userId");
+        if (userId == null) {
+            return Result.error("Fail: no such userId");
+        }
+        String email = (String) requestBody.get("email");
+        String password = (String) requestBody.get("password");
+        String base64Avatar = (String) requestBody.get("avatar");
+        log.info("request userId: "+userId);
+        log.info("request email: "+email);
 
-    //根据userid更改数据库数据，如果userid为空则返回error，然后首先判断图片大小是否超出数据库可存储范围，如果超出直接返回error
-    //保证修改操作的原子性，即不会出现邮件和密码已经修改完，但是由于图片大小过大导致修改终止的情况发生。
-    //TODO 与原api.md不同增加了Integer userId 的参数。
+        byte[] avatar;
+        try {
+            avatar = Base64.getDecoder().decode(base64Avatar);
+        } catch (IllegalArgumentException e) {
+            return Result.error("Fail: invalid avatar data");
+        }
 
-    public Result changeUserInfo(Integer userId, String email, String password, byte[] avatar){
-        if(userId==null){
-            return Result.error("No userId");
+        if (avatar.length > MAX_SIZE) {
+            return Result.error("Fail: picture is too big");
         }
-        if(avatar.length>65535){
-            return Result.error("picture is to big");
-        }
-        if(email!=null){
-            //改变userid对应下的email为新的email
-            userService.changeEmailById(userId,email);
-        }
-        if(password!=null){
-            userService.changePasswordById(userId,password);
-        }
-        if(avatar.length!=0){
-            userService.changeAvatarById(userId,avatar);
-        }
-        return Result.success();
+        User user = new User();
+        user.setUserId(userId);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setAvatar(avatar);
+        userService.updateUserInfo(user);
+        return Result.success("Success: put /user/profile");
     }
+
+
 }

@@ -1,3 +1,5 @@
+# 格式
+
 
 
 | code | description                                    |
@@ -24,7 +26,7 @@
 ```json
 {
     "code": 404,
-    "message": "Failed: not found",
+    "message": "Fail: not found",
     "data": null
 }
 ```
@@ -34,9 +36,164 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
+```
+
+
+
+
+
+前端接受图片并显示的示例
+
+```vue
+<template>
+    <div>
+      <div v-if="user">
+        <h2>{{ user.userName }}</h2>
+        <img :src="getImageUrl(user.avatar)" alt="User Avatar">
+      </div>
+      <div v-else>
+        <p>User not found</p>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        user: null
+      };
+    },
+    created() {
+      this.fetchUser();
+    },
+    methods: {
+      fetchUser() {
+        axios.get('/user')
+          .then(response => {
+            this.user = response.data.data;
+            console.log('User:', this.user);
+          })
+          .catch(error => {
+            console.error('Error fetching user:', error);
+          });
+      },
+      getImageUrl(imageData) {
+        if (imageData) {
+          return '' + this.user.avatar;
+        } else {
+          return 'default_avatar_url.jpg';
+        }
+      }
+    }
+  };
+  </script>
+  
+  <style>
+  /* Add your styles here */
+  </style>
+```
+
+
+
+```vue
+<template>
+  <div>
+    <div v-if="user">
+      <h2>UserName: {{ user.userName }}</h2>
+      <el-avatar :src="getImageUrl(user.avatar)" :size="150" :fit="cover"></el-avatar>
+    </div>
+    
+    <el-upload
+      :action="uploadUrl" 
+      :on-success="handleSuccess"
+      :before-upload="beforeUpload"
+      :http-request="customHttpRequest"
+      :list-type="listType">
+      <el-button slot="trigger" size="small" type="primary">点击上传</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+    <div v-if="imageData">
+      <el-avatar :src="imageData" v-if="imageData" :size="150" :fit="cover"></el-avatar>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+export default {
+  data() {
+    return {
+      imageData: null,
+      uploadUrl: '/upload', // Set the upload URL
+      listType: 'picture',
+      user:null
+    };
+  },
+  created() {
+    this.fetchUser();
+  },
+  methods: {
+    fetchUser() {
+      axios.get('/user')
+        .then(response => {
+          this.user = response.data.data;
+          console.log('User:', this.user);
+        })
+        .catch(error => {
+          console.error('Error fetching user:', error);
+        });
+    },
+    getImageUrl(imageData) {
+      if (imageData) {
+        return '' + imageData;
+      } else {
+        return 'default_avatar_url.jpg';
+      }
+    },
+    beforeUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    handleSuccess(response, file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file.raw);
+      reader.onload = () => {
+        this.imageData = reader.result;
+      };
+    },
+    customHttpRequest(option) {
+      const formData = new FormData();
+      formData.append('avatar', option.file);
+      
+      fetch(this.uploadUrl, {
+        method: 'PUT',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        option.onSuccess(data, option.file);
+      })
+      .catch(error => {
+        option.onError(error, option.file);
+      });
+    }
+  }
+};
+</script>
 ```
 
 
@@ -111,8 +268,8 @@
 
 ```json
 {
-	"code":401,
-	"message":"Failed: unauthorized, invalid username or password",
+	"code":400,
+	"message":"Fail: invalid username or password",
 	"data":null
 }
 ```
@@ -126,9 +283,9 @@
 
 
 
-| 方法 | 地址    |
-| ---- | ------- |
-| POST | /regist |
+| 方法 | 地址      |
+| ---- | --------- |
+| POST | /register |
 
 
 
@@ -179,7 +336,7 @@
 ```json
 {
 	"code": 400,
-	"message": "Failed: duplicate username",
+	"message": "Fail: duplicate username",
 	"data": null
 }
 ```
@@ -227,18 +384,46 @@
 ```json
 {
     "code": 200,
-    "message": "Success: user profile",
+    "message": "Success:get user profile",
     "data": {
     	"userId": 123,
     	"username": "test1",
     	"email": "test1@example.com",
-    	"avatar": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+    	"avatar": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
     	"userRole": "admin"
 	}
 }
 ```
 
 
+
+```json
+{
+    "code": 400,
+    "message": "Fail: invalid token",
+    "data":null
+}
+```
+
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: token parse error",
+    "data":null
+}
+```
+
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: no such user",
+    "data":null
+}
+```
 
 
 
@@ -264,13 +449,15 @@
 | password | string | 否       | 新的密码                     |
 | avatar   | blob   | 否       | 新的头像图片数据，base64编码 |
 
+修改哪些参数就带哪些参数
+
 
 
 ```json
 {
     "email": "newemail@example.com",
     "password": "newpassword123",
-    "avatar": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/..."
+    "avatar": "/9j/4AAQSkZJRgABAQEAYABgAAD/..."
 }
 ```
 
@@ -290,7 +477,7 @@
 ```json
 {
     "code": 200,
-    "message": "Success: profile",
+    "message": "Success:put user profile",
     "data":null
 }
 ```
@@ -300,7 +487,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -351,7 +538,7 @@
             "isbn": "978-3-16-148410-0",
             "title": "Book Title 1",
             "author": "Author 1",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 1",
             "available": 5,
             "borrowed": 10
@@ -360,7 +547,7 @@
             "isbn": "978-3-16-148410-1",
             "title": "Book Title 2",
             "author": "Author 2",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 2",
             "available": 3,
             "borrowed": 8
@@ -430,7 +617,7 @@
             "isbn": "978-3-16-148410-0",
             "title": "Book Title 1",
             "author": "Author 1",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 1",
             "available": 5,
             "borrowed": 10
@@ -439,7 +626,7 @@
             "isbn": "978-3-16-148410-1",
             "title": "Book Title 2",
             "author": "Author 2",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 2",
             "available": 3,
             "borrowed": 8
@@ -546,7 +733,7 @@
     "isbn": "978-3-16-148410-2",
     "title": "New Book Title",
     "author": "New Author",
-    "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+    "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
     "description": "Description of New Book"
 }
 ```
@@ -576,7 +763,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -622,7 +809,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: isbn not found",
+    "message": "Fail: isbn not found",
     "data":null
 }
 ```
@@ -654,7 +841,7 @@
 {
     "title": "New Title",
     "author": "New Author",
-    "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+    "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
     "description": "New Description"
 }
 
@@ -685,7 +872,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -745,7 +932,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -795,7 +982,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: instanceId not found",
+    "message": "Fail: instanceId not found",
     "data":null
 }
 ```
@@ -994,7 +1181,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -1044,7 +1231,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -1161,14 +1348,14 @@
             "userId": 123,
             "username": "test1",
             "email": "test1@example.com",
-            "avatar": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "avatar": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "borrowPerms": 1
         },
         {
             "userId": 456,
             "username": "test2",
             "email": "test2@example.com",
-            "avatar": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "avatar": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "borrowPerms": 0
         }
     ]
@@ -1180,7 +1367,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -1238,7 +1425,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -1317,7 +1504,7 @@
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -1377,7 +1564,7 @@ tip: borrowDate为当前时间
 ```json
 {
     "code": 400,
-    "message": "Failed: bad request",
+    "message": "Fail: bad request",
     "data":null
 }
 ```
@@ -1428,7 +1615,7 @@ tip: borrowDate为当前时间
             "instanceId": 123,
             "isbn": "1234567890123",
             "title":"ttt",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "borrowDate": "2024-03-21",
             "dueDate": "2024-04-21",
             "borrowAprvStatus": 1
@@ -1438,7 +1625,7 @@ tip: borrowDate为当前时间
             "instanceId": 456,
             "isbn": "4567890123456",
             "title":"ttt7",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "borrowDate": "2024-03-22",
             "dueDate": "2024-04-22",
             "borrowAprvStatus": 0
@@ -1548,12 +1735,12 @@ tip: borrowDate为当前时间
         {
             "isbn": "1234567890123",
             "title": "Book Title 1",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
         },
         {
             "isbn": "4567890123456",
             "title": "Book Title 2",
-            "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
         }
     ]
 }

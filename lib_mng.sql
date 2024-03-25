@@ -7,7 +7,7 @@ CREATE TABLE User (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255),
-    avatar BLOB,
+    avatar MEDIUMBLOB,
     # 借阅权限, 1表示正常,0表示不能借阅所有书籍
     borrowPerms INT DEFAULT 1,
     userRole ENUM('user', 'admin') NOT NULL
@@ -17,7 +17,7 @@ CREATE TABLE BookCatalog(
     isbn VARCHAR(17) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     author VARCHAR(255),
-    cover BLOB,
+    cover MEDIUMBLOB,
     description VARCHAR(255)
 );
 
