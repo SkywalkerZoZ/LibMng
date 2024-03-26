@@ -16,12 +16,25 @@ class MapperTests {
     private UserMapper userMapper;
 
     @Test
+    public void testAddAdminUser() {
+        User user = new User();
+        user.setUsername("jia");
+        user.setPassword("123456");
+//        user.setUserRole("user");
+        user.setUserRole("admin");
+//        user.setEmail("test@gmail.com");
+
+        int rowsAffected = userMapper.addUser(user);
+        System.out.println("新增用户成功，受影响的行数：" + rowsAffected);
+        System.out.println("新插入的用户ID：" + user.getUserId());
+    }
+    @Test
     public void testAddUser() {
         User user = new User();
-        user.setUsername("testUser");
-        user.setPassword("testPassword");
+        user.setUsername("user");
+        user.setPassword("123456");
         user.setUserRole("user");
-//        user.setUserRole("admin");
+
 //        user.setEmail("test@gmail.com");
 
         int rowsAffected = userMapper.addUser(user);
@@ -65,45 +78,45 @@ class MapperTests {
     }
 
     @Autowired
-    private BookCatalogMapper bookCatalogMapper;
+    private BookInfoMapper bookInfoMapper;
 
     @Test
-    public void testAddBookCatalog() {
-        BookCatalog book = new BookCatalog();
+    public void testAddBookInfo() {
+        BookInfo book = new BookInfo();
         //book.setIsbn("123456789");
-        book.setIsbn("987654321");
+        book.setIsbn("978-3-16-148410-0");
         book.setTitle("Test Book");
         book.setAuthor("Test Author");
         book.setDescription("Test Description");
-        int rowsAffected = bookCatalogMapper.addBookCatalog(book);
+        int rowsAffected = bookInfoMapper.addBookInfo(book);
         System.out.println("添加书籍目录成功，受影响的行数：" + rowsAffected);
     }
 
     @Test
-    public void testDelBookCatalogByISBN() {
+    public void testDelBookInfoByISBN() {
         String isbn = "123456789"; // Assuming the book with this ISBN exists
-        int rowsAffected = bookCatalogMapper.delBookCatalogByISBN(isbn);
+        int rowsAffected = bookInfoMapper.delBookInfoByISBN(isbn);
         System.out.println("删除书籍目录成功，受影响的行数：" + rowsAffected);
     }
 
     @Test
     public void testGetBooks() {
         // Assuming there are some books in the database
-        List<BookCatalog> books = bookCatalogMapper.getBookCatalogs(new BookCatalog());
+        List<BookInfo> books = bookInfoMapper.getBookInfo(new BookInfo());
         System.out.println("获取到的书籍目录信息：");
-        for (BookCatalog book : books) {
+        for (BookInfo book : books) {
             System.out.println(book);
         }
     }
 
     @Test
-    public void testUpdateBookCatalog() {
-        BookCatalog book = new BookCatalog();
+    public void testUpdateBookInfo() {
+        BookInfo book = new BookInfo();
         book.setIsbn("123456789"); // Assuming the book with this ISBN exist
         book.setTitle("Updated Test Book");
         book.setAuthor("Updated Test Author");
         book.setDescription("Updated Test Description");
-        int rowsAffected = bookCatalogMapper.updateBookCatalog(book);
+        int rowsAffected = bookInfoMapper.updateBookInfo(book);
         System.out.println("更新书籍目录成功，受影响的行数：" + rowsAffected);
     }
 
@@ -114,7 +127,7 @@ class MapperTests {
     @Test
     public void testAddBookInstance() {
         BookInstance bookInstance = new BookInstance();
-        bookInstance.setIsbn("123456789");
+        bookInstance.setIsbn("978-3-16-148410-2");
         bookInstance.setBorrowStatus(0);
         int rowsAffected = bookInstanceMapper.addBookInstance(bookInstance);
     }
@@ -140,8 +153,8 @@ class MapperTests {
     @Test
     public void testAddBorrowing() {
         Borrowing borrowing = new Borrowing();
-        borrowing.setUserId(1);
-        borrowing.setInstanceId(2);
+        borrowing.setUserId(2);
+        borrowing.setInstanceId(4);
         borrowing.setBorrowDate(LocalDate.now());
         borrowing.setDueDate(LocalDate.now().plusDays(7));
         // 设置其他属性值

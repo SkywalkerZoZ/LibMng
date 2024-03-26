@@ -512,9 +512,9 @@ export default {
 
 
 
-| 方法 | 地址                |
-| ---- | ------------------- |
-| GET  | /user/books/catalog |
+| 方法 | 地址               |
+| ---- |------------------|
+| GET  | /user/books/info |
 
 
 
@@ -703,13 +703,13 @@ export default {
             "username": "user1",
             "borrowDate": "2024-03-20",
             "dueDate": "2024-04-20",
-            "bookId": 1
+            "instanceId": 1
         },
         {
             "username": "user2",
             "borrowDate": "2024-03-18",
             "dueDate": "2024-04-18",
-            "bookId": 2
+            "instanceId": 2
         }
     ]
 }
@@ -1749,12 +1749,12 @@ tip: borrowDate为当前时间
         {
             "isbn": "1234567890123",
             "title": "Book Title 1",
-            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/..."
         },
         {
             "isbn": "4567890123456",
             "title": "Book Title 2",
-            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/..."
         }
     ]
 }

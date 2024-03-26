@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xdc5.libmng.mapper.BookCatalogMapper">
-        <insert id="addBookCatalog" parameterType="com.xdc5.libmng.entity.BookCatalog" keyProperty="isbn">
-            INSERT INTO BookCatalog (isbn, title
+<mapper namespace="com.xdc5.libmng.mapper.BookInfoMapper">
+        <insert id="addBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo" keyProperty="isbn">
+            INSERT INTO BookInfo (isbn, title
             <trim prefix="," suffixOverrides=",">
                 <if test="author != null">
                     author
@@ -40,13 +40,13 @@
             </trim>
             )
         </insert>
-    <delete id="delBookCatalogByISBN">
-        DELETE FROM BookCatalog WHERE isbn=#{isbn}
+    <delete id="delBookInfoByISBN">
+        DELETE FROM BookInfo WHERE isbn=#{isbn}
     </delete>
 
-    <select id="getBookCatalogs" parameterType="com.xdc5.libmng.entity.BookCatalog" resultType="com.xdc5.libmng.entity.BookCatalog">
+    <select id="getBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo" resultType="com.xdc5.libmng.entity.BookInfo">
         SELECT isbn,title,author,cover,description
-        FROM BookCatalog
+        FROM BookInfo
         <where>
             <if test="isbn != null">
                 AND isbn=#{isbn}
@@ -63,8 +63,15 @@
         </where>
     </select>
 
-    <update id="updateBookCatalog" parameterType="com.xdc5.libmng.entity.BookCatalog">
-        UPDATE BookCatalog
+    <select id="getBookInfoByISBN" resultType="com.xdc5.libmng.entity.BookInfo">
+        SELECT isbn,title,author,cover,description
+        FROM BookInfo
+        where
+        isbn=#{isbn}
+    </select>
+
+    <update id="updateBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo">
+        UPDATE BookInfo
         <set>
             <if test="title != null">title = #{title},</if>
             <if test="author != null">author = #{author},</if>
