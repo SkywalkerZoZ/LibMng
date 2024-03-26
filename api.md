@@ -552,6 +552,7 @@ export default {
             "author": "Author 1",
             "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 1",
+            "location": "B333",
             "available": 5,
             "borrowed": 10
         },
@@ -561,6 +562,7 @@ export default {
             "author": "Author 2",
             "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 2",
+            "location": "B333",
             "available": 3,
             "borrowed": 8
         }
@@ -633,6 +635,7 @@ export default {
             "author": "Author 1",
             "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 1",
+            "location": "B333",
             "available": 5,
             "borrowed": 10
         },
@@ -642,6 +645,7 @@ export default {
             "author": "Author 2",
             "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "description": "Description of Book 2",
+            "location": "B333",
             "available": 3,
             "borrowed": 8
         }
@@ -1112,7 +1116,8 @@ export default {
             "isbn": "1234567890123",
             "borrowDate": "2024-03-21",
             "dueDate": "2024-04-21",
-            "borrowAprvStatus":0
+            "borrowAprvStatus":0,
+            "location":"B306"
         },
         {
             "borrowingId": 2,
@@ -1122,11 +1127,11 @@ export default {
             "isbn": "4567890123456",
             "borrowDate": "2024-03-22",
             "dueDate": "2024-04-22",
-            "borrowAprvStatus":1
+            "borrowAprvStatus":1,
+            "location":"B306"
         }
     ]
 }
-
 ```
 
 
@@ -1560,6 +1565,7 @@ export default {
 | message         | string | 提示信息                 |
 | data            | object | 数据                     |
 | data.instanceId | int    | 借阅的书实体ID（哪一本） |
+| data.location   | string | 借阅图书位置             |
 
 
 
@@ -1568,7 +1574,8 @@ export default {
     "code": 200,
     "message": "Success: post /user/borrowing",
     "data": {
-        "instanceId":6
+        "instanceId":6,
+        "location":"B333"
     }
 }
 ```

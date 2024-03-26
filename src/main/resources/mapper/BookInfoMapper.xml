@@ -20,6 +20,11 @@
                     description
                 </if>
             </trim>
+            <trim prefix="," suffixOverrides=",">
+                <if test="location != null">
+                    location
+                </if>
+            </trim>
             )
             VALUES (
             #{isbn}, #{title}
@@ -38,6 +43,11 @@
                     #{description}
                 </if>
             </trim>
+            <trim prefix="," suffixOverrides=",">
+                <if test="location != null">
+                    #{location}
+                </if>
+            </trim>
             )
         </insert>
     <delete id="delBookInfoByISBN">
@@ -45,7 +55,7 @@
     </delete>
 
     <select id="getBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo" resultType="com.xdc5.libmng.entity.BookInfo">
-        SELECT isbn,title,author,cover,description
+        SELECT isbn,title,author,cover,description,location
         FROM BookInfo
         <where>
             <if test="isbn != null">
@@ -60,14 +70,16 @@
             <if test="description !=null">
                 AND description=#{description}
             </if>
+            <if test="location !=null">
+                AND location=#{location}
+            </if>
         </where>
     </select>
 
     <select id="getBookInfoByISBN" resultType="com.xdc5.libmng.entity.BookInfo">
-        SELECT isbn,title,author,cover,description
+        SELECT isbn,title,author,cover,description,location
         FROM BookInfo
-        where
-        isbn=#{isbn}
+        WHERE isbn=#{isbn}
     </select>
 
     <update id="updateBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo">
@@ -77,6 +89,8 @@
             <if test="author != null">author = #{author},</if>
             <if test="cover != null">cover = #{cover},</if>
             <if test="description != null">description = #{description},</if>
+            <if test="location != null">location = #{location},</if>
+
         </set>
         WHERE isbn = #{isbn}
     </update>

@@ -20,7 +20,9 @@ CREATE TABLE BookInfo
     title       VARCHAR(255) NOT NULL,
     author      VARCHAR(255),
     cover       MEDIUMBLOB,
-    description VARCHAR(255)
+    description VARCHAR(255),
+    # 同一个ISBN的书放一起
+    location    VARCHAR(255)
 );
 
 # 同一个ISBN号的书籍实体

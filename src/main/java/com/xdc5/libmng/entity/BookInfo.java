@@ -9,5 +9,5 @@ public class BookInfo {
     private String author;
     private byte[] cover;
     private String description;
-
+    private String location;
 }

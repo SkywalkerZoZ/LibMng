@@ -44,7 +44,6 @@ public class BookController {
                 info.put("borrowDate", borrowDate);
                 String dueDate = DateTimeUtils.formatDate(borrowingInfo.getDueDate(), "yyyy-MM-dd");
                 info.put("dueDate", dueDate);
-
                 infoList.add(info);
             }
 
