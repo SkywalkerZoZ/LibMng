@@ -24,6 +24,8 @@ public class LoginController {
             HashMap<String, Object> claims = new HashMap<>();
             claims.put("userId",user.getUserId());
             claims.put("userRole",user.getUserRole());
+            claims.put("username",user.getUsername());
+            claims.put("email",user.getEmail());
             String jwt= JwtUtils.generateToken(claims);
             return Result.success(jwt,"Success: post /login");
         }

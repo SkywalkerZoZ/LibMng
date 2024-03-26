@@ -750,9 +750,9 @@ export default {
 
 
 
-| 方法 | 地址             |
-| ---- | ---------------- |
-| POST | /admin/books/add |
+| 方法 | 地址              |
+| ---- | ----------------- |
+| POST | /admin/books/info |
 
 
 
@@ -793,7 +793,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: post /admin/books/add",
+    "message": "Success: post /admin/books/info",
     "data": null
 }
 ```
@@ -840,9 +840,9 @@ export default {
 
 **接口地址**
 
-| 方法   | 地址                |
-| ------ | ------------------- |
-| DELETE | /admin/books/{isbn} |
+| 方法   | 地址                     |
+| ------ | ------------------------ |
+| DELETE | /admin/books/info/{isbn} |
 
 
 
@@ -865,7 +865,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: delete /admin/books/{isbn}",
+    "message": "Success: delete /admin/books/info/{isbn}",
     "data": null
 }
 ```
@@ -898,9 +898,9 @@ export default {
 
 **接口地址**
 
-| 方法 | 地址                |
-| ---- | ------------------- |
-| PUT  | /admin/books/{isbn} |
+| 方法 | 地址                     |
+| ---- | ------------------------ |
+| PUT  | /admin/books/info/{isbn} |
 
 
 
@@ -940,7 +940,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: put /admin/books/{isbn}",
+    "message": "Success: put /admin/books/info/{isbn}",
     "data": null
 }
 ```

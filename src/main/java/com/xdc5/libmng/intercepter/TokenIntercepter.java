@@ -19,9 +19,6 @@ public class TokenIntercepter implements HandlerInterceptor {
     private ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String url = request.getRequestURL().toString();
-        log.info("request url: {}", url);
-
         String jwt = request.getHeader("Authorization");
         if (!JwtUtils.validateToken(jwt)) {
             log.info("NOT_LOGIN");
@@ -32,22 +29,33 @@ public class TokenIntercepter implements HandlerInterceptor {
             return false;
         }
 
+        String userRole;
         try {
             // 解析userId
             String userIdStr = JwtUtils.extractAttribute(jwt, "userId");
-            String userRole= JwtUtils.extractAttribute(jwt,"userRole");
+            String username=JwtUtils.extractAttribute(jwt,"username");
+            userRole= JwtUtils.extractAttribute(jwt, "userRole");
+            String email=JwtUtils.extractAttribute(jwt,"email");
             Integer userId = Integer.parseInt(userIdStr);
             // 放入HttpServletRequest
             request.setAttribute("userId", userId);
             request.setAttribute("userRole",userRole);
+            request.setAttribute("username",username);
+            request.setAttribute("email",email);
             log.info("parsed userId: "+userId);
         } catch (Exception e) {
             response.getWriter().write(jwt);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return false;
         }
-
-
+        String url=request.getRequestURL().toString();
+        log.info("request url: {}", url);
+        if (url.contains("admin")&&userRole.equals("admin"))
+        {
+            response.getWriter().write("Fail: not admin");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        }
         return true;
     }
 
