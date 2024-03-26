@@ -544,7 +544,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: get /user/books/catalog",
+    "message": "Success: get /user/books/info",
     "data": [
         {
             "isbn": "978-3-16-148410-0",
@@ -718,6 +718,28 @@ export default {
 
 
 
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: isbn not found",
+    "data":null
+}
+```
+
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: borrowing info is null or empty",
+    "data":null
+}
+```
+
+
+
 ## 增加新图书信息
 
 **接口地址**
@@ -777,10 +799,36 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: bad request",
+    "message": "Fail: isbn not null",
     "data":null
 }
 ```
+
+
+
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: title not null",
+    "data":null
+}
+```
+
+
+
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: info already exist",
+    "data":null
+}
+```
+
+
 
 
 
@@ -824,6 +872,18 @@ export default {
 {
     "code": 400,
     "message": "Fail: isbn not found",
+    "data":null
+}
+```
+
+
+
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: isbn not null",
     "data":null
 }
 ```
