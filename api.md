@@ -224,7 +224,7 @@ export default {
 {
 	"username":"test1",
 	"password":"1234",
-	”userRole":"user"
+	"userRole":"user"
 }
 ```
 
@@ -234,7 +234,7 @@ export default {
 {
 	"username": null,
 	"password": null,
-	”userRole":"guest"
+	"userRole":"guest"
 }
 ```
 
@@ -254,7 +254,7 @@ export default {
 ```json
 {
 	"code": 200,
-	"message": "Success: login",
+	"message": "Success: post /login",
 	"data": {
 		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 	}
@@ -303,7 +303,7 @@ export default {
 ```json
 {
     "username":"tester",
-	"password":"123456",
+    "password":"123456",
     "email":"tester@qq.com",
     "userRole":"user"
 }
@@ -396,7 +396,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success:get user profile",
+    "message": "Success:get /user/profile",
     "data": {
     	"userId": 123,
     	"username": "test1",
@@ -489,7 +489,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success:put user profile",
+    "message": "Success:put /user/profile",
     "data":null
 }
 ```
@@ -506,7 +506,7 @@ export default {
 
 
 
-## 图书目录
+## 图书信息目录
 
 **接口地址**
 
@@ -544,7 +544,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books catalog",
+    "message": "Success: get /user/books/catalog",
     "data": [
         {
             "isbn": "978-3-16-148410-0",
@@ -571,7 +571,7 @@ export default {
 
 
 
-## 图书检索
+## 图书信息检索
 
 
 
@@ -587,9 +587,10 @@ export default {
 
 **请求参数**
 
-| 参数    | 类型   | 是否必需 | 描述       |
-| ------- | ------ | -------- | ---------- |
-| keyword | string | 是       | 检索关键词 |
+| 参数    | 类型   | 是否必需 | 描述                                   |
+| ------- | ------ | -------- | -------------------------------------- |
+| method  | string | 是       | 通过哪种方式 {"title","author","isbn"} |
+| keyword | string | 是       | 检索关键词                             |
 
 
 
@@ -624,7 +625,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books search",
+    "message": "Success: get /user/books/search",
     "data": [
         {
             "isbn": "978-3-16-148410-0",
@@ -696,7 +697,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books borrowing-info",
+    "message": "Success: get /admin/books/borrowing-info",
     "data": [
         {
             "username": "user1",
@@ -766,7 +767,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books add",
+    "message": "Success: post /admin/books/add",
     "data": null
 }
 ```
@@ -812,7 +813,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books delete",
+    "message": "Success: delete /admin/books/{isbn}",
     "data": null
 }
 ```
@@ -875,7 +876,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success",
+    "message": "Success: put /admin/books/{isbn}",
     "data": null
 }
 ```
@@ -934,7 +935,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books instances",
+    "message": "Success: post /admin/books/instances",
     "data": null
 }
 
@@ -985,7 +986,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books instances delete",
+    "message": "Success: delete /admin/books/instances/{instanceId}",
     "data": null
 }
 ```
@@ -1041,7 +1042,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: borrowing applications",
+    "message": "Success: get /admin/borrowing/applications",
     "data": [
         {
             "borrowingId": 1,
@@ -1108,7 +1109,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: borrowing late-returns",
+    "message": "Success: get /admin/borrowing/late-returns",
     "data": [
         {
             "borrowingId": 1,
@@ -1184,7 +1185,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: borrowing applications process",
+    "message": "Success: put /admin/borrowing/applications/{borrowingId}",
     "data": null
 }
 ```
@@ -1234,7 +1235,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: borrowing late-returns process",
+    "message": "Success: put /admin/borrowing/late-returns/{borrowingId}",
     "data": null
 }
 ```
@@ -1285,7 +1286,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: borrowing overdue-readers",
+    "message": "Success: get /admin/borrowing/overdue-readers",
     "data": [
         {
             "userId": 123,
@@ -1355,7 +1356,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: readers search",
+    "message": "Success: get /admin/readers/search",
     "data": [
         {
             "userId": 123,
@@ -1428,7 +1429,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: penalty",
+    "message": "Success: put /admin/penalty/{userId}",
     "data": null
 }
 ```
@@ -1505,7 +1506,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: borrowing",
+    "message": "Success: post /user/borrowing",
     "data": {
         "instanceId":6
     }
@@ -1567,7 +1568,7 @@ tip: borrowDate为当前时间
 ```json
 {
     "code": 200,
-    "message": "Success: reservation",
+    "message": "Success: put /user/reservation/{userId}",
     "data": null
 }
 ```
@@ -1621,7 +1622,7 @@ tip: borrowDate为当前时间
 ```json
 {
     "code": 200,
-    "message": "Success: borrowing records",
+    "message": "Success: get /user/borrowing/records",
     "data": [
         {
             "borrowingId": 1,
@@ -1686,7 +1687,7 @@ tip: borrowDate为当前时间
 ```json
 {
     "code": 200,
-    "message": "Success: penalty",
+    "message": "Success: get /user/penalty",
     "data": [
         {
             "penaltyId": 1,
@@ -1743,7 +1744,7 @@ tip: borrowDate为当前时间
 ```json
 {
     "code": 200,
-    "message": "Success: reservation",
+    "message": "Success: get /user/reservation",
     "data": [
         {
             "isbn": "1234567890123",
