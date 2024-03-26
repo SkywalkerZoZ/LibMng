@@ -56,4 +56,14 @@
         </set>
         WHERE borrowingId = #{borrowingId}
     </update>
+
+    <select id="getByInstanceId" resultType="com.xdc5.libmng.entity.Borrowing">
+        SELECT userId,instanceId,borrowDate,dueDate
+        FROM Borrowing
+        <where>
+            <if test="instanceId!= null">
+                AND instanceId=#{instanceId}
+            </if>
+        </where>
+    </select>
 </mapper>

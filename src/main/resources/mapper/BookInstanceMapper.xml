@@ -45,4 +45,14 @@
         </where>
     </select>
 
+    <select id="getInstanceId" resultType="java.lang.Integer">
+        SELECT instanceId
+        FROM BookInstance
+        <where>
+            <if test="isbn != null">
+                AND isbn=#{isbn}
+            </if>
+        </where>
+    </select>
+
 </mapper>

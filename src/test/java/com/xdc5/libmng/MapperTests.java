@@ -16,12 +16,25 @@ class MapperTests {
     private UserMapper userMapper;
 
     @Test
+    public void testAddAdminUser() {
+        User user = new User();
+        user.setUsername("jia");
+        user.setPassword("123456");
+//        user.setUserRole("user");
+        user.setUserRole("admin");
+//        user.setEmail("test@gmail.com");
+
+        int rowsAffected = userMapper.addUser(user);
+        System.out.println("新增用户成功，受影响的行数：" + rowsAffected);
+        System.out.println("新插入的用户ID：" + user.getUserId());
+    }
+    @Test
     public void testAddUser() {
         User user = new User();
-        user.setUsername("testUser");
-        user.setPassword("testPassword");
+        user.setUsername("user");
+        user.setPassword("123456");
         user.setUserRole("user");
-//        user.setUserRole("admin");
+
 //        user.setEmail("test@gmail.com");
 
         int rowsAffected = userMapper.addUser(user);
@@ -71,7 +84,7 @@ class MapperTests {
     public void testAddBookCatalog() {
         BookCatalog book = new BookCatalog();
         //book.setIsbn("123456789");
-        book.setIsbn("987654321");
+        book.setIsbn("978-3-16-148410-0");
         book.setTitle("Test Book");
         book.setAuthor("Test Author");
         book.setDescription("Test Description");
@@ -114,7 +127,7 @@ class MapperTests {
     @Test
     public void testAddBookInstance() {
         BookInstance bookInstance = new BookInstance();
-        bookInstance.setIsbn("123456789");
+        bookInstance.setIsbn("978-3-16-148410-2");
         bookInstance.setBorrowStatus(0);
         int rowsAffected = bookInstanceMapper.addBookInstance(bookInstance);
     }
@@ -140,8 +153,8 @@ class MapperTests {
     @Test
     public void testAddBorrowing() {
         Borrowing borrowing = new Borrowing();
-        borrowing.setUserId(1);
-        borrowing.setInstanceId(2);
+        borrowing.setUserId(2);
+        borrowing.setInstanceId(4);
         borrowing.setBorrowDate(LocalDate.now());
         borrowing.setDueDate(LocalDate.now().plusDays(7));
         // 设置其他属性值

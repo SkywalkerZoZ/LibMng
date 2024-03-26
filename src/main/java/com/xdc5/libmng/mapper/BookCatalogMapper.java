@@ -14,4 +14,5 @@ public interface BookCatalogMapper {
     //返回影响的行数
     int addBookCatalog(BookCatalog bookCatalog);
     int updateBookCatalog(BookCatalog bookCatalog);
+    List<BookCatalog> getBookCatalogsByISBN(@Param("isbn") String isbn);
 }

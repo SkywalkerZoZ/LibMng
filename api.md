@@ -702,13 +702,13 @@ export default {
             "username": "user1",
             "borrowDate": "2024-03-20",
             "dueDate": "2024-04-20",
-            "bookId": 1
+            "instanceId": 1
         },
         {
             "username": "user2",
             "borrowDate": "2024-03-18",
             "dueDate": "2024-04-18",
-            "bookId": 2
+            "instanceId": 2
         }
     ]
 }

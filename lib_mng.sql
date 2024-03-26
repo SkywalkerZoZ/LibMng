@@ -34,7 +34,8 @@ CREATE TABLE BookInstance (
 CREATE TABLE Borrowing (
     borrowingId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
-    instanceId INT,
+    #防止一本书被多个人借用
+    instanceId INT UNIQUE,
     # 借阅日期
     borrowDate DATE NOT NULL,
     # 借阅到期日期

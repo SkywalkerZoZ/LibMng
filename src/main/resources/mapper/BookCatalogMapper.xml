@@ -62,6 +62,13 @@
             </if>
         </where>
     </select>
+    
+    <select id="getBookCatalogsByISBN" resultType="com.xdc5.libmng.entity.BookCatalog">
+        SELECT isbn,title,author,cover,description
+        FROM BookCatalog
+        where
+        isbn=#{isbn}
+    </select>
 
     <update id="updateBookCatalog" parameterType="com.xdc5.libmng.entity.BookCatalog">
         UPDATE BookCatalog
