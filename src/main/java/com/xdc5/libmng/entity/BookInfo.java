@@ -3,7 +3,7 @@ package com.xdc5.libmng.entity;
 import lombok.Data;
 
 @Data
-public class BookCatalog {
+public class BookInfo {
     private String isbn;
     private String title;
     private String author;

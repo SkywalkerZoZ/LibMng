@@ -78,45 +78,45 @@ class MapperTests {
     }
 
     @Autowired
-    private BookCatalogMapper bookCatalogMapper;
+    private BookInfoMapper bookInfoMapper;
 
     @Test
-    public void testAddBookCatalog() {
-        BookCatalog book = new BookCatalog();
+    public void testAddBookInfo() {
+        BookInfo book = new BookInfo();
         //book.setIsbn("123456789");
         book.setIsbn("978-3-16-148410-0");
         book.setTitle("Test Book");
         book.setAuthor("Test Author");
         book.setDescription("Test Description");
-        int rowsAffected = bookCatalogMapper.addBookCatalog(book);
+        int rowsAffected = bookInfoMapper.addBookInfo(book);
         System.out.println("添加书籍目录成功，受影响的行数：" + rowsAffected);
     }
 
     @Test
-    public void testDelBookCatalogByISBN() {
+    public void testDelBookInfoByISBN() {
         String isbn = "123456789"; // Assuming the book with this ISBN exists
-        int rowsAffected = bookCatalogMapper.delBookCatalogByISBN(isbn);
+        int rowsAffected = bookInfoMapper.delBookInfoByISBN(isbn);
         System.out.println("删除书籍目录成功，受影响的行数：" + rowsAffected);
     }
 
     @Test
     public void testGetBooks() {
         // Assuming there are some books in the database
-        List<BookCatalog> books = bookCatalogMapper.getBookCatalogs(new BookCatalog());
+        List<BookInfo> books = bookInfoMapper.getBookInfo(new BookInfo());
         System.out.println("获取到的书籍目录信息：");
-        for (BookCatalog book : books) {
+        for (BookInfo book : books) {
             System.out.println(book);
         }
     }
 
     @Test
-    public void testUpdateBookCatalog() {
-        BookCatalog book = new BookCatalog();
+    public void testUpdateBookInfo() {
+        BookInfo book = new BookInfo();
         book.setIsbn("123456789"); // Assuming the book with this ISBN exist
         book.setTitle("Updated Test Book");
         book.setAuthor("Updated Test Author");
         book.setDescription("Updated Test Description");
-        int rowsAffected = bookCatalogMapper.updateBookCatalog(book);
+        int rowsAffected = bookInfoMapper.updateBookInfo(book);
         System.out.println("更新书籍目录成功，受影响的行数：" + rowsAffected);
     }
 

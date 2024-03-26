@@ -512,9 +512,9 @@ export default {
 
 
 
-| 方法 | 地址                |
-| ---- | ------------------- |
-| GET  | /user/books/catalog |
+| 方法 | 地址               |
+| ---- |------------------|
+| GET  | /user/books/info |
 
 
 
@@ -544,7 +544,7 @@ export default {
 ```json
 {
     "code": 200,
-    "message": "Success: books catalog",
+    "message": "Success: books info",
     "data": [
         {
             "isbn": "978-3-16-148410-0",
