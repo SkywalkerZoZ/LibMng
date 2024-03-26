@@ -53,7 +53,7 @@ public class BookController {
 
     }
 
-    @PostMapping("/admin/books/add")
+    @PostMapping("/admin/books/info")
     public Result addBookInfo(@RequestBody BookInfo bookinfo) {
         if ((bookinfo.getIsbn() == null) || (bookinfo.getIsbn().isEmpty())) {
             return Result.error("Fail: isbn not null");
@@ -65,11 +65,11 @@ public class BookController {
             return Result.error("Fail: info already exist");
         }
         bookService.addBookInfo(bookinfo);
-        return Result.success(null, "Success: post /admin/books/add");
+        return Result.success(null, "Success: post /admin/books/info");
 
     }
 
-    @DeleteMapping("/admin/books/{isbn}")
+    @DeleteMapping("/admin/books/info/{isbn}")
     public Result delBookInfo(@PathVariable String isbn) {
 
         List<BookInfo> data = bookService.getBookInfoByISBN(isbn);
@@ -80,7 +80,7 @@ public class BookController {
             return Result.error("Fail: isbn not null");
         }
         bookService.delBookInfo(isbn);
-        return Result.success("Success: books delete");
+        return Result.success("Success: delete /admin/books/info/{isbn}");
     }
 
 
