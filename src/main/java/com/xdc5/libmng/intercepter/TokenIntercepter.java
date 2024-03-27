@@ -50,7 +50,7 @@ public class TokenIntercepter implements HandlerInterceptor {
         }
         String url=request.getRequestURL().toString();
         log.info("request url: {}", url);
-        if (url.contains("admin")&&userRole.equals("admin"))
+        if (url.contains("admin")&&!userRole.equals("admin"))
         {
             response.getWriter().write("Fail: not admin");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

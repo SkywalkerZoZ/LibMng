@@ -23,7 +23,11 @@ public class RegisterController {
         {
             return Result.error("Fail: duplicate email");
         }
-        userService.addUser(user);
+        try {
+            userService.addUser(user);
+        } catch (Exception e) {
+            return Result.error("Fail: data too long");
+        }
 
         return Result.success("Success: post /register");
     }
