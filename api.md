@@ -355,6 +355,16 @@ export default {
 
 
 
+```json
+{
+    "code": 400,
+    "message": "Fail: data too long",
+    "data":null
+}
+```
+
+
+
 # 管理员
 
 
@@ -833,6 +843,16 @@ export default {
 ```
 
 
+
+超过数据库限制
+
+```json
+{
+    "code": 400,
+    "message": "Fail: data too long",
+    "data":null
+}
+```
 
 
 

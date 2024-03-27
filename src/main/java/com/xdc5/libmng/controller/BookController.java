@@ -64,7 +64,11 @@ public class BookController {
         if (bookService.checkIsbnDuplicate(bookinfo.getIsbn())) {
             return Result.error("Fail: info already exist");
         }
-        bookService.addBookInfo(bookinfo);
+        try {
+            bookService.addBookInfo(bookinfo);
+        } catch (Exception e) {
+            return Result.error("Fail: data too long");
+        }
         return Result.success(null, "Success: post /admin/books/info");
 
     }
