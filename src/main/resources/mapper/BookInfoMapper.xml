@@ -3,7 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xdc5.libmng.mapper.BookInfoMapper">
-        <insert id="addBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo" keyProperty="isbn">
+    <sql id="selectBookInfo">
+        SELECT
+            bi.isbn,
+            bi.title,
+            bi.author,
+            bi.cover,
+            bi.description,
+            bi.location,
+            SUM(CASE WHEN binst.borrowStatus = 0 THEN 1 ELSE 0 END) AS available,
+            SUM(CASE WHEN binst.borrowStatus = 1 THEN 1 ELSE 0 END) AS borrowed
+        FROM
+            BookInfo bi
+                LEFT JOIN
+            BookInstance binst ON bi.isbn = binst.isbn
+    </sql>
+    <insert id="addBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo" keyProperty="isbn">
             INSERT INTO BookInfo (isbn, title
             <trim prefix="," suffixOverrides=",">
                 <if test="author != null">
@@ -83,83 +98,35 @@
     </select>
 
 
-    <select id="getBookByTitle" resultType="java.util.HashMap">
-
-        SELECT
-            bi.isbn,
-            bi.title,
-            bi.author,
-            bi.cover,
-            bi.description,
-            bi.location,
-            SUM(CASE WHEN binst.borrowStatus = 0 THEN 1 ELSE 0 END) AS available,
-            SUM(CASE WHEN binst.borrowStatus = 1 THEN 1 ELSE 0 END) AS borrowed
-        FROM
-            BookInfo bi
-                LEFT JOIN
-            BookInstance binst ON bi.isbn = binst.isbn
+    <select id="getBookInfoByTitle" resultType="java.util.HashMap">
+        <include refid="selectBookInfo"/>
         WHERE
             bi.title LIKE #{title}
         GROUP BY
-            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location;
-
+            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
     </select>
     <select id="getAllBookInfo" resultType="java.util.HashMap">
-        SELECT
-            bi.isbn,
-            bi.title,
-            bi.author,
-            bi.cover,
-            bi.description,
-            bi.location,
-            SUM(CASE WHEN binst.borrowStatus = 0 THEN 1 ELSE 0 END) AS available,
-            SUM(CASE WHEN binst.borrowStatus = 1 THEN 1 ELSE 0 END) AS borrowed
-        FROM
-            BookInfo bi
-                LEFT JOIN
-            BookInstance binst ON bi.isbn = binst.isbn
+        <include refid="selectBookInfo"/>
         GROUP BY
-            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location;
-
+            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
     </select>
-    <select id="getBookByAuthor" resultType="java.util.HashMap">
-        SELECT
-            bi.isbn,
-            bi.title,
-            bi.author,
-            bi.cover,
-            bi.description,
-            bi.location,
-            SUM(CASE WHEN binst.borrowStatus = 0 THEN 1 ELSE 0 END) AS available,
-            SUM(CASE WHEN binst.borrowStatus = 1 THEN 1 ELSE 0 END) AS borrowed
-        FROM
-            BookInfo bi
-                LEFT JOIN
-            BookInstance binst ON bi.isbn = binst.isbn
+    <select id="getBookInfoByAuthor" resultType="java.util.HashMap">
+        <include refid="selectBookInfo"/>
         WHERE
             bi.author LIKE #{author}
         GROUP BY
-            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location;
+            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
     </select>
-    <select id="getBookByIsbn" resultType="java.util.HashMap">
-        SELECT
-            bi.isbn,
-            bi.title,
-            bi.author,
-            bi.cover,
-            bi.description,
-            bi.location,
-            SUM(CASE WHEN binst.borrowStatus = 0 THEN 1 ELSE 0 END) AS available,
-            SUM(CASE WHEN binst.borrowStatus = 1 THEN 1 ELSE 0 END) AS borrowed
-        FROM
-            BookInfo bi
-                LEFT JOIN
-            BookInstance binst ON bi.isbn = binst.isbn
+    <select id="getBookInfoByIsbn" resultType="java.util.HashMap">
+        <include refid="selectBookInfo"/>
         WHERE
             bi.isbn LIKE #{isbn}
         GROUP BY
-            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location;
-
+            bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
     </select>
 
     <update id="updateBookInfo" parameterType="com.xdc5.libmng.entity.BookInfo">
