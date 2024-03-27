@@ -1,23 +1,35 @@
 package com.xdc5.libmng.service;
 
+
 import com.xdc5.libmng.entity.BookInfo;
 import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.mapper.BookInfoMapper;
 import com.xdc5.libmng.mapper.BookInstanceMapper;
 import com.xdc5.libmng.mapper.BorrowingMapper;
 import com.xdc5.libmng.mapper.UserMapper;
+
+
+
+import com.xdc5.libmng.mapper.BookInstanceMapper;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.awt.print.Book;
 import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @Slf4j
 @Service
 public class BookService {
     @Autowired
+
     private BorrowingMapper borrowingMapper;
     @Autowired
     private BookInstanceMapper bookInstanceMapper;
@@ -63,5 +75,33 @@ public class BookService {
 
     public String getUserName(int userId) {
         return userMapper.getUserNameById(userId);
+    }
+    //获取全部图书信息
+    public List<HashMap<String,Object>> getAllBookInfos(){
+        return bookInfoMapper.getAllBookInfo();
+    }
+    //通过title找到我需要的数目
+    public List<HashMap<String,Object>> getBookByTitle(String title){
+
+        String titleWithWildcard = "%" + title + "%";
+
+        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookByTitle(titleWithWildcard);
+        return booklist;
+    }
+    //通过author找到我需要的数目
+    public List<HashMap<String,Object>> getBookByAuthor(String author){
+
+        String authorWithWildcard = "%" + author + "%";
+        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookByAuthor(authorWithWildcard);
+        //我们需要根据bookInfomapper和
+        return booklist;
+    }
+
+    public List<HashMap<String,Object>> getBookByIsbn(String isbn){
+
+        String isbnWithWildcard = "%" + isbn + "%";
+        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookByIsbn(isbnWithWildcard);
+        //我们需要根据bookInfomapper和
+        return booklist;
     }
 }
