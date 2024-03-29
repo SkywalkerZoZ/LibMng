@@ -2,6 +2,7 @@ package com.xdc5.libmng.service;
 
 
 import com.xdc5.libmng.entity.BookInfo;
+import com.xdc5.libmng.entity.BookInstance;
 import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.mapper.BookInfoMapper;
 import com.xdc5.libmng.mapper.BookInstanceMapper;
@@ -66,6 +67,25 @@ public class BookService {
     public boolean checkIsbnDuplicate(String isbn) {
         List<BookInfo> bookInfos = bookInfoMapper.getBookInfoByISBN(isbn);
         return !bookInfos.isEmpty();
+    }
+
+    public boolean updateBookInfo(String isbn) {
+        List<BookInfo> book = bookInfoMapper.getBookInfoByISBN(isbn);
+        if (book.isEmpty()) {
+            return false;
+        } else {
+            for(BookInfo tBook: book)
+                bookInfoMapper.updateBookInfo(tBook);
+            return true;
+        }
+    }
+
+    public boolean addBookInstance(BookInstance bookInstance)
+    {
+        if(bookInstanceMapper.addBookInstance(bookInstance) > 0)
+            return true;
+        else
+            return false;
     }
 
     public String getUserName(int userId) {

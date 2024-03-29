@@ -115,5 +115,22 @@ public class BookController {
         return Result.success("Success: delete /admin/books/info/{isbn}");
     }
 
+    @PutMapping("/admin/books/info/{isbn}")
+    public Result changeBookInfo(@PathVariable String isbn) {
+
+        if(bookService.updateBookInfo(isbn))
+            return Result.success("Success: change /admin/books/info/{isbn}");
+        else
+            return Result.error("Fail: Fail: bad request");
+    }
+
+    @PostMapping("/admin/books/instances")
+    public Result addBookInstance(@RequestBody BookInstance bookInstance) {
+        if(bookService.addBookInstance(bookInstance))
+            return Result.success("Success: post /admin/books/instances");
+        else
+            return Result.error("Fail: Fail: bad request");
+
+    }
 
 }
