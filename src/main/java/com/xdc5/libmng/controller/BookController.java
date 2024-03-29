@@ -116,21 +116,26 @@ public class BookController {
     }
 
     @PutMapping("/admin/books/info/{isbn}")
-    public Result changeBookInfo(@PathVariable String isbn) {
+    public Result changeBookInfo(@RequestBody BookInfo book) {
 
-        if(bookService.updateBookInfo(isbn))
+        if(bookService.updateBookInfo(book))
             return Result.success("Success: change /admin/books/info/{isbn}");
         else
-            return Result.error("Fail: Fail: bad request");
+            return Result.error("Fail: bad request");
     }
 
     @PostMapping("/admin/books/instances")
-    public Result addBookInstance(@RequestBody BookInstance bookInstance) {
-        if(bookService.addBookInstance(bookInstance))
-            return Result.success("Success: post /admin/books/instances");
-        else
-            return Result.error("Fail: Fail: bad request");
-
+    public Result addBookInstance(@RequestBody Map<String, Integer> requestBody) {
+        for (String isbn : requestBody.keySet()) {
+            for (int i =0;i< requestBody.get(isbn);i++) {
+                if (bookService.addBookInstance(isbn)) {
+                    continue;
+                } else {
+                    return Result.error("Fail: bad request");
+                }
+            }
+        }
+        return Result.success("Success: post /admin/books/instances");
     }
 
 }
