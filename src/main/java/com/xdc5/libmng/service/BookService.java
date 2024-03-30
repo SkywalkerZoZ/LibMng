@@ -69,15 +69,17 @@ public class BookService {
         return !bookInfos.isEmpty();
     }
 
-    public boolean updateBookInfo(BookInfo bookInfo) {
+    public boolean updateBookInfo(String isbn, BookInfo bookInfo) {
+        bookInfo.setIsbn(isbn);
         List<BookInfo> book = bookInfoMapper.getBookInfoByISBN(bookInfo.getIsbn());
         if (book.isEmpty()) {
             return false;
         } else {
             for(int i=0;i<book.size();i++)
-                bookInfoMapper.updateBookInfo(bookInfo);
-            return true;
+                if (bookInfoMapper.updateBookInfo(bookInfo) > 0)
+                    return true;
         }
+        return false;
     }
 
     public boolean addBookInstance(String isbn)
@@ -85,10 +87,7 @@ public class BookService {
         BookInstance bookInstance = new BookInstance();
         bookInstance.setIsbn(isbn);
         bookInstance.setBorrowStatus(0);
-        if(bookInstanceMapper.addBookInstance(bookInstance) > 0)
-            return true;
-        else
-            return false;
+        return bookInstanceMapper.addBookInstance(bookInstance) > 0;
     }
 
     public String getUserName(int userId) {
