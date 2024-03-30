@@ -59,44 +59,51 @@ public class BookService {
         bookInfoMapper.delBookInfoByISBN(isbn);
     }
 
-    public List<BookInfo> getBookInfoByISBN(String isbn) {
-        List<BookInfo> data = bookInfoMapper.getBookInfoByISBN(isbn);
+    public List<BookInfo> getBookInfoByIsbn(String isbn) {
+        List<BookInfo> data = bookInfoMapper.getBookInfoByIsbn(isbn);
         return data;
     }
 
     public boolean checkIsbnDuplicate(String isbn) {
-        List<BookInfo> bookInfos = bookInfoMapper.getBookInfoByISBN(isbn);
+        List<BookInfo> bookInfos = bookInfoMapper.getBookInfoByIsbn(isbn);
         return !bookInfos.isEmpty();
     }
 
-    public boolean updateBookInfo(String isbn) {
-        List<BookInfo> book = bookInfoMapper.getBookInfoByISBN(isbn);
+    public boolean checkBookInfoIsEmpty(String isbn){
+        List<Integer> bookInstances = bookInstanceMapper.getInstanceId(isbn);
+        return !bookInstances.isEmpty();
+    }
+
+    public boolean updateBookInfo(String isbn, BookInfo bookInfo) {
+        bookInfo.setIsbn(isbn);
+        List<BookInfo> book = bookInfoMapper.getBookInfoByIsbn(bookInfo.getIsbn());
         if (book.isEmpty()) {
             return false;
         } else {
-            for(BookInfo tBook: book)
-                bookInfoMapper.updateBookInfo(tBook);
-            return true;
+            for(int i=0;i<book.size();i++)
+                if (bookInfoMapper.updateBookInfo(bookInfo) > 0)
+                    return true;
         }
+        return false;
     }
 
-    public boolean addBookInstance(BookInstance bookInstance)
+    public boolean addBookInstance(String isbn)
     {
-        if(bookInstanceMapper.addBookInstance(bookInstance) > 0)
-            return true;
-        else
-            return false;
+        BookInstance bookInstance = new BookInstance();
+        bookInstance.setIsbn(isbn);
+        bookInstance.setBorrowStatus(0);
+        return bookInstanceMapper.addBookInstance(bookInstance) > 0;
     }
 
     public String getUserName(int userId) {
         return userMapper.getUserNameById(userId);
     }
     //获取全部图书信息
-    public List<HashMap<String,Object>> getAllBookInfos(){
+    public List<HashMap<String,Object>> getAllBookInfo(){
         return bookInfoMapper.getAllBookInfo();
     }
     //通过title找到我需要的数目
-    public List<HashMap<String,Object>> getBookByTitle(String title){
+    public List<HashMap<String,Object>> getBookInfoByTitle(String title){
 
         String titleWithWildcard = "%" + title + "%";
 
@@ -104,7 +111,7 @@ public class BookService {
         return booklist;
     }
     //通过author找到我需要的数目
-    public List<HashMap<String,Object>> getBookByAuthor(String author){
+    public List<HashMap<String,Object>> getBookInfoByAuthor(String author){
 
         String authorWithWildcard = "%" + author + "%";
         List<HashMap<String,Object>> booklist = bookInfoMapper.getBookInfoByAuthor(authorWithWildcard);
@@ -112,10 +119,10 @@ public class BookService {
         return booklist;
     }
 
-    public List<HashMap<String,Object>> getBookByIsbn(String isbn){
+    public List<HashMap<String,Object>> getBookDetailByIsbn(String isbn){
 
         String isbnWithWildcard = "%" + isbn + "%";
-        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookInfoByIsbn(isbnWithWildcard);
+        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookDetailByIsbn(isbnWithWildcard);
         //我们需要根据bookInfomapper和
         return booklist;
     }

@@ -1,6 +1,6 @@
 # ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
-DROP DATABASE lib_mng;
-CREATE DATABASE lib_mng;
+DROP DATABASE IF EXISTS lib_mng;
+CREATE DATABASE IF NOT EXISTS lib_mng;
 USE lib_mng;
 CREATE TABLE User
 (

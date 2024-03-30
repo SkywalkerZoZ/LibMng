@@ -914,6 +914,16 @@ export default {
 
 
 
+
+```json
+{
+    "code": 400,
+    "message": "Fail: can't delete bookinfo(exist instances)",
+    "data": null
+}
+```
+
+
 ## 修改图书信息
 
 **接口地址**
@@ -991,9 +1001,10 @@ export default {
 
 **请求参数**
 
-| 参数 | 类型   | 是否必需 | 描述         |
-| ---- | ------ | -------- | ------------ |
-| isbn | string | 是       | 图书的ISBN号 |
+| 参数   | 类型   | 是否必需 | 描述           |
+| ------ | ------ | -------- | -------------- |
+| isbn   | string | 是       | 图书的ISBN号   |
+| number | int    | 是       | 添加图书的数量 |
 
 
 
@@ -1030,7 +1041,7 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: bad request",
+    "message": "Fail:can not add book instance",
     "data":null
 }
 ```

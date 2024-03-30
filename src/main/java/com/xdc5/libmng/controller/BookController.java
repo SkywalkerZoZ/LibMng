@@ -8,10 +8,10 @@ import com.xdc5.libmng.service.BookService;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -22,7 +22,7 @@ public class BookController {
     @GetMapping("/user/books/info")
     public Result showBookInfo(){
         //按照api要求返回信息。
-        List<HashMap<String,Object>> bookInfoList=bookService.getAllBookInfos();
+        List<HashMap<String,Object>> bookInfoList=bookService.getAllBookInfo();
         return Result.success(bookInfoList,"Success: all books Info");
     }
 
@@ -34,15 +34,15 @@ public class BookController {
         log.info("method:"+method+"keyword:"+keyword);
         if(Objects.equals(method, "title")){
             //按照title寻找数目并返回success
-            List<HashMap<String,Object>> allBooksInfo=bookService.getBookByTitle(keyword);
+            List<HashMap<String,Object>> allBooksInfo=bookService.getBookInfoByTitle(keyword);
             return Result.success(allBooksInfo,"Success: books Info");
         }else if(Objects.equals(method, "author")){
             //按照author寻找书目并返回success
-            List<HashMap<String,Object>> allBooksInfo=bookService.getBookByAuthor(keyword);
+            List<HashMap<String,Object>> allBooksInfo=bookService.getBookInfoByAuthor(keyword);
             return Result.success(allBooksInfo,"Success: books Info");
         }else if(Objects.equals(method, "isbn")){
             //按照isbn寻找书目并返回success
-            List<HashMap<String,Object>> allBooksInfo=bookService.getBookByIsbn(keyword);
+            List<HashMap<String,Object>> allBooksInfo=bookService.getBookDetailByIsbn(keyword);
             return Result.success(allBooksInfo,"Success: books Info");
         }else{
             return Result.error("Fail: invalid method");
@@ -100,11 +100,10 @@ public class BookController {
         return Result.success(null, "Success: post /admin/books/info");
 
     }
-
     @DeleteMapping("/admin/books/info/{isbn}")
     public Result delBookInfo(@PathVariable String isbn) {
 
-        List<BookInfo> data = bookService.getBookInfoByISBN(isbn);
+        List<BookInfo> data = bookService.getBookInfoByIsbn(isbn);
         if (data == null || data.isEmpty()) {
             return Result.error("Fail: isbn not found");
         }
@@ -116,21 +115,24 @@ public class BookController {
     }
 
     @PutMapping("/admin/books/info/{isbn}")
-    public Result changeBookInfo(@PathVariable String isbn) {
-
-        if(bookService.updateBookInfo(isbn))
+    public Result changeBookInfo(@PathVariable String isbn,@RequestBody BookInfo book) {
+        if(bookService.updateBookInfo(isbn,book))
             return Result.success("Success: change /admin/books/info/{isbn}");
         else
-            return Result.error("Fail: Fail: bad request");
+            return Result.error("Fail: bad request");
     }
 
+    @Transactional
     @PostMapping("/admin/books/instances")
-    public Result addBookInstance(@RequestBody BookInstance bookInstance) {
-        if(bookService.addBookInstance(bookInstance))
-            return Result.success("Success: post /admin/books/instances");
-        else
-            return Result.error("Fail: Fail: bad request");
-
+    public Result addBookInstance(@RequestBody Map<String, Object> requestBody) {
+        String isbn = (String)requestBody.get("isbn");
+        Integer num=(Integer)requestBody.get("number");
+        for (int i =0;i< num;i++) {
+            if (!bookService.addBookInstance(isbn)) {
+                return Result.error("Fail:can not add book instance");
+            }
+        }
+        return Result.success("Success: post /admin/books/instances");
     }
 
     @DeleteMapping("/admin/books/instances/{instanceId}")

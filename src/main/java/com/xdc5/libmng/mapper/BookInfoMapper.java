@@ -15,11 +15,10 @@ public interface BookInfoMapper {
     //返回影响的行数
     int addBookInfo(BookInfo bookInfo);
     int updateBookInfo(BookInfo bookInfo);
-    List<BookInfo> getBookInfoByISBN(@Param("isbn") String isbn);
-//按照api要求返回查找信息
+    // TODO List<BookInfo> ?
+    List<BookInfo> getBookInfoByIsbn(@Param("isbn") String isbn);
     List<HashMap<String,Object>> getBookInfoByTitle(String title);
     List<HashMap<String,Object>> getBookInfoByAuthor(String author);
-    List<HashMap<String,Object>> getBookInfoByIsbn(String isbn);
-//按照api要求返回图书信息。
+    List<HashMap<String,Object>> getBookDetailByIsbn(String isbn);
     List<HashMap<String,Object>> getAllBookInfo();
 }
