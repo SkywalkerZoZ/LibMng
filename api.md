@@ -914,6 +914,16 @@ export default {
 
 
 
+
+```json
+{
+    "code": 400,
+    "message": "Fail: can't delete bookinfo(exist instances)",
+    "data": null
+}
+```
+
+
 ## 修改图书信息
 
 **接口地址**

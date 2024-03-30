@@ -69,6 +69,11 @@ public class BookService {
         return !bookInfos.isEmpty();
     }
 
+    public boolean checkBookInfoIsEmpty(String isbn){
+        List<Integer> bookInstances = bookInstanceMapper.getInstanceId(isbn);
+        return !bookInstances.isEmpty();
+    }
+
     public boolean updateBookInfo(String isbn) {
         List<BookInfo> book = bookInfoMapper.getBookInfoByISBN(isbn);
         if (book.isEmpty()) {
