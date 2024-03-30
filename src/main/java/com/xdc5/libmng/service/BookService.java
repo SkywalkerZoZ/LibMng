@@ -59,13 +59,13 @@ public class BookService {
         bookInfoMapper.delBookInfoByISBN(isbn);
     }
 
-    public List<BookInfo> getBookInfoByISBN(String isbn) {
-        List<BookInfo> data = bookInfoMapper.getBookInfoByISBN(isbn);
+    public List<BookInfo> getBookInfoByIsbn(String isbn) {
+        List<BookInfo> data = bookInfoMapper.getBookInfoByIsbn(isbn);
         return data;
     }
 
     public boolean checkIsbnDuplicate(String isbn) {
-        List<BookInfo> bookInfos = bookInfoMapper.getBookInfoByISBN(isbn);
+        List<BookInfo> bookInfos = bookInfoMapper.getBookInfoByIsbn(isbn);
         return !bookInfos.isEmpty();
     }
 
@@ -76,7 +76,7 @@ public class BookService {
 
     public boolean updateBookInfo(String isbn, BookInfo bookInfo) {
         bookInfo.setIsbn(isbn);
-        List<BookInfo> book = bookInfoMapper.getBookInfoByISBN(bookInfo.getIsbn());
+        List<BookInfo> book = bookInfoMapper.getBookInfoByIsbn(bookInfo.getIsbn());
         if (book.isEmpty()) {
             return false;
         } else {
@@ -99,11 +99,11 @@ public class BookService {
         return userMapper.getUserNameById(userId);
     }
     //获取全部图书信息
-    public List<HashMap<String,Object>> getAllBookInfos(){
+    public List<HashMap<String,Object>> getAllBookInfo(){
         return bookInfoMapper.getAllBookInfo();
     }
     //通过title找到我需要的数目
-    public List<HashMap<String,Object>> getBookByTitle(String title){
+    public List<HashMap<String,Object>> getBookInfoByTitle(String title){
 
         String titleWithWildcard = "%" + title + "%";
 
@@ -111,7 +111,7 @@ public class BookService {
         return booklist;
     }
     //通过author找到我需要的数目
-    public List<HashMap<String,Object>> getBookByAuthor(String author){
+    public List<HashMap<String,Object>> getBookInfoByAuthor(String author){
 
         String authorWithWildcard = "%" + author + "%";
         List<HashMap<String,Object>> booklist = bookInfoMapper.getBookInfoByAuthor(authorWithWildcard);
@@ -119,10 +119,10 @@ public class BookService {
         return booklist;
     }
 
-    public List<HashMap<String,Object>> getBookByIsbn(String isbn){
+    public List<HashMap<String,Object>> getBookDetailByIsbn(String isbn){
 
         String isbnWithWildcard = "%" + isbn + "%";
-        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookInfoByIsbn(isbnWithWildcard);
+        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookDetailByIsbn(isbnWithWildcard);
         //我们需要根据bookInfomapper和
         return booklist;
     }

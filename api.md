@@ -1041,7 +1041,7 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: bad request",
+    "message": "Fail:can not add book instance",
     "data":null
 }
 ```

@@ -91,7 +91,7 @@
         </where>
     </select>
 
-    <select id="getBookInfoByISBN" resultType="com.xdc5.libmng.entity.BookInfo">
+    <select id="getBookInfoByIsbn" resultType="com.xdc5.libmng.entity.BookInfo">
         SELECT isbn,title,author,cover,description,location
         FROM BookInfo
         WHERE isbn=#{isbn}
@@ -120,7 +120,7 @@
             bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
         ORDER BY borrowed DESC;
     </select>
-    <select id="getBookInfoByIsbn" resultType="java.util.HashMap">
+    <select id="getBookDetailByIsbn" resultType="java.util.HashMap">
         <include refid="selectBookInfo"/>
         WHERE
             bi.isbn LIKE #{isbn}
