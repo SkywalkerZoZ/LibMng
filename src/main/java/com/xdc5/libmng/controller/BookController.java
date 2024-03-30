@@ -89,7 +89,7 @@ public class BookController {
         if ((bookinfo.getTitle() == null) || (bookinfo.getTitle().isEmpty())) {
             return Result.error("Fail: title not null");
         }
-        if (bookService.checkIsbnDuplicate(bookinfo.getIsbn())) {
+        if (bookService.existsIsbn(bookinfo.getIsbn())) {
             return Result.error("Fail: info already exist");
         }
         try {
@@ -103,8 +103,8 @@ public class BookController {
     @DeleteMapping("/admin/books/info/{isbn}")
     public Result delBookInfo(@PathVariable String isbn) {
 
-        List<BookInfo> data = bookService.getBookInfoByIsbn(isbn);
-        if (data == null || data.isEmpty()) {
+        BookInfo data = bookService.getBookInfoByIsbn(isbn);
+        if (data == null ) {
             return Result.error("Fail: isbn not found");
         }
         if (isbn == null || isbn.isEmpty()) {
@@ -116,10 +116,18 @@ public class BookController {
 
     @PutMapping("/admin/books/info/{isbn}")
     public Result changeBookInfo(@PathVariable String isbn,@RequestBody BookInfo book) {
-        if(bookService.updateBookInfo(isbn,book))
-            return Result.success("Success: change /admin/books/info/{isbn}");
-        else
-            return Result.error("Fail: bad request");
+        if(!bookService.existsIsbn(isbn))
+        {
+            return Result.error("Fail: isbn not found");
+
+        }
+        book.setIsbn(isbn);
+        if (!bookService.updateBookInfo(book))
+        {
+            return Result.error("Fail: can not update BookInfo");
+        }
+        return Result.success("Success: change /admin/books/info/{isbn}");
+
     }
 
     @Transactional
@@ -137,10 +145,11 @@ public class BookController {
 
     @DeleteMapping("/admin/books/instances/{instanceId}")
     public Result deleteBookInstance(@PathVariable Integer instanceId){
-        if(bookService.deleteBookInstance(instanceId))
-            return Result.success("Success: delete /admin/books/instances/{instanceId}");
-        else
+        if(!bookService.deleteBookInstance(instanceId))
+        {
             return Result.error("Fail: instanceId not found");
+        }
+        return Result.success("Success: delete /admin/books/instances/{instanceId}");
 
     }
 

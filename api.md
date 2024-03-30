@@ -987,6 +987,18 @@ export default {
 
 
 
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: isbn not found",
+    "data":null
+}
+```
+
+
+
 ## 增加图书实体
 
 **接口地址**

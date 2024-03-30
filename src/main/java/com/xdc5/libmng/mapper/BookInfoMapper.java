@@ -16,7 +16,7 @@ public interface BookInfoMapper {
     int addBookInfo(BookInfo bookInfo);
     int updateBookInfo(BookInfo bookInfo);
     // TODO List<BookInfo> ?
-    List<BookInfo> getBookInfoByIsbn(@Param("isbn") String isbn);
+    BookInfo getBookInfoByIsbn(@Param("isbn") String isbn);
     List<HashMap<String,Object>> getBookInfoByTitle(String title);
     List<HashMap<String,Object>> getBookInfoByAuthor(String author);
     List<HashMap<String,Object>> getBookDetailByIsbn(String isbn);

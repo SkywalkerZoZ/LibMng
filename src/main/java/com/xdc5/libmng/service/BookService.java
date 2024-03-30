@@ -59,14 +59,13 @@ public class BookService {
         bookInfoMapper.delBookInfoByISBN(isbn);
     }
 
-    public List<BookInfo> getBookInfoByIsbn(String isbn) {
-        List<BookInfo> data = bookInfoMapper.getBookInfoByIsbn(isbn);
-        return data;
+    public BookInfo getBookInfoByIsbn(String isbn) {
+        return bookInfoMapper.getBookInfoByIsbn(isbn);
     }
 
-    public boolean checkIsbnDuplicate(String isbn) {
-        List<BookInfo> bookInfos = bookInfoMapper.getBookInfoByIsbn(isbn);
-        return !bookInfos.isEmpty();
+    public boolean existsIsbn(String isbn) {
+        BookInfo bookInfo = bookInfoMapper.getBookInfoByIsbn(isbn);
+        return bookInfo!=null;
     }
 
     public boolean checkBookInfoIsEmpty(String isbn){
@@ -74,17 +73,9 @@ public class BookService {
         return !bookInstances.isEmpty();
     }
 
-    public boolean updateBookInfo(String isbn, BookInfo bookInfo) {
-        bookInfo.setIsbn(isbn);
-        List<BookInfo> book = bookInfoMapper.getBookInfoByIsbn(bookInfo.getIsbn());
-        if (book.isEmpty()) {
-            return false;
-        } else {
-            for(int i=0;i<book.size();i++)
-                if (bookInfoMapper.updateBookInfo(bookInfo) > 0)
-                    return true;
-        }
-        return false;
+    public boolean updateBookInfo(BookInfo bookInfo)
+    {
+        return bookInfoMapper.updateBookInfo(bookInfo)>0;
     }
 
     public boolean addBookInstance(String isbn)
@@ -128,9 +119,6 @@ public class BookService {
     }
 
     public boolean deleteBookInstance(Integer instanceId) {
-        if(bookInstanceMapper.delBookInstanceById(instanceId) > 0)
-            return true;
-        else
-            return false;
+        return bookInstanceMapper.delBookInstanceById(instanceId) > 0;
     }
 }
