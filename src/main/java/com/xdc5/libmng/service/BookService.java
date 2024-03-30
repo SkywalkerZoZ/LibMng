@@ -119,4 +119,11 @@ public class BookService {
         //我们需要根据bookInfomapper和
         return booklist;
     }
+
+    public boolean deleteBookInstance(Integer instanceId) {
+        if(bookInstanceMapper.delBookInstanceById(instanceId) > 0)
+            return true;
+        else
+            return false;
+    }
 }

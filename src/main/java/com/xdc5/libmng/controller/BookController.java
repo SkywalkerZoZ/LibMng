@@ -133,4 +133,13 @@ public class BookController {
 
     }
 
+    @DeleteMapping("/admin/books/instances/{instanceId}")
+    public Result deleteBookInstance(@PathVariable Integer instanceId){
+        if(bookService.deleteBookInstance(instanceId))
+            return Result.success("Success: delete /admin/books/instances/{instanceId}");
+        else
+            return Result.error("Fail: instanceId not found");
+
+    }
+
 }
