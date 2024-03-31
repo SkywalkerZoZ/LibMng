@@ -50,8 +50,8 @@ CREATE TABLE Borrowing
     lateRetDate       DATE DEFAULT NULL,
     # 借阅的审批状态,0为未审批, 1为同意, 2为拒绝
     borrowAprvStatus  INT  DEFAULT 0,
-    # 延期的审批状态,0为未申请, 1为未审批, 2为同意, 3为拒绝
-    lateRetAprvStatus INT  DEFAULT 0,
+    # 延期的审批状态,Null为未申请, 0为未审批, 1为同意, 2为拒绝
+    lateRetAprvStatus INT  DEFAULT NULL,
     FOREIGN KEY (userId) REFERENCES User (userId),
     FOREIGN KEY (instanceId) REFERENCES BookInstance (instanceId) ON DELETE CASCADE
 );

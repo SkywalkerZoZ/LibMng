@@ -1,6 +1,5 @@
 package com.xdc5.libmng.service;
 
-import com.xdc5.libmng.entity.BookInfo;
 import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.mapper.BookInstanceMapper;
 import com.xdc5.libmng.mapper.BorrowingMapper;
@@ -21,18 +20,31 @@ public class BorrowingService {
 
     @Autowired
     private BookInstanceMapper bookInstanceMapper;
-    public List<Borrowing> getBorrowAprv(){
-        Borrowing borrowingRequest = new Borrowing();
-        borrowingRequest.setBorrowAprvStatus(0);
-        return borrowingMapper.getBorrowing(borrowingRequest);
+    public List<Borrowing> getBorrowAprv(Integer approved){
+        return borrowingMapper.getBorrowAprv(approved);
     }
-    public List<Borrowing> getLateRetAprv(){
-        Borrowing LateRetAprv = new Borrowing();
-        LateRetAprv.setLateRetAprvStatus(1);
-        return borrowingMapper.getBorrowing(LateRetAprv);
+    public List<Borrowing> getLateRetAprv(Integer approved){
+        return borrowingMapper.getLateRetAprv(approved);
+    }
+    public void updateBorrowAprvStatus(Integer agree, Integer borrowingId){
+        Borrowing borrowing = new Borrowing();
+        borrowing.setBorrowingId(borrowingId);
+        if (agree == 1){
+            borrowing.setBorrowAprvStatus(1);
+        }else if(agree == 0){
+            borrowing.setBorrowAprvStatus(2);
+        }
+        borrowingMapper.updateBorrowing(borrowing);
     }
 
-    public void updateBorrowStatus(Borrowing borrowing){
+    public void updateLateRetStatus(Integer agree, Integer borrowingId){
+        Borrowing borrowing = new Borrowing();
+        borrowing.setBorrowingId(borrowingId);
+        if (agree == 1){
+            borrowing.setLateRetAprvStatus(1);
+        }else if(agree == 0){
+            borrowing.setLateRetAprvStatus(2);
+        }
         borrowingMapper.updateBorrowing(borrowing);
     }
 

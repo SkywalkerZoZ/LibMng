@@ -21,12 +21,12 @@ public class BorrowingController {
     @Autowired
     BookService bookService;
     @GetMapping("/admin/borrowing/applications")
-    public Result showBorrowAprv() {
-        if (borrowingService.getBorrowAprv() == null || borrowingService.getBorrowAprv().isEmpty()) {
+    public Result showBorrowAprv(@RequestParam Integer approved) {
+        if (borrowingService.getBorrowAprv(approved) == null || borrowingService.getBorrowAprv(approved).isEmpty()) {
             return Result.error("Fail: borrowing approval is null or empty");
         }
 
-        List<Borrowing> BorrowingRequest = borrowingService.getBorrowAprv();
+        List<Borrowing> BorrowingRequest = borrowingService.getBorrowAprv(approved);
         List<HashMap<String, Object>> allInfoLists = new ArrayList<>();
         for (Borrowing request : BorrowingRequest) {
             String userName = bookService.getUserName(request.getUserId());
@@ -42,12 +42,12 @@ public class BorrowingController {
 
 
     @GetMapping("/admin/borrowing/late-returns")
-    public Result showlateRetAprv() {
-        if (borrowingService.getLateRetAprv() == null || borrowingService.getLateRetAprv().isEmpty()) {
+    public Result showlateRetAprv(@RequestParam Integer approved) {
+        if (borrowingService.getLateRetAprv(approved) == null || borrowingService.getLateRetAprv(approved).isEmpty()) {
             return Result.error("Fail: late return approval is null or empty");
         }
 
-        List<Borrowing> LateRetAprv = borrowingService.getLateRetAprv();
+        List<Borrowing> LateRetAprv = borrowingService.getLateRetAprv(approved);
         List<HashMap<String, Object>> allInfoLists = new ArrayList<>();
         for (Borrowing request : LateRetAprv) {
 
@@ -75,10 +75,7 @@ public class BorrowingController {
         if (Objects.equals(borrowingInfo.getBorrowAprvStatus(), agree)) {
             return Result.error("Fail: already processed");
         }
-        Borrowing statusUpdate = new Borrowing();
-        statusUpdate.setBorrowAprvStatus(agree);
-        statusUpdate.setBorrowingId(borrowingId);
-        borrowingService.updateBorrowStatus(statusUpdate);
+        borrowingService.updateBorrowAprvStatus(agree, borrowingId);
         return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
     }
 
@@ -95,10 +92,7 @@ public class BorrowingController {
         if (agree != 0 && agree != 1) {
             return Result.error("Fail: input error");
         }
-        Borrowing statusUpdate = new Borrowing();
-        statusUpdate.setLateRetAprvStatus(agree);
-        statusUpdate.setBorrowingId(borrowingId);
-        borrowingService.updateBorrowStatus(statusUpdate);
+        borrowingService.updateLateRetStatus(agree, borrowingId);
         return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
     }
 }

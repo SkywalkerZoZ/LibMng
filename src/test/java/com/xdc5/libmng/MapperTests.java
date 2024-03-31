@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 class MapperTests {
 
@@ -262,4 +264,18 @@ class MapperTests {
         int rowsAffected = penaltyMapper.updatePenalty(penalty);
     }
 
+    @Test
+    public void testGetBorrowAprv() {
+        // 测试获取 borrowAprvStatus 为 0 的借阅记录
+        List<Borrowing> approvedBorrowings = borrowingMapper.getBorrowAprv(0);
+        for (Borrowing borrowing : approvedBorrowings) {
+            System.out.println(borrowing);
+        }
+
+        // 测试获取 lateRetAprvStatus 不为 0 的借阅记录
+        List<Borrowing> lateApprovedBorrowings = borrowingMapper.getBorrowAprv(1);
+        for (Borrowing borrowing : lateApprovedBorrowings) {
+            System.out.println(borrowing);
+        }
+    }
 }

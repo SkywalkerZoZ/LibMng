@@ -66,4 +66,31 @@
             </if>
         </where>
     </select>
+
+    <select id="getBorrowAprv" resultType="com.xdc5.libmng.entity.Borrowing">
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus
+        FROM Borrowing
+        <where>
+            <if test="approved==0">
+                AND borrowAprvStatus=0
+            </if>
+            <if test="approved==1">
+                AND borrowAprvStatus!=0
+            </if>
+        </where>
+    </select>
+    <select id="getLateRetAprv" resultType="com.xdc5.libmng.entity.Borrowing">
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus
+        FROM Borrowing
+        <where>
+            <if test="approved==0">
+                AND lateRetAprvStatus=0
+            </if>
+            <if test="approved==1">
+                AND lateRetAprvStatus!=0
+            </if>
+        </where>
+    </select>
+
+
 </mapper>
