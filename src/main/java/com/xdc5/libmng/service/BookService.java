@@ -151,10 +151,15 @@ public class BookService {
         LateRetAprv.setLateRetAprvStatus(1);
         return borrowingMapper.getBorrowing(LateRetAprv);
     }
-    public void processBorrowAprv(Integer agree){
-        if (agree == 1){
 
-        }
+    public void updateBorrowStatus(Borrowing borrowing){
+        borrowingMapper.updateBorrowing(borrowing);
+    }
+
+    public List<Borrowing> getBorrowingInfo(Integer borrowingId){
+        Borrowing borrowId = new Borrowing();
+        borrowId.setBorrowingId(borrowingId);
+        return borrowingMapper.getBorrowing(borrowId);
     }
 
 }

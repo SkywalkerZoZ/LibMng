@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 
 
+import javax.sql.rowset.BaseRowSet;
+import java.security.interfaces.RSAKey;
 import java.util.*;
 
 @Slf4j
@@ -207,6 +210,42 @@ public class BookController {
         }
         return Result.success(allInfoLists, "Success : get /admin/borrowing/late-returns");
     }
-
+    @PutMapping("/admin/borrowing/applications/{borrowingId}")
+    public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree){
+        if (agree != 0 && agree != 1 && agree != 2){
+            return Result.error("Fail: input error");
+        }
+        if (bookService.getBorrowingInfo(borrowingId).isEmpty() || bookService.getBorrowingInfo(borrowingId) == null){
+            return Result.error("Fail: not found this borrow approval");
+        }
+        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getBorrowAprvStatus(), agree)){
+            return Result.error("Fail: already processed");
+        }
+        Borrowing statusUpdate = new Borrowing();
+        statusUpdate.setBorrowAprvStatus(agree);
+        statusUpdate.setBorrowingId(borrowingId);
+        bookService.updateBorrowStatus(statusUpdate);
+        return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
+    }
+    @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
+    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree){
+        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getBorrowAprvStatus(), 0)){
+            return Result.error("Fail: not approval borrow");
+        }
+        if (agree != 0 && agree != 1 && agree != 2 && agree != 3){
+            return Result.error("Fail: input error");
+        }
+        if (bookService.getBorrowingInfo(borrowingId).isEmpty() || bookService.getBorrowingInfo(borrowingId) == null){
+            return Result.error("Fail: not found this borrow approval");
+        }
+        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getLateRetAprvStatus(), agree)){
+            return Result.error("Fail: already processed");
+        }
+        Borrowing statusUpdate = new Borrowing();
+        statusUpdate.setLateRetAprvStatus(agree);
+        statusUpdate.setBorrowingId(borrowingId);
+        bookService.updateBorrowStatus(statusUpdate);
+        return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
+    }
 
 }

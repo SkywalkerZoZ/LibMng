@@ -1263,9 +1263,9 @@ export default {
 
 **请求参数**
 
-| 参数  | 类型 | 是否必需 | 描述               |
-| ----- | ---- | -------- | ------------------ |
-| agree | int  | 是       | 1为同意，0为不同意 |
+| 参数  | 类型 | 是否必需 | 描述         |
+| ----- | ---- | -------- |------------|
+| agree | int  | 是       | 1为同意，2为不同意 |
 
 
 
@@ -1302,8 +1302,24 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: bad request",
-    "data":null
+    "message": "Fail: not found this borrow approval",
+    "data": null
+}
+```
+
+```json
+{
+    "code": 400,
+    "message": "Fail: already already processed",
+    "data": null
+}
+```
+
+```json
+{
+    "code": 400,
+    "message": "Fail: input error",
+    "data": null
 }
 ```
 
@@ -1352,8 +1368,24 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: bad request",
-    "data":null
+    "message": "Fail: already already processed",
+    "data": null
+}
+```
+
+```json
+{
+    "code": 400,
+    "message": "Fail: input error",
+    "data": null
+}
+```
+
+```json
+{
+    "code": 400,
+    "message": "Fail: not found this borrow approval",
+    "data": null
 }
 ```
 
