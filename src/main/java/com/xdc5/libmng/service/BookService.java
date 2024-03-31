@@ -1,13 +1,11 @@
 package com.xdc5.libmng.service;
 
 
+import com.xdc5.libmng.entity.BookDetail;
 import com.xdc5.libmng.entity.BookInfo;
 import com.xdc5.libmng.entity.BookInstance;
 import com.xdc5.libmng.entity.Borrowing;
-import com.xdc5.libmng.mapper.BookInfoMapper;
-import com.xdc5.libmng.mapper.BookInstanceMapper;
-import com.xdc5.libmng.mapper.BorrowingMapper;
-import com.xdc5.libmng.mapper.UserMapper;
+import com.xdc5.libmng.mapper.*;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -25,32 +22,15 @@ import java.util.List;
 @Slf4j
 @Service
 public class BookService {
-    @Autowired
 
-    private BorrowingMapper borrowingMapper;
     @Autowired
     private BookInstanceMapper bookInstanceMapper;
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private BookInfoMapper bookInfoMapper;
-
-    public List<Borrowing> getBorrowingInfo(String isbn) {
-        List<Integer> instanceId = bookInstanceMapper.getInstanceId(isbn);
-        List<Borrowing> allBorrowingInfo = new ArrayList<>();
-
-        // 检查 instanceId 是否为 null 或者是否为空列表
-        if (instanceId != null && !instanceId.isEmpty()) {
-            for (Integer integer : instanceId) {
-                Borrowing info = borrowingMapper.getByInstanceId(integer);
-                if (info != null) { // 检查获取的借阅信息是否为 null
-                    allBorrowingInfo.add(info); // 将当前 instanceId 对应的 Borrowing 信息添加到 allBorrowingInfo 列表中
-                }
-            }
-        }
-
-        return allBorrowingInfo; // 返回列表中的所有元素，可能为空
-    }
+    @Autowired
+    private BookDetailMapper bookDetailMapper;
 
     public void addBookInfo(BookInfo bookInfo) {
         bookInfoMapper.addBookInfo(bookInfo);
@@ -91,30 +71,30 @@ public class BookService {
         return userMapper.getUserNameById(userId);
     }
     //获取全部图书信息
-    public List<HashMap<String,Object>> getAllBookInfo(){
-        return bookInfoMapper.getAllBookInfo();
+    public List<BookDetail> getAllBookInfo(){
+        return bookDetailMapper.getAllBookInfo();
     }
     //通过title找到我需要的数目
-    public List<HashMap<String,Object>> getBookInfoByTitle(String title){
+    public List<BookDetail> getBookInfoByTitle(String title){
 
         String titleWithWildcard = "%" + title + "%";
 
-        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookInfoByTitle(titleWithWildcard);
+        List<BookDetail> booklist = bookDetailMapper.getBookDetailByTitle(titleWithWildcard);
         return booklist;
     }
     //通过author找到我需要的数目
-    public List<HashMap<String,Object>> getBookInfoByAuthor(String author){
+    public List<BookDetail> getBookInfoByAuthor(String author){
 
         String authorWithWildcard = "%" + author + "%";
-        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookInfoByAuthor(authorWithWildcard);
+        List<BookDetail> booklist = bookDetailMapper.getBookDetailByAuthor(authorWithWildcard);
         //我们需要根据bookInfomapper和
         return booklist;
     }
 
-    public List<HashMap<String,Object>> getBookDetailByIsbn(String isbn){
+    public List<BookDetail> getBookDetailByIsbn(String isbn){
 
         String isbnWithWildcard = "%" + isbn + "%";
-        List<HashMap<String,Object>> booklist = bookInfoMapper.getBookDetailByIsbn(isbnWithWildcard);
+        List<BookDetail> booklist = bookDetailMapper.getBookDetailByIsbn(isbnWithWildcard);
         //我们需要根据bookInfomapper和
         return booklist;
     }
@@ -125,29 +105,8 @@ public class BookService {
     public String getIsbnByInstanceId(Integer instanceId){
         return bookInstanceMapper.getIsbnByInstanceId(instanceId);
     }
-    public List<Borrowing> getBorrowAprv(){
-        Borrowing borrowingRequest = new Borrowing();
-        borrowingRequest.setBorrowAprvStatus(0);
-        return borrowingMapper.getBorrowing(borrowingRequest);
-    }
     public String getLocationByIsbn(String isbn){
-        List<BookInfo> BookInfo = bookInfoMapper.getBookInfoByIsbn(isbn);
-        return BookInfo.get(0).getLocation();
+        BookInfo BookInfo = bookInfoMapper.getBookInfoByIsbn(isbn);
+        return BookInfo.getLocation();
     }
-    public List<Borrowing> getLateRetAprv(){
-        Borrowing LateRetAprv = new Borrowing();
-        LateRetAprv.setLateRetAprvStatus(1);
-        return borrowingMapper.getBorrowing(LateRetAprv);
-    }
-
-    public void updateBorrowStatus(Borrowing borrowing){
-        borrowingMapper.updateBorrowing(borrowing);
-    }
-
-    public List<Borrowing> getBorrowingInfo(Integer borrowingId){
-        Borrowing borrowId = new Borrowing();
-        borrowId.setBorrowingId(borrowingId);
-        return borrowingMapper.getBorrowing(borrowId);
-    }
-
 }

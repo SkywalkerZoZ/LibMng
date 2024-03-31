@@ -1,0 +1,77 @@
+package com.xdc5.libmng.service;
+
+import com.xdc5.libmng.entity.BookInfo;
+import com.xdc5.libmng.entity.Borrowing;
+import com.xdc5.libmng.mapper.BookInstanceMapper;
+import com.xdc5.libmng.mapper.BorrowingMapper;
+import com.xdc5.libmng.utils.DateTimeUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+@Slf4j
+@Service
+public class BorrowingService {
+    @Autowired
+    private BorrowingMapper borrowingMapper;
+
+    @Autowired
+    private BookInstanceMapper bookInstanceMapper;
+    public List<Borrowing> getBorrowAprv(){
+        Borrowing borrowingRequest = new Borrowing();
+        borrowingRequest.setBorrowAprvStatus(0);
+        return borrowingMapper.getBorrowing(borrowingRequest);
+    }
+    public List<Borrowing> getLateRetAprv(){
+        Borrowing LateRetAprv = new Borrowing();
+        LateRetAprv.setLateRetAprvStatus(1);
+        return borrowingMapper.getBorrowing(LateRetAprv);
+    }
+
+    public void updateBorrowStatus(Borrowing borrowing){
+        borrowingMapper.updateBorrowing(borrowing);
+    }
+
+    public Borrowing getBorrowingInfo(Integer borrowingId){
+        Borrowing borrowId = new Borrowing();
+        borrowId.setBorrowingId(borrowingId);
+        List<Borrowing> borrowList=borrowingMapper.getBorrowing(borrowId);
+        return borrowList.isEmpty() ? null : borrowList.get(0);
+    }
+
+    public List<Borrowing> getBorrowingInfo(String isbn) {
+        List<Integer> instanceId = bookInstanceMapper.getInstanceId(isbn);
+        List<Borrowing> allBorrowingInfo = new ArrayList<>();
+
+        // 检查 instanceId 是否为 null 或者是否为空列表
+        if (instanceId != null && !instanceId.isEmpty()) {
+            for (Integer integer : instanceId) {
+                Borrowing info = borrowingMapper.getByInstanceId(integer);
+                if (info != null) { // 检查获取的借阅信息是否为 null
+                    allBorrowingInfo.add(info); // 将当前 instanceId 对应的 Borrowing 信息添加到 allBorrowingInfo 列表中
+                }
+            }
+        }
+
+        return allBorrowingInfo; // 返回列表中的所有元素，可能为空
+    }
+    public HashMap<String, Object> extractAprvInfo(Borrowing request, String userName, String isbn) {
+        HashMap<String, Object> infoList = new HashMap<>();
+        infoList.put("borrowingId", request.getBorrowingId());
+        infoList.put("userId", request.getUserId());
+        infoList.put("username", userName);
+        infoList.put("instanceId", request.getInstanceId());
+        infoList.put("isbn", isbn);
+
+        String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
+        infoList.put("borrowDate", borrowDate);
+        String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
+        infoList.put("dueDate", dueDate);
+        return infoList;
+    }
+
+}

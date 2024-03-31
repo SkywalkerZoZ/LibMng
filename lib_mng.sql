@@ -75,6 +75,22 @@ CREATE TABLE Penalty
     FOREIGN KEY (userId) REFERENCES User (userId)
 );
 
+SET GLOBAL event_scheduler = ON;
+CREATE EVENT update_borrow_perms_event
+    ON SCHEDULE EVERY 1 DAY -- 或根据需要调整频率
+    DO
+    BEGIN
+        UPDATE User u
+        SET u.borrowPerms = 1
+        WHERE NOT EXISTS (
+            -- 仅选中那些没有任何未过期处罚记录的用户
+            SELECT 1
+            FROM Penalty p
+            WHERE p.userId = u.userId
+              AND p.endDate >= CURRENT_DATE())
+          AND u.borrowPerms = 0; -- 仅更新当前不能借阅的用户
+    END;
+
 
 INSERT INTO User (username, password, email, userRole)
 VALUES ('jia', '123456', 'admin@example.com', 'admin');

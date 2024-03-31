@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdc5.libmng.mapper.BookDetailMapper">
+    <sql id="selectBookInfo">
+        SELECT
+            bi.isbn,
+            bi.title,
+            bi.author,
+            bi.cover,
+            bi.description,
+            bi.location,
+            SUM(CASE WHEN binst.borrowStatus = 0 THEN 1 ELSE 0 END) AS available,
+            SUM(CASE WHEN binst.borrowStatus = 1 THEN 1 ELSE 0 END) AS borrowed
+        FROM
+            BookInfo bi
+                LEFT JOIN
+            BookInstance binst ON bi.isbn = binst.isbn
+    </sql>
+    <select id="getBookDetailByTitle" resultType="com.xdc5.libmng.entity.BookDetail">
+        <include refid="selectBookInfo"/>
+        WHERE
+        bi.title LIKE #{title}
+        GROUP BY
+        bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
+    </select>
+    <select id="getAllBookInfo" resultType="com.xdc5.libmng.entity.BookDetail">
+        <include refid="selectBookInfo"/>
+        GROUP BY
+        bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
+    </select>
+    <select id="getBookDetailByAuthor" resultType="com.xdc5.libmng.entity.BookDetail">
+        <include refid="selectBookInfo"/>
+        WHERE
+        bi.author LIKE #{author}
+        GROUP BY
+        bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
+    </select>
+    <select id="getBookDetailByIsbn" resultType="com.xdc5.libmng.entity.BookDetail">
+        <include refid="selectBookInfo"/>
+        WHERE
+        bi.isbn LIKE #{isbn}
+        GROUP BY
+        bi.isbn, bi.title, bi.author, bi.cover, bi.description, bi.location
+        ORDER BY borrowed DESC;
+    </select>
+</mapper>

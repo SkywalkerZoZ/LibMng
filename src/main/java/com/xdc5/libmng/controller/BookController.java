@@ -1,20 +1,15 @@
 package com.xdc5.libmng.controller;
 
-import com.xdc5.libmng.entity.BookInfo;
-import com.xdc5.libmng.entity.BookInstance;
-import com.xdc5.libmng.entity.Borrowing;
-import com.xdc5.libmng.entity.Result;
+import com.xdc5.libmng.entity.*;
 import com.xdc5.libmng.service.BookService;
+import com.xdc5.libmng.service.BorrowingService;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.RequestScope;
 
 
-import javax.sql.rowset.BaseRowSet;
-import java.security.interfaces.RSAKey;
 import java.util.*;
 
 @Slf4j
@@ -22,32 +17,35 @@ import java.util.*;
 public class BookController {
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private BorrowingService borrowingService;
     @GetMapping("/user/books/info")
-    public Result showBookInfo(){
+    public Result showBookInfo() {
         //按照api要求返回信息。
-        List<HashMap<String,Object>> bookInfoList=bookService.getAllBookInfo();
-        return Result.success(bookInfoList,"Success: all books Info");
+        List<BookDetail> bookInfoList = bookService.getAllBookInfo();
+        return Result.success(bookInfoList, "Success: all books Info");
     }
 
 
     @GetMapping("/user/books/search")
-    public Result searchBook(@RequestBody Map<String, Object> requestBody){
-        String method=(String)requestBody.get("method");
-        String keyword=(String)requestBody.get("keyword");
-        log.info("method:"+method+"keyword:"+keyword);
-        if(Objects.equals(method, "title")){
+    public Result searchBook(@RequestBody Map<String, Object> requestBody) {
+        String method = (String) requestBody.get("method");
+        String keyword = (String) requestBody.get("keyword");
+        log.info("method:" + method + "keyword:" + keyword);
+        if (Objects.equals(method, "title")) {
             //按照title寻找数目并返回success
-            List<HashMap<String,Object>> allBooksInfo=bookService.getBookInfoByTitle(keyword);
-            return Result.success(allBooksInfo,"Success: books Info");
-        }else if(Objects.equals(method, "author")){
+            List<BookDetail> allBooksInfo = bookService.getBookInfoByTitle(keyword);
+            return Result.success(allBooksInfo, "Success: books Info");
+        } else if (Objects.equals(method, "author")) {
             //按照author寻找书目并返回success
-            List<HashMap<String,Object>> allBooksInfo=bookService.getBookInfoByAuthor(keyword);
-            return Result.success(allBooksInfo,"Success: books Info");
-        }else if(Objects.equals(method, "isbn")){
+            List<BookDetail> allBooksInfo = bookService.getBookInfoByAuthor(keyword);
+            return Result.success(allBooksInfo, "Success: books Info");
+        } else if (Objects.equals(method, "isbn")) {
             //按照isbn寻找书目并返回success
-            List<HashMap<String,Object>> allBooksInfo=bookService.getBookDetailByIsbn(keyword);
-            return Result.success(allBooksInfo,"Success: books Info");
-        }else{
+            List<BookDetail> allBooksInfo = bookService.getBookDetailByIsbn(keyword);
+            return Result.success(allBooksInfo, "Success: books Info");
+        } else {
             return Result.error("Fail: invalid method");
         }
     }
@@ -57,7 +55,7 @@ public class BookController {
         if (bookInstance.getIsbn() == null) {
             return Result.error("Fail: isbn not found");
         }
-        List<Borrowing> borrowingInfoList = bookService.getBorrowingInfo(bookInstance.getIsbn());
+        List<Borrowing> borrowingInfoList = borrowingService.getBorrowingInfo(bookInstance.getIsbn());
         if ((borrowingInfoList == null) || (borrowingInfoList.isEmpty())) {
             return Result.error("Fail: borrowing info is null or empty");
         }
@@ -103,11 +101,12 @@ public class BookController {
         return Result.success(null, "Success: post /admin/books/info");
 
     }
+
     @DeleteMapping("/admin/books/info/{isbn}")
     public Result delBookInfo(@PathVariable String isbn) {
 
         BookInfo data = bookService.getBookInfoByIsbn(isbn);
-        if (data == null ) {
+        if (data == null) {
             return Result.error("Fail: isbn not found");
         }
         if (isbn == null || isbn.isEmpty()) {
@@ -118,15 +117,13 @@ public class BookController {
     }
 
     @PutMapping("/admin/books/info/{isbn}")
-    public Result changeBookInfo(@PathVariable String isbn,@RequestBody BookInfo book) {
-        if(!bookService.existsIsbn(isbn))
-        {
+    public Result changeBookInfo(@PathVariable String isbn, @RequestBody BookInfo book) {
+        if (!bookService.existsIsbn(isbn)) {
             return Result.error("Fail: isbn not found");
 
         }
         book.setIsbn(isbn);
-        if (!bookService.updateBookInfo(book))
-        {
+        if (!bookService.updateBookInfo(book)) {
             return Result.error("Fail: can not update BookInfo");
         }
         return Result.success("Success: change /admin/books/info/{isbn}");
@@ -136,9 +133,9 @@ public class BookController {
     @Transactional
     @PostMapping("/admin/books/instances")
     public Result addBookInstance(@RequestBody Map<String, Object> requestBody) {
-        String isbn = (String)requestBody.get("isbn");
-        Integer num=(Integer)requestBody.get("number");
-        for (int i =0;i< num;i++) {
+        String isbn = (String) requestBody.get("isbn");
+        Integer num = (Integer) requestBody.get("number");
+        for (int i = 0; i < num; i++) {
             if (!bookService.addBookInstance(isbn)) {
                 return Result.error("Fail:can not add book instance");
             }
@@ -147,114 +144,11 @@ public class BookController {
     }
 
     @DeleteMapping("/admin/books/instances/{instanceId}")
-    public Result deleteBookInstance(@PathVariable Integer instanceId){
-        if(!bookService.deleteBookInstance(instanceId))
-        {
+    public Result deleteBookInstance(@PathVariable Integer instanceId) {
+        if (!bookService.deleteBookInstance(instanceId)) {
             return Result.error("Fail: instanceId not found");
         }
         return Result.success("Success: delete /admin/books/instances/{instanceId}");
 
     }
-
-    @GetMapping("/admin/borrowing/applications")
-    public Result showBorrowAprv(){
-        if (bookService.getBorrowAprv().isEmpty() || bookService.getBorrowAprv() == null){
-            return Result.error("Fail: borrowing approval is null or empty");
-        }
-
-        List<Borrowing> BorrowingRequest = bookService.getBorrowAprv();
-        List<HashMap<String,Object>> allInfoLists = new ArrayList<>();
-        for (Borrowing request : BorrowingRequest){
-            String userName = bookService.getUserName(request.getUserId());
-            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
-            String location = bookService.getLocationByIsbn(isbn);
-            HashMap<String, Object> infoList = new HashMap<>();
-            infoList.put("borrowingId", request.getBorrowingId());
-            infoList.put("userId", request.getUserId());
-            infoList.put("username", userName);
-            infoList.put("instanceId", request.getInstanceId());
-            infoList.put("isbn", isbn);
-
-            String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
-            infoList.put("borrowDate", borrowDate);
-            String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
-            infoList.put("dueDate", dueDate);
-
-            infoList.put("borrowAprvStatus", request.getBorrowAprvStatus());
-            infoList.put("location", location);
-
-            allInfoLists.add(infoList);
-        }
-        return Result.success(allInfoLists, "Success: get /admin/borrowing/applications");
-    }
-    @GetMapping("/admin/borrowing/late-returns")
-    public Result showlateRetAprv(){
-        if (bookService.getLateRetAprv().isEmpty() || bookService.getLateRetAprv() == null){
-            return Result.error("Fail: late return approval is null or empty");
-        }
-
-        List<Borrowing> LateRetAprv = bookService.getLateRetAprv();
-        List<HashMap<String,Object>> allInfoLists = new ArrayList<>();
-        for (Borrowing request : LateRetAprv){
-
-            String userName = bookService.getUserName(request.getUserId());
-            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
-            HashMap<String, Object> infoList = new HashMap<>();
-            infoList.put("borrowingId", request.getBorrowingId());
-            infoList.put("userId", request.getUserId());
-            infoList.put("username", userName);
-            infoList.put("instanceId", request.getInstanceId());
-            infoList.put("isbn", isbn);
-
-            String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
-            infoList.put("borrowDate", borrowDate);
-            String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
-            infoList.put("dueDate", dueDate);
-            String lateRetDate = DateTimeUtils.formatDate(request.getLateRetDate(), "yyyy-MM-dd");
-            infoList.put("lateRetDate", lateRetDate);
-
-            infoList.put("lateRetAprvStatus", request.getLateRetAprvStatus());
-
-            allInfoLists.add(infoList);
-        }
-        return Result.success(allInfoLists, "Success : get /admin/borrowing/late-returns");
-    }
-    @PutMapping("/admin/borrowing/applications/{borrowingId}")
-    public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree){
-        if (agree != 0 && agree != 1 && agree != 2){
-            return Result.error("Fail: input error");
-        }
-        if (bookService.getBorrowingInfo(borrowingId).isEmpty() || bookService.getBorrowingInfo(borrowingId) == null){
-            return Result.error("Fail: not found this borrow approval");
-        }
-        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getBorrowAprvStatus(), agree)){
-            return Result.error("Fail: already processed");
-        }
-        Borrowing statusUpdate = new Borrowing();
-        statusUpdate.setBorrowAprvStatus(agree);
-        statusUpdate.setBorrowingId(borrowingId);
-        bookService.updateBorrowStatus(statusUpdate);
-        return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
-    }
-    @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
-    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree){
-        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getBorrowAprvStatus(), 0)){
-            return Result.error("Fail: not approval borrow");
-        }
-        if (agree != 0 && agree != 1 && agree != 2 && agree != 3){
-            return Result.error("Fail: input error");
-        }
-        if (bookService.getBorrowingInfo(borrowingId).isEmpty() || bookService.getBorrowingInfo(borrowingId) == null){
-            return Result.error("Fail: not found this borrow approval");
-        }
-        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getLateRetAprvStatus(), agree)){
-            return Result.error("Fail: already processed");
-        }
-        Borrowing statusUpdate = new Borrowing();
-        statusUpdate.setLateRetAprvStatus(agree);
-        statusUpdate.setBorrowingId(borrowingId);
-        bookService.updateBorrowStatus(statusUpdate);
-        return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
-    }
-
 }
