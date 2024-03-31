@@ -606,24 +606,28 @@ export default {
 
 
 
-```json
-{
-    "method":"title",
-    "keyword": "SPM"
-}
+**Params**
+
+
+
 ```
-```json
-{
-    "method":"author",
-    "keyword": "WenhuiWei"
-}
+/user/books/search?method=title&keyword=SPM
 ```
-```json
-{
-    "method":"isbn",
-    "keyword": "11223344"
-}
+
+
+
 ```
+/user/books/search?method=author&keyword=WenhuiWei
+```
+
+
+
+```
+/user/books/search?method=isbn&keyword=11223344
+```
+
+
+
 
 
 **响应参数**
@@ -697,11 +701,15 @@ export default {
 
 
 
-```json
-{
-	"isbn":"978-3-16-148410-0"
-}
+**Params**
+
+
+
 ```
+/admin/books/borrowing-info?isbn=978-3-16-148410-0
+```
+
+
 
 
 
@@ -1141,10 +1149,12 @@ export default {
 
 
 
-```json
-{
-    "approved": 0
-}
+**Params**
+
+
+
+```
+/admin/borrowing/applications?approved=0
 ```
 
 
@@ -1219,11 +1229,15 @@ export default {
 
 
 
-```json
-{
-    "approved": 0
-}
+**Params**
+
+
+
 ```
+/admin/borrowing/late-returns?approved=0
+```
+
+
 
 
 **响应参数**
@@ -1499,13 +1513,15 @@ export default {
 
 
 
-```json
-{
-    "username": "test_user",
-    "userId": 123,
-    "overdue": 1
-}
+**Params**
+
+
+
 ```
+/admin/readers/search?username=test_user&userId=123&overdue=1
+```
+
+
 
 
 

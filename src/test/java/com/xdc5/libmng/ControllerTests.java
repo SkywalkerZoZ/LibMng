@@ -20,12 +20,8 @@ public class ControllerTests {
 
     @Test
     public void testBorrowingInfo() {
-        // 创建一个 BookInstance 对象
-        BookInstance bookInstance = new BookInstance();
-        bookInstance.setIsbn("978-3-16-148410-0");
-
         // 调用 borrowingInfo 方法
-        Result result = bookController.borrowingInfo(bookInstance);
+        Result result = bookController.borrowingInfo("978-3-16-148410-0");
 
         // 输出结果
         System.out.println("Code: " + result.getCode());

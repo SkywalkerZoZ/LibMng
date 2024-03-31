@@ -29,9 +29,7 @@ public class BookController {
 
 
     @GetMapping("/user/books/search")
-    public Result searchBook(@RequestBody Map<String, Object> requestBody) {
-        String method = (String) requestBody.get("method");
-        String keyword = (String) requestBody.get("keyword");
+    public Result searchBook(@RequestParam String method, @RequestParam String keyword) {
         log.info("method:" + method + "keyword:" + keyword);
         if (Objects.equals(method, "title")) {
             //按照title寻找数目并返回success
@@ -51,11 +49,11 @@ public class BookController {
     }
 
     @GetMapping("/admin/books/borrowing-info")
-    public Result borrowingInfo(@RequestBody BookInstance bookInstance) {
-        if (bookInstance.getIsbn() == null) {
+    public Result borrowingInfo(@RequestParam String isbn) {
+        if (isbn == null) {
             return Result.error("Fail: isbn not found");
         }
-        List<Borrowing> borrowingInfoList = borrowingService.getBorrowingInfo(bookInstance.getIsbn());
+        List<Borrowing> borrowingInfoList = borrowingService.getBorrowingInfo(isbn);
         if ((borrowingInfoList == null) || (borrowingInfoList.isEmpty())) {
             return Result.error("Fail: borrowing info is null or empty");
         }
