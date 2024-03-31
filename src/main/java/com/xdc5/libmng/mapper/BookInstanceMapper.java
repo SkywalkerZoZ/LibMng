@@ -14,4 +14,5 @@ public interface BookInstanceMapper {
     //返回影响的行数
     int addBookInstance(BookInstance bookInstance);
     List<Integer> getInstanceId(@Param("isbn") String isbn);
+    String getIsbnByInstanceId(@Param("instanceId") Integer instanceId);
 }

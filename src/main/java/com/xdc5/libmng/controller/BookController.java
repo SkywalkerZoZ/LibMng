@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 
 
+import javax.sql.rowset.BaseRowSet;
+import java.security.interfaces.RSAKey;
 import java.util.*;
 
 @Slf4j
@@ -151,6 +154,107 @@ public class BookController {
         }
         return Result.success("Success: delete /admin/books/instances/{instanceId}");
 
+    }
+
+    @GetMapping("/admin/borrowing/applications")
+    public Result showBorrowAprv(){
+        if (bookService.getBorrowAprv().isEmpty() || bookService.getBorrowAprv() == null){
+            return Result.error("Fail: borrowing approval is null or empty");
+        }
+
+        List<Borrowing> BorrowingRequest = bookService.getBorrowAprv();
+        List<HashMap<String,Object>> allInfoLists = new ArrayList<>();
+        for (Borrowing request : BorrowingRequest){
+            String userName = bookService.getUserName(request.getUserId());
+            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
+            String location = bookService.getLocationByIsbn(isbn);
+            HashMap<String, Object> infoList = new HashMap<>();
+            infoList.put("borrowingId", request.getBorrowingId());
+            infoList.put("userId", request.getUserId());
+            infoList.put("username", userName);
+            infoList.put("instanceId", request.getInstanceId());
+            infoList.put("isbn", isbn);
+
+            String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
+            infoList.put("borrowDate", borrowDate);
+            String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
+            infoList.put("dueDate", dueDate);
+
+            infoList.put("borrowAprvStatus", request.getBorrowAprvStatus());
+            infoList.put("location", location);
+
+            allInfoLists.add(infoList);
+        }
+        return Result.success(allInfoLists, "Success: get /admin/borrowing/applications");
+    }
+    @GetMapping("/admin/borrowing/late-returns")
+    public Result showlateRetAprv(){
+        if (bookService.getLateRetAprv().isEmpty() || bookService.getLateRetAprv() == null){
+            return Result.error("Fail: late return approval is null or empty");
+        }
+
+        List<Borrowing> LateRetAprv = bookService.getLateRetAprv();
+        List<HashMap<String,Object>> allInfoLists = new ArrayList<>();
+        for (Borrowing request : LateRetAprv){
+
+            String userName = bookService.getUserName(request.getUserId());
+            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
+            HashMap<String, Object> infoList = new HashMap<>();
+            infoList.put("borrowingId", request.getBorrowingId());
+            infoList.put("userId", request.getUserId());
+            infoList.put("username", userName);
+            infoList.put("instanceId", request.getInstanceId());
+            infoList.put("isbn", isbn);
+
+            String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
+            infoList.put("borrowDate", borrowDate);
+            String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
+            infoList.put("dueDate", dueDate);
+            String lateRetDate = DateTimeUtils.formatDate(request.getLateRetDate(), "yyyy-MM-dd");
+            infoList.put("lateRetDate", lateRetDate);
+
+            infoList.put("lateRetAprvStatus", request.getLateRetAprvStatus());
+
+            allInfoLists.add(infoList);
+        }
+        return Result.success(allInfoLists, "Success : get /admin/borrowing/late-returns");
+    }
+    @PutMapping("/admin/borrowing/applications/{borrowingId}")
+    public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree){
+        if (agree != 0 && agree != 1 && agree != 2){
+            return Result.error("Fail: input error");
+        }
+        if (bookService.getBorrowingInfo(borrowingId).isEmpty() || bookService.getBorrowingInfo(borrowingId) == null){
+            return Result.error("Fail: not found this borrow approval");
+        }
+        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getBorrowAprvStatus(), agree)){
+            return Result.error("Fail: already processed");
+        }
+        Borrowing statusUpdate = new Borrowing();
+        statusUpdate.setBorrowAprvStatus(agree);
+        statusUpdate.setBorrowingId(borrowingId);
+        bookService.updateBorrowStatus(statusUpdate);
+        return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
+    }
+    @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
+    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree){
+        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getBorrowAprvStatus(), 0)){
+            return Result.error("Fail: not approval borrow");
+        }
+        if (agree != 0 && agree != 1 && agree != 2 && agree != 3){
+            return Result.error("Fail: input error");
+        }
+        if (bookService.getBorrowingInfo(borrowingId).isEmpty() || bookService.getBorrowingInfo(borrowingId) == null){
+            return Result.error("Fail: not found this borrow approval");
+        }
+        if (Objects.equals(bookService.getBorrowingInfo(borrowingId).get(0).getLateRetAprvStatus(), agree)){
+            return Result.error("Fail: already processed");
+        }
+        Borrowing statusUpdate = new Borrowing();
+        statusUpdate.setLateRetAprvStatus(agree);
+        statusUpdate.setBorrowingId(borrowingId);
+        bookService.updateBorrowStatus(statusUpdate);
+        return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
     }
 
 }

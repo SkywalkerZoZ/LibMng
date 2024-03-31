@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -121,4 +122,32 @@ public class BookService {
     public boolean deleteBookInstance(Integer instanceId) {
         return bookInstanceMapper.delBookInstanceById(instanceId) > 0;
     }
+    public String getIsbnByInstanceId(Integer instanceId){
+        return bookInstanceMapper.getIsbnByInstanceId(instanceId);
+    }
+    public List<Borrowing> getBorrowAprv(){
+        Borrowing borrowingRequest = new Borrowing();
+        borrowingRequest.setBorrowAprvStatus(0);
+        return borrowingMapper.getBorrowing(borrowingRequest);
+    }
+    public String getLocationByIsbn(String isbn){
+        List<BookInfo> BookInfo = bookInfoMapper.getBookInfoByIsbn(isbn);
+        return BookInfo.get(0).getLocation();
+    }
+    public List<Borrowing> getLateRetAprv(){
+        Borrowing LateRetAprv = new Borrowing();
+        LateRetAprv.setLateRetAprvStatus(1);
+        return borrowingMapper.getBorrowing(LateRetAprv);
+    }
+
+    public void updateBorrowStatus(Borrowing borrowing){
+        borrowingMapper.updateBorrowing(borrowing);
+    }
+
+    public List<Borrowing> getBorrowingInfo(Integer borrowingId){
+        Borrowing borrowId = new Borrowing();
+        borrowId.setBorrowingId(borrowingId);
+        return borrowingMapper.getBorrowing(borrowId);
+    }
+
 }

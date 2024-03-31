@@ -15,5 +15,4 @@ public interface BorrowingMapper {
     //返回影响的行数
     int addBorrowing(Borrowing borrowing);
     int updateBorrowing(Borrowing borrowing);
-
 }
