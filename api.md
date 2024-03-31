@@ -612,7 +612,18 @@ export default {
     "keyword": "SPM"
 }
 ```
-
+```json
+{
+    "method":"author",
+    "keyword": "WenhuiWei"
+}
+```
+```json
+{
+    "method":"isbn",
+    "keyword": "11223344"
+}
+```
 
 
 **响应参数**
