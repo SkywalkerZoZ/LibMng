@@ -21,4 +21,5 @@ public interface BookInfoMapper {
     List<HashMap<String,Object>> getBookInfoByAuthor(String author);
     List<HashMap<String,Object>> getBookDetailByIsbn(String isbn);
     List<HashMap<String,Object>> getAllBookInfo();
+
 }

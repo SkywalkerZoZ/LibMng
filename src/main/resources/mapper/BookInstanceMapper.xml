@@ -55,4 +55,11 @@
         </where>
     </select>
 
+    <select id="getIsbnByInstanceId" resultType="java.lang.String">
+        SELECT isbn
+        FROM BookInstance
+        where
+            instanceId=#{instanceId}
+    </select>
+
 </mapper>

@@ -40,7 +40,7 @@ CREATE TABLE Borrowing
 (
     borrowingId       INT AUTO_INCREMENT PRIMARY KEY,
     userId            INT,
-    #防止一本书被多个人借用
+    # 防止一本书被多个人借用
     instanceId        INT UNIQUE,
     # 借阅日期
     borrowDate        DATE NOT NULL,
@@ -48,9 +48,9 @@ CREATE TABLE Borrowing
     dueDate           DATE NOT NULL,
     # 延期日期, 为NULL则不延期
     lateRetDate       DATE DEFAULT NULL,
-    # 借阅的审批状态,0为未审批, 1为已审批
+    # 借阅的审批状态,0为未审批, 1为同意, 2为拒绝
     borrowAprvStatus  INT  DEFAULT 0,
-    # 延期的审批状态,0为未审批, 1为已审批
+    # 延期的审批状态,0为未申请, 1为未审批, 2为同意, 3为拒绝
     lateRetAprvStatus INT  DEFAULT 0,
     FOREIGN KEY (userId) REFERENCES User (userId),
     FOREIGN KEY (instanceId) REFERENCES BookInstance (instanceId) ON DELETE CASCADE

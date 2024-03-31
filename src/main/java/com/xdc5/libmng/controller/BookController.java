@@ -144,4 +144,69 @@ public class BookController {
 
     }
 
+    @GetMapping("/admin/borrowing/applications")
+    public Result showBorrowAprv(){
+        if (bookService.getBorrowAprv().isEmpty() || bookService.getBorrowAprv() == null){
+            return Result.error("Fail: borrowing approval is null or empty");
+        }
+
+        List<Borrowing> BorrowingRequest = bookService.getBorrowAprv();
+        List<HashMap<String,Object>> allInfoLists = new ArrayList<>();
+        for (Borrowing request : BorrowingRequest){
+            String userName = bookService.getUserName(request.getUserId());
+            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
+            String location = bookService.getLocationByIsbn(isbn);
+            HashMap<String, Object> infoList = new HashMap<>();
+            infoList.put("borrowingId", request.getBorrowingId());
+            infoList.put("userId", request.getUserId());
+            infoList.put("username", userName);
+            infoList.put("instanceId", request.getInstanceId());
+            infoList.put("isbn", isbn);
+
+            String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
+            infoList.put("borrowDate", borrowDate);
+            String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
+            infoList.put("dueDate", dueDate);
+
+            infoList.put("borrowAprvStatus", request.getBorrowAprvStatus());
+            infoList.put("location", location);
+
+            allInfoLists.add(infoList);
+        }
+        return Result.success(allInfoLists, "Success: get /admin/borrowing/applications");
+    }
+    @GetMapping("/admin/borrowing/late-returns")
+    public Result showlateRetAprv(){
+        if (bookService.getLateRetAprv().isEmpty() || bookService.getLateRetAprv() == null){
+            return Result.error("Fail: late return approval is null or empty");
+        }
+
+        List<Borrowing> LateRetAprv = bookService.getLateRetAprv();
+        List<HashMap<String,Object>> allInfoLists = new ArrayList<>();
+        for (Borrowing request : LateRetAprv){
+
+            String userName = bookService.getUserName(request.getUserId());
+            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
+            HashMap<String, Object> infoList = new HashMap<>();
+            infoList.put("borrowingId", request.getBorrowingId());
+            infoList.put("userId", request.getUserId());
+            infoList.put("username", userName);
+            infoList.put("instanceId", request.getInstanceId());
+            infoList.put("isbn", isbn);
+
+            String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
+            infoList.put("borrowDate", borrowDate);
+            String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
+            infoList.put("dueDate", dueDate);
+            String lateRetDate = DateTimeUtils.formatDate(request.getLateRetDate(), "yyyy-MM-dd");
+            infoList.put("lateRetDate", lateRetDate);
+
+            infoList.put("lateRetAprvStatus", request.getLateRetAprvStatus());
+
+            allInfoLists.add(infoList);
+        }
+        return Result.success(allInfoLists, "Success : get /admin/borrowing/late-returns");
+    }
+
+
 }
