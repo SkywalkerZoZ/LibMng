@@ -19,6 +19,8 @@ public class TokenIntercepter implements HandlerInterceptor {
     private ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String url=request.getRequestURL().toString();
+        log.info("request url: {}", url);
         String jwt = request.getHeader("Authorization");
         if (!JwtUtils.validateToken(jwt)) {
             log.info("NOT_LOGIN");
@@ -48,8 +50,6 @@ public class TokenIntercepter implements HandlerInterceptor {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return false;
         }
-        String url=request.getRequestURL().toString();
-        log.info("request url: {}", url);
         if (url.contains("admin")&&!userRole.equals("admin"))
         {
             response.getWriter().write("Fail: not admin");
