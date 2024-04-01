@@ -130,8 +130,8 @@ public class BorrowingController {
     @GetMapping("/user/borrowing/records")
     public Result selectBorrowingInfo(HttpServletRequest request) {
         String token = request.getHeader("token");
-        Object uid = JwtUtils.extractAttribute(token,"userId");
-        return Result.success(borrowingService.getBorrowingInfo((Integer)uid),"Success: post /user/borrowing");
+        String uid = JwtUtils.extractAttribute(token,"userId");
+        return Result.success(borrowingService.getBorrowingInfoByUid(Integer.parseInt(uid)),"Success: get /user/borrowing/records");
 
     }
 }
