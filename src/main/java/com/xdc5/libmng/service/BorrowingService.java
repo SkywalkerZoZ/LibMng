@@ -6,7 +6,6 @@ import com.xdc5.libmng.mapper.BookInstanceMapper;
 import com.xdc5.libmng.mapper.BorrowingMapper;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,9 +89,9 @@ public class BorrowingService {
         infoList.put("instanceId", request.getInstanceId());
         infoList.put("isbn", isbn);
 
-        String borrowDate = DateTimeUtils.formatDate(request.getBorrowDate(), "yyyy-MM-dd");
+        String borrowDate = DateTimeUtils.dateToStr(request.getBorrowDate(), "yyyy-MM-dd");
         infoList.put("borrowDate", borrowDate);
-        String dueDate = DateTimeUtils.formatDate(request.getDueDate(), "yyyy-MM-dd");
+        String dueDate = DateTimeUtils.dateToStr(request.getDueDate(), "yyyy-MM-dd");
         infoList.put("dueDate", dueDate);
         return infoList;
     }
@@ -102,16 +101,14 @@ public class BorrowingService {
         if(bookInstanceMapper.getIsbnByInstanceId(bInfo.getInstanceId()) == null)
             return false;
         //检查该书是否已经被提交过申请
-        else if (checkIfExists(bInfo)) {
+        else if (canBorrow(bInfo)) {
             return false;
         }
         return (borrowingMapper.addBorrowing(bInfo) > 0);
     }
 
-    public boolean checkIfExists(Borrowing bInfo) {
-        if (borrowingMapper.getByInstanceId(bInfo.getInstanceId()) != null)
-            return true;
+    public boolean canBorrow(Borrowing bInfo) {
 
-        return false;
+        return borrowingMapper.getByInstanceId(bInfo.getInstanceId()) != null;
     }
 }

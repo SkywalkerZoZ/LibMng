@@ -11,7 +11,7 @@ public class ReservationService {
     @Autowired
     private ReservationMapper reservationMapper;
 
-    public boolean reservateBook(Reservation reservation) {
+    public boolean reserveBook(Reservation reservation) {
         return (reservationMapper.addReservation(reservation) > 0);
     }
 

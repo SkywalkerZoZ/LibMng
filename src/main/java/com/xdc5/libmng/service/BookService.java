@@ -35,7 +35,10 @@ public class BookService {
 
 
     public String getLocation(Integer instId) {
-        return  getBookInfoByIsbn(getIsbnByInstanceId(instId)).getLocation();
+        String isbn=getIsbnByInstanceId(instId);
+        BookInfo bookInfo=getBookInfoByIsbn(isbn);
+        log.info(bookInfo.getLocation());
+        return  bookInfo.getLocation();
     }
 
     public void addBookInfo(BookInfo bookInfo) {

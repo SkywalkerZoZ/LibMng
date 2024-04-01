@@ -1652,7 +1652,6 @@ export default {
 
 | 参数       | 类型   | 是否必需 | 描述       |
 | ---------- | ------ | -------- | ---------- |
-| userId     | int    | 是       | 借阅用户ID |
 | instanceId | int    | 是       | 图书实体ID |
 | dueDate    | string | 是       | 应归还日期 |
 
@@ -1660,8 +1659,7 @@ export default {
 
 ```json
 {
-    "userId": 123,
-    "instanceId": 456,
+    "instanceId": 6,
     "dueDate": "2024-04-20"
 }
 ```
@@ -1696,10 +1694,22 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: bad request",
+    "message": "Fail: do not have borrowing privileges,
     "data":null
 }
 ```
+
+
+
+```json
+{
+    "code": 400,
+    "message": "the book has been borrowed",
+    "data":null
+}
+```
+
+
 
 
 
@@ -1709,9 +1719,9 @@ tip: borrowDate为当前时间
 
 **接口地址**
 
-| 方法 | 地址                       |
-| ---- | -------------------------- |
-| PUT  | /user/reservation/{userId} |
+| 方法 | 地址                     |
+| ---- | ------------------------ |
+| PUT  | /user/reservation/{isbn} |
 
 
 
@@ -1725,7 +1735,7 @@ tip: borrowDate为当前时间
 
 ```json
 {
-    "isbn": "1234567890123"
+    "isbn": "978-3-16-148410-0"
 }
 ```
 
@@ -1807,7 +1817,6 @@ tip: borrowDate为当前时间
             "instanceId": 123,
             "isbn": "1234567890123",
             "title":"ttt",
-            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "borrowDate": "2024-03-21",
             "dueDate": "2024-04-21",
             "borrowAprvStatus": 1
@@ -1819,7 +1828,6 @@ tip: borrowDate为当前时间
             "instanceId": 456,
             "isbn": "4567890123456",
             "title":"ttt7",
-            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
             "borrowDate": "2024-03-22",
             "dueDate": "2024-04-22",
             "borrowAprvStatus": 0

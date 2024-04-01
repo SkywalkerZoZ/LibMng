@@ -67,9 +67,9 @@ public class BookController {
                 info.put("username", username);
                 info.put("instanceId", borrowingInfo.getInstanceId());
                 //格式化时间成字符串
-                String borrowDate = DateTimeUtils.formatDate(borrowingInfo.getBorrowDate(), "yyyy-MM-dd");
+                String borrowDate = DateTimeUtils.dateToStr(borrowingInfo.getBorrowDate(), "yyyy-MM-dd");
                 info.put("borrowDate", borrowDate);
-                String dueDate = DateTimeUtils.formatDate(borrowingInfo.getDueDate(), "yyyy-MM-dd");
+                String dueDate = DateTimeUtils.dateToStr(borrowingInfo.getDueDate(), "yyyy-MM-dd");
                 info.put("dueDate", dueDate);
                 infoList.add(info);
             }
