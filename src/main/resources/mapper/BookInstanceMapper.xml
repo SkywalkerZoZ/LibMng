@@ -22,6 +22,13 @@
             )
         </insert>
 
+    <update id="updateStatus">
+        UPDATE bookinstance
+        SET borrowStatus=#{borrowStatus}
+        WHERE
+            instanceId=#{instanceId}
+    </update>
+
     <delete id="delBookInstanceById">
         DELETE FROM BookInstance WHERE instanceId=#{instanceId}
     </delete>
@@ -57,6 +64,13 @@
 
     <select id="getIsbnByInstanceId" resultType="java.lang.String">
         SELECT isbn
+        FROM BookInstance
+        where
+            instanceId=#{instanceId}
+    </select>
+
+    <select id="getStatusByInstanceId" resultType="java.lang.Integer">
+        SELECT borrowStatus
         FROM BookInstance
         where
             instanceId=#{instanceId}

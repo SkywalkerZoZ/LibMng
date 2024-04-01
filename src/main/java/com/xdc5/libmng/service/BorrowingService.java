@@ -1,5 +1,6 @@
 package com.xdc5.libmng.service;
 
+import com.xdc5.libmng.entity.BookInstance;
 import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.mapper.BookDetailMapper;
 import com.xdc5.libmng.mapper.BookInstanceMapper;
@@ -96,19 +97,31 @@ public class BorrowingService {
         return infoList;
     }
 
-    public boolean addBorrowing(Borrowing bInfo) {
-        //检查书架有该书
-        if(bookInstanceMapper.getIsbnByInstanceId(bInfo.getInstanceId()) == null)
-            return false;
-        //检查该书是否已经被提交过申请
-        else if (canBorrow(bInfo)) {
-            return false;
+    //借书申请后BorrowStatus就变为1，如果管理员同意，BorrowStatus不变，如果不同意，BorrowStatus变回0
+    public void addBorrowing(Borrowing bInfo) {
+        borrowingMapper.addBorrowing(bInfo);
+        BookInstance update = new BookInstance();
+        update.setBorrowStatus(1);
+        update.setInstanceId(bInfo.getInstanceId());
+        updateStatus(update);
+    }
+
+    public void updateStatus(BookInstance bInfo){
+        bookInstanceMapper.updateStatus(bInfo);
+    }
+
+    public boolean canBorrow(Integer bookInstanceId) {
+        return bookInstanceMapper.getStatusByInstanceId(bookInstanceId)==0;
+    }
+
+    public Integer getAvailableInstance(String isbn){
+        List <Integer> availableBooks = bookInstanceMapper.getInstanceId(isbn);
+        for (Integer availableBook : availableBooks){
+            if (canBorrow(availableBook)){
+                return availableBook;
+            }
         }
-        return (borrowingMapper.addBorrowing(bInfo) > 0);
+        return null;
     }
 
-    public boolean canBorrow(Borrowing bInfo) {
-
-        return borrowingMapper.getByInstanceId(bInfo.getInstanceId()) != null;
-    }
 }

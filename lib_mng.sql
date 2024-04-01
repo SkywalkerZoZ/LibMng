@@ -41,11 +41,13 @@ CREATE TABLE Borrowing
     borrowingId       INT AUTO_INCREMENT PRIMARY KEY,
     userId            INT,
     # 防止一本书被多个人借用
-    instanceId        INT UNIQUE,
+    instanceId        INT,
     # 借阅日期
     borrowDate        DATE NOT NULL,
     # 借阅到期日期
     dueDate           DATE NOT NULL,
+    # 归还时间
+    returnDate        DATE DEFAULT NULL,
     # 延期日期, 为NULL则不延期
     lateRetDate       DATE DEFAULT NULL,
     # 借阅的审批状态,0为未审批, 1为同意, 2为拒绝

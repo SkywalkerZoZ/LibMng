@@ -17,7 +17,7 @@
     </delete>
 
     <select id="getBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing" resultType="com.xdc5.libmng.entity.Borrowing">
-        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus,returnDate
         FROM Borrowing
         <where>
             <if test="borrowingId != null">
@@ -53,12 +53,13 @@
             <if test="lateRetDate != null">lateRetDate = #{lateRetDate},</if>
             <if test="borrowAprvStatus != null">borrowAprvStatus = #{borrowAprvStatus},</if>
             <if test="lateRetAprvStatus != null">lateRetAprvStatus = #{lateRetAprvStatus},</if>
+            <if test="returnDate != null">returnDate = #{returnDate},</if>
         </set>
         WHERE borrowingId = #{borrowingId}
     </update>
 
     <select id="getByInstanceId" resultType="com.xdc5.libmng.entity.Borrowing">
-        SELECT userId,instanceId,borrowDate,dueDate
+        SELECT userId,instanceId,borrowDate,dueDate,returnDate
         FROM Borrowing
         <where>
             <if test="instanceId!= null">

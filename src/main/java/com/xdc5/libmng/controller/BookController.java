@@ -71,6 +71,8 @@ public class BookController {
                 info.put("borrowDate", borrowDate);
                 String dueDate = DateTimeUtils.dateToStr(borrowingInfo.getDueDate(), "yyyy-MM-dd");
                 info.put("dueDate", dueDate);
+                String returnDate = DateTimeUtils.dateToStr(borrowingInfo.getReturnDate(), "yyyy-MM-dd");
+                info.put("returnDate", returnDate);
                 infoList.add(info);
             }
 

@@ -11,6 +11,7 @@ public class Borrowing {
     private LocalDate borrowDate;
     private LocalDate dueDate;
     private LocalDate lateRetDate;
+    private LocalDate returnDate;
     private Integer borrowAprvStatus;
     private Integer lateRetAprvStatus;
 }

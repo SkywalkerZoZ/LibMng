@@ -1,5 +1,6 @@
 package com.xdc5.libmng.controller;
 
+import com.xdc5.libmng.entity.BookInstance;
 import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.service.BookService;
@@ -66,7 +67,6 @@ public class BorrowingController {
 
     @PutMapping("/admin/borrowing/applications/{borrowingId}")
     public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree) {
-        // TODO agree逻辑处理 borrowingService.updateBorrowStatus
         if (agree != 0 && agree != 1 ) {
             return Result.error("Fail: input error");
         }
@@ -74,16 +74,26 @@ public class BorrowingController {
         if (borrowingInfo == null) {
             return Result.error("Fail: this borrow approval not found");
         }
-        if (Objects.equals(borrowingInfo.getBorrowAprvStatus(), agree)) {
+        if (Objects.equals(borrowingInfo.getBorrowAprvStatus(), agree+1)) {
             return Result.error("Fail: already processed");
         }
         borrowingService.updateBorrowAprvStatus(agree, borrowingId);
+        if(agree == 0){
+            BookInstance update = new BookInstance();
+            update.setBorrowStatus(0);
+            update.setInstanceId(borrowingInfo.getInstanceId());
+            borrowingService.updateStatus(update);
+        }
+
         return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
     }
 
     @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
     public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree) {
         Borrowing borrowingInfo=borrowingService.getBorrowingInfo(borrowingId);
+        if (agree != 0 && agree != 1) {
+            return Result.error("Fail: input error");
+        }
         if (borrowingInfo==null) {
             return Result.error("Fail: borrow approval not found");
         }
@@ -91,12 +101,13 @@ public class BorrowingController {
         if (borrowAprvStatus==0) {
             return Result.error("Fail: approval has not processed");
         }
-        if (agree != 0 && agree != 1) {
-            return Result.error("Fail: input error");
+        if (Objects.equals(borrowingInfo.getLateRetAprvStatus(), agree+1)) {
+            return Result.error("Fail: already processed");
         }
         borrowingService.updateLateRetStatus(agree, borrowingId);
         return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
     }
+
 
     /* ****User Part**** */
     // TODO 修改方法
@@ -104,27 +115,30 @@ public class BorrowingController {
     public Result borrowBook(HttpServletRequest request,@RequestBody Map<String, Object> requestBody) {
         Integer userId = (Integer) request.getAttribute("userId");
         String dueDate=(String)requestBody.get("dueDate");
-        Integer instanceId= (Integer) requestBody.get("instanceId");
+        String isbn= (String) requestBody.get("isbn");
+
+        Integer availableBook = borrowingService.getAvailableInstance(isbn);
+        if (availableBook==null){
+            return Result.error("Fail: no available instance exists");
+        }
+        //检查用户权限
+        if(!userService.checkPermsByID(userId)) {
+            return Result.error("Fail: do not have borrowing privileges");
+        }
         Borrowing bInfo = new Borrowing();
         bInfo.setUserId(userId);
-        bInfo.setInstanceId((Integer) requestBody.get("instanceId"));
-
+        bInfo.setInstanceId(availableBook);
         //转换data格式
         LocalDate date=DateTimeUtils.strToDate(dueDate,"yyyy-MM-dd");
         bInfo.setDueDate(date);
-        //检查用户权限
-        if(!userService.checkPermsByID(bInfo.getUserId())) {
-            return Result.error("Fail: do not have borrowing privileges");
-        }
+
         //添加借阅信息
-        if (!borrowingService.addBorrowing(bInfo))
-        {
-            return Result.error("the book has been borrowed");
-        }
+        borrowingService.addBorrowing(bInfo);
+
         //返回数据信息
         HashMap<String,Object> data = new HashMap<>();
-        data.put("instanceId",instanceId);
-        data.put("location",bookService.getLocation(instanceId));
+        data.put("instanceId",availableBook);
+        data.put("location",bookService.getLocation(availableBook));
         return Result.success(data,"Success: post /user/borrowing");
         //更新实体状态（审批处处理）
     }
