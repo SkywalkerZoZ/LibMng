@@ -1796,7 +1796,6 @@ tip: borrowDate为当前时间
 | data                     | array  | 借阅记录列表                             |
 | data[i].borrowingId      | int    | 借阅记录ID                               |
 | data[i].userId           | int    | 用户ID                                   |
-| data[i].username         | string | 用户名                                   |
 | data[i].instanceId       | int    | 图书实体ID                               |
 | data[i].isbn             | string | 图书ISBN号                               |
 | data[i].borrowDate       | string | 借阅日期                                 |
@@ -1813,7 +1812,6 @@ tip: borrowDate为当前时间
         {
             "borrowingId": 1,
             "userId": "1",
-            "userName": "test1",
             "instanceId": 123,
             "isbn": "1234567890123",
             "title":"ttt",
@@ -1824,7 +1822,6 @@ tip: borrowDate为当前时间
         {
             "borrowingId": 2,
             "userId": "2",
-            "userName": "test2",
             "instanceId": 456,
             "isbn": "4567890123456",
             "title":"ttt7",

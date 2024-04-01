@@ -132,7 +132,7 @@ public class BorrowingController {
     @GetMapping("/user/borrowing/records")
     public Result selectBorrowingInfo(HttpServletRequest request) {
         Integer userId = (Integer) request.getAttribute("userId");
-        return Result.success(borrowingService.getBorrowingInfo(userId),"Success: post /user/borrowing");
+        return Result.success(borrowingService.getBorrowingInfoByUid(userId),"Success: get /user/borrowing/records");
 
     }
 }
