@@ -4,22 +4,25 @@ import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.service.BookService;
 import com.xdc5.libmng.service.BorrowingService;
+import com.xdc5.libmng.service.UserService;
 import com.xdc5.libmng.utils.DateTimeUtils;
+import com.xdc5.libmng.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RestController
 public class BorrowingController {
     @Autowired
     BorrowingService borrowingService;
-
     @Autowired
     BookService bookService;
+    @Autowired
+    UserService userService;
     @GetMapping("/admin/borrowing/applications")
     public Result showBorrowAprv(@RequestParam Integer approved) {
         if (borrowingService.getBorrowAprv(approved) == null || borrowingService.getBorrowAprv(approved).isEmpty()) {
@@ -94,5 +97,41 @@ public class BorrowingController {
         }
         borrowingService.updateLateRetStatus(agree, borrowingId);
         return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
+    }
+
+    /* ****User Part**** */
+    @PostMapping("/user/borrowing")
+    public Result borrowBook(@RequestBody Map<String, Object> requestBody) {
+        Borrowing bInfo = new Borrowing();
+        bInfo.setUserId((Integer) requestBody.get("userId"));
+        bInfo.setInstanceId((Integer) requestBody.get("instanceId"));
+
+        //转换data格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse((String)requestBody.get("dueDate"), formatter);
+
+        bInfo.setDueDate(date);
+        //检查用户权限
+        if(userService.checkPermsByID(bInfo.getUserId())) {
+            //添加借阅信息
+            if (!borrowingService.addBorrowing(bInfo))
+                return Result.error("Fail: bad request");
+        }
+        //返回数据信息
+        List<HashMap<String,Object>> data = new ArrayList<>();
+        HashMap<String,Object> Mp = new HashMap<>();
+        Mp.put("instanceId",requestBody.get("instanceId"));
+        Mp.put("location",bookService.getLocation((Integer) requestBody.get("instanceId")));
+        data.add(0,Mp);
+        return Result.success(data,"Success: post /user/borrowing");
+        //更新实体状态（审批处处理）
+    }
+
+    @GetMapping("/user/borrowing/records")
+    public Result selectBorrowingInfo(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        Object uid = JwtUtils.extractAttribute(token,"userId");
+        return Result.success(borrowingService.getBorrowingInfo((Integer)uid),"Success: post /user/borrowing");
+
     }
 }

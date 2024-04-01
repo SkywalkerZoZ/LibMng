@@ -933,16 +933,6 @@ export default {
 
 
 
-
-```json
-{
-    "code": 400,
-    "message": "Fail: can't delete bookinfo(exist instances)",
-    "data": null
-}
-```
-
-
 ## 修改图书信息
 
 **接口地址**
@@ -1729,14 +1719,12 @@ tip: borrowDate为当前时间
 
 | 参数   | 类型   | 是否必需 | 描述       |
 | ------ | ------ | -------- | ---------- |
-| userId | int    | 是       | 用户ID     |
 | isbn   | string | 是       | 图书ISBN号 |
 
 
 
 ```json
 {
-    "userId": 123,
     "isbn": "1234567890123"
 }
 ```
@@ -1814,6 +1802,8 @@ tip: borrowDate为当前时间
     "data": [
         {
             "borrowingId": 1,
+            "userId": "1",
+            "userName": "test1",
             "instanceId": 123,
             "isbn": "1234567890123",
             "title":"ttt",
@@ -1824,6 +1814,8 @@ tip: borrowDate为当前时间
         },
         {
             "borrowingId": 2,
+            "userId": "2",
+            "userName": "test2",
             "instanceId": 456,
             "isbn": "4567890123456",
             "title":"ttt7",
