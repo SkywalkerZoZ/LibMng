@@ -62,4 +62,11 @@ public class UserService {
     public void addUser(User user){
         userMapper.addUser(user);
     }
+    public boolean checkPermsByID(Integer uid) {
+        User user = userMapper.getUserById(uid);
+        //检查用户存在
+        if(user == null)
+            return false;
+        return user.getBorrowPerms() == 1;
+    }
 }

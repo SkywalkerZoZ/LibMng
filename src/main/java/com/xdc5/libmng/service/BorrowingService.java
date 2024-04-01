@@ -1,10 +1,12 @@
 package com.xdc5.libmng.service;
 
 import com.xdc5.libmng.entity.Borrowing;
+import com.xdc5.libmng.mapper.BookDetailMapper;
 import com.xdc5.libmng.mapper.BookInstanceMapper;
 import com.xdc5.libmng.mapper.BorrowingMapper;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,11 @@ import java.util.List;
 public class BorrowingService {
     @Autowired
     private BorrowingMapper borrowingMapper;
-
     @Autowired
     private BookInstanceMapper bookInstanceMapper;
+    @Autowired
+    private BookDetailMapper bookDetailMapper;
+
     public List<Borrowing> getBorrowAprv(Integer approved){
         return borrowingMapper.getBorrowAprv(approved);
     }
@@ -71,6 +75,13 @@ public class BorrowingService {
 
         return allBorrowingInfo; // 返回列表中的所有元素，可能为空
     }
+
+    public List<Borrowing> getBorrowingInfoByUid(Integer uid) {
+        List<Borrowing> allBorrowingInfo = new ArrayList<>();
+        Borrowing borrowing = new Borrowing();
+        borrowing.setUserId(uid);
+        return borrowingMapper.getBorrowing(borrowing);
+    }
     public HashMap<String, Object> extractAprvInfo(Borrowing request, String userName, String isbn) {
         HashMap<String, Object> infoList = new HashMap<>();
         infoList.put("borrowingId", request.getBorrowingId());
@@ -86,4 +97,21 @@ public class BorrowingService {
         return infoList;
     }
 
+    public boolean addBorrowing(Borrowing bInfo) {
+        //检查书架有该书
+        if(bookInstanceMapper.getIsbnByInstanceId(bInfo.getInstanceId()) == null)
+            return false;
+        //检查该书是否已经被提交过申请
+        else if (checkIfExists(bInfo)) {
+            return false;
+        }
+        return (borrowingMapper.addBorrowing(bInfo) > 0);
+    }
+
+    public boolean checkIfExists(Borrowing bInfo) {
+        if (borrowingMapper.getByInstanceId(bInfo.getInstanceId()) != null)
+            return true;
+
+        return false;
+    }
 }

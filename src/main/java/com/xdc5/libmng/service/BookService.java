@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -31,6 +32,11 @@ public class BookService {
     private BookInfoMapper bookInfoMapper;
     @Autowired
     private BookDetailMapper bookDetailMapper;
+
+
+    public String getLocation(Integer instId) {
+        return  getBookInfoByIsbn(getIsbnByInstanceId(instId)).getLocation();
+    }
 
     public void addBookInfo(BookInfo bookInfo) {
         bookInfoMapper.addBookInfo(bookInfo);
@@ -87,7 +93,7 @@ public class BookService {
 
         String authorWithWildcard = "%" + author + "%";
         List<BookDetail> booklist = bookDetailMapper.getBookDetailByAuthor(authorWithWildcard);
-        //我们需要根据bookInfomapper和
+
         return booklist;
     }
 
@@ -95,7 +101,7 @@ public class BookService {
 
         String isbnWithWildcard = "%" + isbn + "%";
         List<BookDetail> booklist = bookDetailMapper.getBookDetailByIsbn(isbnWithWildcard);
-        //我们需要根据bookInfomapper和
+
         return booklist;
     }
 
