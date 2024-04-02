@@ -22,11 +22,6 @@
 
         )
     </insert>
-    <insert id="insertNewPenalty">
-        INSERT INTO Penalty (adminId, userId, reason, penaltyDate, endDate)
-        VALUES (#{adminId}, #{userId}, #{reason}, CURDATE(), #{endDate});
-
-    </insert>
 
     <select id="getPenalty" parameterType="com.xdc5.libmng.entity.Penalty" resultType="com.xdc5.libmng.entity.Penalty">
         SELECT penaltyId,adminId,userId,reason,penaltyDate,endDate
@@ -62,16 +57,10 @@
         <set>
             <if test="reason != null">reason = #{reason},</if>
             <if test="endDate != null">endDate = #{endDate},</if>
+            penaltyDate = CURDATE()
         </set>
-        WHERE penaltyId = #{penaltyId}
-    </update>
-    <update id="updatePenaltyById">
-        UPDATE Penalty
-        SET reason = #{reason},
-            penaltyDate = CURDATE(),
-            endDate = #{endDate}
         WHERE adminId = #{adminId}
-          AND userId = #{userId};
+        AND userId = #{userId}
+        AND endDate>CURDATE()
     </update>
-
 </mapper>
