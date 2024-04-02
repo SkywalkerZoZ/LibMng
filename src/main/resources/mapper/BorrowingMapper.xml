@@ -92,6 +92,13 @@
             </if>
         </where>
     </select>
+    <select id="getUnretReader" resultType="java.util.HashMap">
+        SELECT u.userId, u.username, u.email, b.borrowDate, b.dueDate
+        FROM USER u
+                 JOIN Borrowing b ON u.userId = b.userId
+        WHERE b.returnDate IS NULL;
+
+    </select>
 
 
 </mapper>

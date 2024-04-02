@@ -4,6 +4,7 @@ import com.xdc5.libmng.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -19,4 +20,10 @@ public interface UserMapper {
     User getUserById(@Param("userId") Integer userId);
 
     String getUserNameById(@Param("userId") Integer userId);
+    //根据读者名返回读者信息
+    List<HashMap<String ,Object>> getReaderByName(String userName);
+    List<HashMap<String,Object>> getReaderById(Integer userId);
+
+    //更改用户perms
+    void changeReaderPerms(Integer userId);
 }

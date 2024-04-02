@@ -1493,13 +1493,12 @@ export default {
 
 
 
-**请求体参数**
+**请求参数**
 
-| 参数     | 类型 | 是否必需 | 描述                         |
-| -------- | ---- | -------- | ---------------------------- |
-| username | int  | 否       | 用户名                       |
-| userId   | int  | 否       | 用户ID                       |
-| overdue  | int  | 否       | 是否过期未还，1为是，0为不是 |
+| 参数       | 类型     | 是否必需 | 描述              |
+|----------|--------|------|-----------------|
+| username | String | 否    | 用户名             |
+| userId   | int    | 否    | 用户id            |
 
 
 
@@ -1508,7 +1507,8 @@ export default {
 
 
 ```
-/admin/readers/search?username=test_user&userId=123&overdue=1
+/admin/readers/search?username=test_user
+/admin/readers/search?userId=1
 ```
 
 
@@ -1694,7 +1694,7 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: do not have borrowing privileges,
+    "message": "Fail: do not have borrowing privileges",
     "data":null
 }
 ```

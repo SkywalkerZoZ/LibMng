@@ -4,6 +4,7 @@ import com.xdc5.libmng.entity.Borrowing;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -17,4 +18,6 @@ public interface BorrowingMapper {
     int updateBorrowing(Borrowing borrowing);
     List<Borrowing> getBorrowAprv(@Param("approved") Integer approved);
     List<Borrowing> getLateRetAprv(@Param("approved") Integer approved);
+
+    List<HashMap<String,Object>> getUnretReader();
 }

@@ -14,4 +14,8 @@ public interface PenaltyMapper {
     //返回影响的行数
     int addPenalty(Penalty penalty);
     int updatePenalty(Penalty penalty);
+
+    void insertNewPenalty(Integer adminId,Integer userId,String reason,String endDate);
+
+    void updatePenaltyById(Integer adminId,Integer userId,String reason,String endDate);
 }

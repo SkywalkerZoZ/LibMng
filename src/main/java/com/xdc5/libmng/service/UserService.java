@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -68,5 +69,19 @@ public class UserService {
         if(user == null)
             return false;
         return user.getBorrowPerms() == 1;
+    }
+
+    //按照姓名模糊查找读者情况
+    public List<HashMap<String,Object>> getReaderByName(String userName){
+        String userNameWithWildcard="%"+userName+"%";
+        return userMapper.getReaderByName(userNameWithWildcard);
+    }
+    //啊按照用户Id查找
+    public List<HashMap<String ,Object>> getReaderById(Integer userId){
+        return userMapper.getReaderById(userId);
+    }
+    //更改目标用户的borrowPerms
+    public void changeReasderPerms(Integer userId){
+        userMapper.changeReaderPerms(userId);
     }
 }

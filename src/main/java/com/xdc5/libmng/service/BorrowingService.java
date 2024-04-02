@@ -125,4 +125,9 @@ public class BorrowingService {
     {
         borrowingMapper.updateBorrowing(borrowing);
     }
+
+    //获取未归还的读者列表
+    public List<HashMap<String,Object>> getUNretReader(){
+        return borrowingMapper.getUnretReader();
+    }
 }

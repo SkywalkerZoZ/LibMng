@@ -32,6 +32,12 @@
         </set>
         WHERE userId = #{userId}
     </update>
+    <update id="changeReaderPerms">
+        UPDATE USER
+        SET borrowPerms = 0
+        WHERE userId = #{userId};
+
+    </update>
 
 
     <delete id="delUserById">
@@ -70,4 +76,18 @@
         where
         userId=#{userId}
     </select>
+    <select id="getReaderByName" resultType="java.util.HashMap">
+        SELECT userId, username, email, avatar, borrowPerms
+        FROM USER
+        WHERE username LIKE #{userName};
+
+
+    </select>
+    <select id="getReaderById" resultType="java.util.HashMap">
+        SELECT userId, username, email, avatar, borrowPerms
+        FROM USER
+        WHERE userId = #{userId};
+
+    </select>
+
 </mapper>

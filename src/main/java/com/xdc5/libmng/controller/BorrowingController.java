@@ -7,6 +7,7 @@ import com.xdc5.libmng.service.BookService;
 import com.xdc5.libmng.service.BorrowingService;
 import com.xdc5.libmng.service.UserService;
 import com.xdc5.libmng.utils.DateTimeUtils;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -107,6 +108,26 @@ public class BorrowingController {
         borrowingService.updateLateRetStatus(agree, borrowingId);
         return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
     }
+
+    //查看未归还的读者列表
+    @GetMapping("/admin/borrowing/overdue-readers")
+    public Result showUnretReader(){
+        List<HashMap<String,Object>> resultData=borrowingService.getUNretReader();
+        return Result.success(resultData,"Success: get /admin/borrowing/overdue-readers");
+    }
+    //检索读者
+    @GetMapping("/admin/readers/search")
+    public Result searchReader(String username,Integer userId){
+        if(username!=null&&userId==null){
+        //按照姓名模糊查找
+            return Result.success(userService.getReaderByName(username),"Success: get /admin/readers/search");
+        }else if(username==null&&userId!=null){
+            return Result.success(userService.getReaderById(userId),"Success: get /admin/readers/search");
+        }else{
+            return Result.error("Fail: bad request");
+        }
+    }
+
 
 
     /* ****User Part**** */
