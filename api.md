@@ -1895,7 +1895,7 @@ tip: borrowDate为当前时间
 
 
 
-## 查看处分记录
+## 用户查看自己的处分记录
 
 **接口地址**
 
@@ -1913,19 +1913,17 @@ tip: borrowDate为当前时间
 
 **响应参数**
 
-| 参数                  | 类型   | 描述         |
-| --------------------- | ------ | ------------ |
-| code                  | int    | 状态码       |
-| message               | string | 提示信息     |
-| data                  | array  | 处分记录列表 |
-| data[i].penaltyId     | int    | 处分记录ID   |
-| data[i].adminId       | int    | 管理员ID     |
-| data[i].adminUsername | string | 管理员用户名 |
-| data[i].userId        | int    | 用户ID       |
-| data[i].username      | string | 用户名       |
-| data[i].reason        | string | 处分原因     |
-| data[i].penaltyDate   | string | 处分日期     |
-| data[i].endDate       | string | 处分结束日期 |
+| 参数                | 类型   | 描述           |
+| ------------------- | ------ | -------------- |
+| code                | int    | 状态码         |
+| message             | string | 提示信息       |
+| data                | array  | 处分记录列表   |
+| data[i].penaltyId   | int    | 处分记录ID     |
+| data[i].adminName   | string | 管理员用户名   |
+| data[i].username    | string | 被处分人用户名 |
+| data[i].reason      | string | 处分原因       |
+| data[i].penaltyDate | string | 处分日期       |
+| data[i].endDate     | string | 处分结束日期   |
 
 
 
@@ -1936,14 +1934,16 @@ tip: borrowDate为当前时间
     "data": [
         {
             "penaltyId": 1,
-            "adminUsername": "admin1",
+            "adminName": "admin1",
+            "username":"tester",
             "reason": "Late return",
             "penaltyDate": "2024-03-21",
             "endDate": "2024-04-21"
         },
         {
             "penaltyId": 2,
-            "adminUsername": "admin2",
+            "adminName": "admin2",
+            "username":"tester2",
             "reason": "Damaged book",
             "penaltyDate": "2024-03-22",
             "endDate": "2024-04-22"
@@ -1983,6 +1983,7 @@ tip: borrowDate为当前时间
 | data[i].isbn   | string | 图书ISBN号 |
 | data[i].title  | string | 图书标题   |
 | data[i].author | string | 图书作者   |
+| data[i].cover  | string | 封面       |
 
 
 
@@ -1994,11 +1995,13 @@ tip: borrowDate为当前时间
         {
             "isbn": "1234567890123",
             "title": "Book Title 1",
+            "author":"ddd",
             "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/..."
         },
         {
             "isbn": "4567890123456",
             "title": "Book Title 2",
+            "author":"ddde",
             "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/..."
         }
     ]
