@@ -118,4 +118,23 @@ public class BookService {
         BookInfo BookInfo = bookInfoMapper.getBookInfoByIsbn(isbn);
         return BookInfo.getLocation();
     }
+    public void updateStatus(BookInstance bInstance){
+        bookInstanceMapper.updateStatus(bInstance);
+    }
+    public boolean canBorrow(Integer bookInstanceId) {
+        return bookInstanceMapper.getStatusByInstanceId(bookInstanceId)==0;
+    }
+    public Integer getAvailableInstance(String isbn){
+        List <Integer> availableBooks = bookInstanceMapper.getInstanceId(isbn);
+        for (Integer availableBook : availableBooks){
+            if (canBorrow(availableBook)){
+                return availableBook;
+            }
+        }
+        return null;
+    }
+    public BookInstance getInstanceById(Integer instanceId){
+        return bookInstanceMapper.getInstanceById(instanceId);
+    }
 }
+

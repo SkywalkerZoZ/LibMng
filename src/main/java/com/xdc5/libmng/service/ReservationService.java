@@ -14,5 +14,9 @@ public class ReservationService {
     public boolean reserveBook(Reservation reservation) {
         return (reservationMapper.addReservation(reservation) > 0);
     }
+    public boolean checkIfReserved(Reservation reservation)
+    {
+        return !reservationMapper.getReservation(reservation).isEmpty();
+    }
 
 }

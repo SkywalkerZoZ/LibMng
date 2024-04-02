@@ -17,4 +17,5 @@ public interface BookInstanceMapper {
     String getIsbnByInstanceId(@Param("instanceId") Integer instanceId);
     int getStatusByInstanceId(@Param("instanceId") Integer instanceId);
     int updateStatus(BookInstance bookInstance);
+    BookInstance getInstanceById(@Param("instanceId")Integer instanceId);
 }

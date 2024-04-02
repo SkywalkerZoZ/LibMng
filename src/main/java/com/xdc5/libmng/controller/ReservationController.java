@@ -18,16 +18,21 @@ public class ReservationController {
 
     @PutMapping("/user/reservation/{isbn}")
     public Result reservateBook(HttpServletRequest request,@PathVariable String isbn) {
-        System.out.println(isbn);
+        //不存在该书籍
+        if(bookService.getBookInfoByIsbn(isbn) == null)
+            return Result.error("Fail: the book not exists");
         Integer userId = (Integer) request.getAttribute("userId");
         Reservation reservation = new Reservation();
         reservation.setIsbn(isbn);
         reservation.setUserId(userId);
-        //不存在该书籍
-        if(bookService.getBookInfoByIsbn(reservation.getIsbn()) == null)
-            return Result.error("Fail: the book not exists");
-        else if(reservationService.reserveBook(reservation))
-            return Result.success("Success: put /user/reservation/{userId}");
-        return Result.error("Fail: bad request");
+        if(reservationService.checkIfReserved(reservation))
+        {
+            return Result.error("Fail: has been reserved");
+        }
+        if(!reservationService.reserveBook(reservation)){
+            return Result.error("Fail: bad request");
+        }
+        return Result.success("Success: put /user/reservation/{userId}");
+
     }
 }

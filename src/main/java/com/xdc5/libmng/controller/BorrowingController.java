@@ -82,7 +82,7 @@ public class BorrowingController {
             BookInstance update = new BookInstance();
             update.setBorrowStatus(0);
             update.setInstanceId(borrowingInfo.getInstanceId());
-            borrowingService.updateStatus(update);
+            bookService.updateStatus(update);
         }
 
         return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
@@ -110,21 +110,20 @@ public class BorrowingController {
 
 
     /* ****User Part**** */
-    // TODO 修改方法
     @PostMapping("/user/borrowing")
     public Result borrowBook(HttpServletRequest request,@RequestBody Map<String, Object> requestBody) {
         Integer userId = (Integer) request.getAttribute("userId");
         String dueDate=(String)requestBody.get("dueDate");
         String isbn= (String) requestBody.get("isbn");
-
-        Integer availableBook = borrowingService.getAvailableInstance(isbn);
-        if (availableBook==null){
-            return Result.error("Fail: no available instance exists");
-        }
         //检查用户权限
         if(!userService.checkPermsByID(userId)) {
             return Result.error("Fail: do not have borrowing privileges");
         }
+        Integer availableBook = bookService.getAvailableInstance(isbn);
+        if (availableBook==null){
+            return Result.error("Fail: no available instance exists");
+        }
+
         Borrowing bInfo = new Borrowing();
         bInfo.setUserId(userId);
         bInfo.setInstanceId(availableBook);
@@ -132,7 +131,7 @@ public class BorrowingController {
         LocalDate date=DateTimeUtils.strToDate(dueDate,"yyyy-MM-dd");
         bInfo.setDueDate(date);
 
-        //添加借阅信息
+        //添加借阅信息 更改 BookInstance borrowStatus
         borrowingService.addBorrowing(bInfo);
 
         //返回数据信息
@@ -140,7 +139,6 @@ public class BorrowingController {
         data.put("instanceId",availableBook);
         data.put("location",bookService.getLocation(availableBook));
         return Result.success(data,"Success: post /user/borrowing");
-        //更新实体状态（审批处处理）
     }
 
     @GetMapping("/user/borrowing/records")
@@ -149,4 +147,30 @@ public class BorrowingController {
         return Result.success(borrowingService.getBorrowingInfoByUid(userId),"Success: get /user/borrowing/records");
 
     }
+
+    @PutMapping("/user/borrowing/return/{instanceId}")
+    public Result returnBook(HttpServletRequest request,@PathVariable Integer instanceId)
+    {
+        Integer userId = (Integer) request.getAttribute("userId");
+        if(instanceId==null)
+        {
+            return Result.error("Fail: instanceId not found");
+        }
+        BookInstance instance = bookService.getInstanceById(instanceId);
+        if(instance==null)
+        {
+            return Result.error("Fail: instanceId not found");
+        }
+        instance.setBorrowStatus(0);
+        bookService.updateStatus(instance);
+        Borrowing borrowing=borrowingService.getUnreturnedBorrowing(userId,instanceId);
+        if(borrowing==null)
+        {
+            return Result.error("Fail: borrowing not found");
+        }
+        borrowing.setReturnDate(LocalDate.now());
+        borrowingService.updateBorrowing(borrowing);
+        return Result.success("Success: put /user/borrowing/return/{instanceId}");
+    }
+
 }

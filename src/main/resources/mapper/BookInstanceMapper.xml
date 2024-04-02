@@ -75,5 +75,10 @@
         where
             instanceId=#{instanceId}
     </select>
+    <select id="getInstanceById" resultType="com.xdc5.libmng.entity.BookInstance">
+        SELECT *
+        FROM bookinstance
+        WHERE instanceId=#{instanceId}
+    </select>
 
 </mapper>

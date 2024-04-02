@@ -103,25 +103,26 @@ public class BorrowingService {
         BookInstance update = new BookInstance();
         update.setBorrowStatus(1);
         update.setInstanceId(bInfo.getInstanceId());
-        updateStatus(update);
+        bookInstanceMapper.updateStatus(update);
     }
-
-    public void updateStatus(BookInstance bInfo){
-        bookInstanceMapper.updateStatus(bInfo);
-    }
-
-    public boolean canBorrow(Integer bookInstanceId) {
-        return bookInstanceMapper.getStatusByInstanceId(bookInstanceId)==0;
-    }
-
-    public Integer getAvailableInstance(String isbn){
-        List <Integer> availableBooks = bookInstanceMapper.getInstanceId(isbn);
-        for (Integer availableBook : availableBooks){
-            if (canBorrow(availableBook)){
-                return availableBook;
+    public Borrowing getUnreturnedBorrowing(Integer userId,Integer instanceId){
+        Borrowing searchBorrowing=new Borrowing();
+        searchBorrowing.setUserId(userId);
+        searchBorrowing.setInstanceId(instanceId);
+        List<Borrowing> borrowinglist = borrowingMapper.getBorrowing(searchBorrowing);
+        Borrowing borrowing=null;
+        for (Borrowing bo :borrowinglist)
+        {
+            //还未归还
+            if (bo.getReturnDate()==null)
+            {
+                borrowing=bo;
             }
         }
-        return null;
+        return borrowing;
     }
-
+    public void updateBorrowing(Borrowing borrowing)
+    {
+        borrowingMapper.updateBorrowing(borrowing);
+    }
 }
