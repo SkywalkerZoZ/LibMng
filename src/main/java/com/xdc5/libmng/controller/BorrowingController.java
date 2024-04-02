@@ -150,6 +150,10 @@ public class BorrowingController {
         bInfo.setInstanceId(availableBook);
         //转换data格式
         LocalDate date=DateTimeUtils.strToDate(dueDate,"yyyy-MM-dd");
+        if(date==null)
+        {
+            return Result.error("Fail: invalid date");
+        }
         bInfo.setDueDate(date);
 
         //添加借阅信息 更改 BookInstance borrowStatus

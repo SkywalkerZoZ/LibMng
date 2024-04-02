@@ -1616,7 +1616,17 @@ export default {
 ```json
 {
     "code": 400,
-    "message": "Fail: bad request",
+    "message": "Fail: invalid date",
+    "data":null
+}
+```
+
+
+
+```json
+{
+    "code": 400,
+    "message": "Fail: no such user",
     "data":null
 }
 ```
@@ -1711,7 +1721,13 @@ export default {
 
 
 
-
+```json
+{
+    "code": 400,
+    "message": "Fail: invalid date",
+    "data":null
+}
+```
 
 tip: borrowDate为当前时间
 
