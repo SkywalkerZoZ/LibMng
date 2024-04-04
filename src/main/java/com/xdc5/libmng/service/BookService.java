@@ -45,8 +45,13 @@ public class BookService {
         bookInfoMapper.addBookInfo(bookInfo);
     }
 
-    public void delBookInfo(String isbn) {
-        bookInfoMapper.delBookInfoByISBN(isbn);
+    public boolean delBookInfo(String isbn) {
+        try {
+            bookInfoMapper.delBookInfoByISBN(isbn);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public BookInfo getBookInfoByIsbn(String isbn) {
@@ -63,10 +68,14 @@ public class BookService {
         return !bookInstances.isEmpty();
     }
 
-    public boolean updateBookInfo(BookInfo bookInfo)
-    {
-        return bookInfoMapper.updateBookInfo(bookInfo)>0;
+    public boolean updateBookInfo(BookInfo bookInfo) {
+        try {
+            return bookInfoMapper.updateBookInfo(bookInfo) > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
+
 
     public boolean addBookInstance(String isbn)
     {

@@ -935,6 +935,16 @@ export default {
 
 
 
+```json
+{
+    "code": 400,
+    "message": "Fail: can not delete the book info",
+    "data":null
+}
+```
+
+
+
 ## 修改图书信息
 
 **接口地址**
@@ -1851,7 +1861,7 @@ tip: borrowDate为当前时间
 
 
 
-## 查看借阅记录
+## 用户查看自己的借阅记录
 
 **接口地址**
 

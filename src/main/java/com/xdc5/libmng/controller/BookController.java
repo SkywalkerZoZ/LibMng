@@ -112,7 +112,10 @@ public class BookController {
         if (isbn == null || isbn.isEmpty()) {
             return Result.error("Fail: isbn not null");
         }
-        bookService.delBookInfo(isbn);
+        if(!bookService.delBookInfo(isbn))
+        {
+            return Result.error("Fail: can not delete the book info");
+        }
         return Result.success("Success: delete /admin/books/info/{isbn}");
     }
 
