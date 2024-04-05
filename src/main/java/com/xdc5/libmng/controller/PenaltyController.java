@@ -1,5 +1,6 @@
 package com.xdc5.libmng.controller;
 
+import com.xdc5.libmng.entity.Penalty;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.service.PenaltyService;
 import com.xdc5.libmng.service.UserService;
@@ -8,14 +9,12 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -55,5 +54,13 @@ public class PenaltyController {
         }
         return Result.success("Success: put /admin/penalty/{userId}");
     }
+
+    @GetMapping("/user/penalty")
+    public Result getPenalty(){
+
+        List<Penalty> penalties = penaltyService.getPenalty();
+        return Result.success(penalties,"Success: get /user/penalty");
+    }
+
 
 }

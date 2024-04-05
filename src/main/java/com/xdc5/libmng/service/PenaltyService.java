@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -32,5 +33,9 @@ public class PenaltyService {
         penalty.setReason(reason);
         penalty.setEndDate(endDate);
         penaltyMapper.updatePenalty(penalty);
+    }
+
+    public List<Penalty> getPenalty() {
+        return penaltyMapper.getPenalty(null);
     }
 }

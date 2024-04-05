@@ -1,10 +1,7 @@
 package com.xdc5.libmng.service;
 
 
-import com.xdc5.libmng.entity.BookDetail;
-import com.xdc5.libmng.entity.BookInfo;
-import com.xdc5.libmng.entity.BookInstance;
-import com.xdc5.libmng.entity.Borrowing;
+import com.xdc5.libmng.entity.*;
 import com.xdc5.libmng.mapper.*;
 
 

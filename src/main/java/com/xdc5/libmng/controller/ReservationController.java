@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class ReservationController {
@@ -34,5 +35,11 @@ public class ReservationController {
         }
         return Result.success("Success: put /user/reservation/{userId}");
 
+    }
+
+    @GetMapping("/user/reservation")
+    public Result getReservation(){
+        List<Reservation> reservations = reservationService.getReservation();
+        return Result.success(reservations,"Success: get /user/reservation");
     }
 }
