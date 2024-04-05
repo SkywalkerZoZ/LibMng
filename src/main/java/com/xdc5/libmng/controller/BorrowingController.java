@@ -130,7 +130,7 @@ public class BorrowingController {
 
 
 
-    /* ****User Part**** */
+    // TODO 考虑删除相应reservation
     @PostMapping("/user/borrowing")
     public Result borrowBook(HttpServletRequest request,@RequestBody Map<String, Object> requestBody) {
         Integer userId = (Integer) request.getAttribute("userId");
