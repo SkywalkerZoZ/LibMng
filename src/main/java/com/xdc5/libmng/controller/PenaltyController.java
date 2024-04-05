@@ -1,6 +1,7 @@
 package com.xdc5.libmng.controller;
 
 import com.xdc5.libmng.entity.Penalty;
+import com.xdc5.libmng.entity.PenaltyDetail;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.service.PenaltyService;
 import com.xdc5.libmng.service.UserService;
@@ -56,9 +57,9 @@ public class PenaltyController {
     }
 
     @GetMapping("/user/penalty")
-    public Result getPenalty(){
-
-        List<Penalty> penalties = penaltyService.getPenalty();
+    public Result getPenalty(HttpServletRequest request){
+        Integer userId = (Integer) request.getAttribute("userId");
+        List<PenaltyDetail> penalties = penaltyService.getPenaltyByUserId(userId);
         return Result.success(penalties,"Success: get /user/penalty");
     }
 

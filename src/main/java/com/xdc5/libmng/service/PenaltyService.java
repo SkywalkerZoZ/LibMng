@@ -2,6 +2,8 @@ package com.xdc5.libmng.service;
 
 
 import com.xdc5.libmng.entity.Penalty;
+import com.xdc5.libmng.entity.PenaltyDetail;
+import com.xdc5.libmng.mapper.PenaltyDetailMapper;
 import com.xdc5.libmng.mapper.PenaltyMapper;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,9 @@ import java.util.List;
 public class PenaltyService {
     @Autowired
     private PenaltyMapper penaltyMapper;
+
+    @Autowired
+    private PenaltyDetailMapper penaltyDetailMapper;
     //插入新的处分信息
     public void insertPenalty(Integer adminId, Integer userId, String reason, LocalDate endDate){
         Penalty penalty=new Penalty();
@@ -35,7 +40,7 @@ public class PenaltyService {
         penaltyMapper.updatePenalty(penalty);
     }
 
-    public List<Penalty> getPenalty() {
-        return penaltyMapper.getPenalty(null);
+    public List<PenaltyDetail> getPenaltyByUserId(Integer userId) {
+        return penaltyDetailMapper.getPenaltyDetailsByUserId(userId);
     }
 }

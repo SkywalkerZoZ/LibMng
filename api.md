@@ -1949,7 +1949,10 @@ tip: borrowDate为当前时间
 | message             | string | 提示信息       |
 | data                | array  | 处分记录列表   |
 | data[i].penaltyId   | int    | 处分记录ID     |
+| data[i].adminId     | int    | 管理员ID       |
 | data[i].adminName   | string | 管理员用户名   |
+| data[i].adminEmail  | int    | 管理员邮箱     |
+| data[i].userId      | int    | 用户Id         |
 | data[i].username    | string | 被处分人用户名 |
 | data[i].reason      | string | 处分原因       |
 | data[i].penaltyDate | string | 处分日期       |
@@ -1964,7 +1967,10 @@ tip: borrowDate为当前时间
     "data": [
         {
             "penaltyId": 1,
+            "adminId":1,
             "adminName": "admin1",
+            "adminEmail":"xxx@qq.com",
+            "userId":2,
             "username":"tester",
             "reason": "Late return",
             "penaltyDate": "2024-03-21",
@@ -1972,7 +1978,10 @@ tip: borrowDate为当前时间
         },
         {
             "penaltyId": 2,
+            "adminId":1,
             "adminName": "admin2",
+            "adminEmail":"xxx@qq.com",
+            "userId":2,
             "username":"tester2",
             "reason": "Damaged book",
             "penaltyDate": "2024-03-22",
@@ -2005,15 +2014,18 @@ tip: borrowDate为当前时间
 
 **响应参数**
 
-| 参数           | 类型   | 描述       |
-| -------------- | ------ | ---------- |
-| code           | int    | 状态码     |
-| message        | string | 提示信息   |
-| data           | array  | 预约列表   |
-| data[i].isbn   | string | 图书ISBN号 |
-| data[i].title  | string | 图书标题   |
-| data[i].author | string | 图书作者   |
-| data[i].cover  | string | 封面       |
+| 参数                | 类型   | 描述         |
+| ------------------- | ------ | ------------ |
+| code                | int    | 状态码       |
+| message             | string | 提示信息     |
+| data                | array  | 图书目录数组 |
+| data[i].isbn        | string | ISBN号       |
+| data[i].title       | string | 标题         |
+| data[i].author      | string | 作者         |
+| data[i].cover       | blob   | 封面图片数据 |
+| data[i].description | string | 描述         |
+| data[i].available   | int    | 现存数量     |
+| data[i].borrowed    | int    | 被借阅数量   |
 
 
 
@@ -2023,16 +2035,24 @@ tip: borrowDate为当前时间
     "message": "Success: get /user/reservation",
     "data": [
         {
-            "isbn": "1234567890123",
+            "isbn": "978-3-16-148410-0",
             "title": "Book Title 1",
-            "author":"ddd",
-            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/..."
+            "author": "Author 1",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "description": "Description of Book 1",
+            "location": "B333",
+            "available": 5,
+            "borrowed": 10
         },
         {
-            "isbn": "4567890123456",
+            "isbn": "978-3-16-148410-1",
             "title": "Book Title 2",
-            "author":"ddde",
-            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/..."
+            "author": "Author 2",
+            "cover": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
+            "description": "Description of Book 2",
+            "location": "B333",
+            "available": 3,
+            "borrowed": 8
         }
     ]
 }

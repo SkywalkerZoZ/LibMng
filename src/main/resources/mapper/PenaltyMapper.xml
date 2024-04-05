@@ -47,6 +47,11 @@
             </if>
         </where>
     </select>
+    <select id="getPenaltyByUserId" resultType="com.xdc5.libmng.entity.Penalty">
+        SELECT penaltyId,adminId,userId,reason,penaltyDate,endDate
+        FROM Penalty
+        WHERE userId=#{userId}
+    </select>
 
     <delete id="delPenaltyById">
         DELETE FROM Penalty WHERE penaltyId=#{penaltyId}
