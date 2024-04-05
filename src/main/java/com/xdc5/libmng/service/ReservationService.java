@@ -22,7 +22,7 @@ public class ReservationService {
         return !reservationMapper.getReservation(reservation).isEmpty();
     }
 
-    public List<Reservation> getReservation() {
-        return reservationMapper.getReservation(null);
+    public List<String> getReservation(Integer userId) {
+        return reservationMapper.getRsvIsbnByUserId(userId);
     }
 }

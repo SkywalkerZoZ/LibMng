@@ -19,6 +19,11 @@
             </if>
         </where>
     </select>
+    <select id="getRsvIsbnByUserId" resultType="java.lang.String">
+        SELECT isbn
+        FROM reservation
+        WHERE userId=#{userId}
+    </select>
 
     <delete id="delReservationById">
         DELETE FROM Reservation WHERE rsvId=#{rsvId}

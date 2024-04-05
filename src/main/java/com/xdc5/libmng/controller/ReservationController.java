@@ -1,5 +1,7 @@
 package com.xdc5.libmng.controller;
 
+import com.xdc5.libmng.entity.BookDetail;
+import com.xdc5.libmng.entity.BookInfo;
 import com.xdc5.libmng.entity.Reservation;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.service.BookService;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,8 +41,14 @@ public class ReservationController {
     }
 
     @GetMapping("/user/reservation")
-    public Result getReservation(){
-        List<Reservation> reservations = reservationService.getReservation();
-        return Result.success(reservations,"Success: get /user/reservation");
+    public Result getReservation(HttpServletRequest request){
+        Integer userId = (Integer) request.getAttribute("userId");
+        List<String> reservations = reservationService.getReservation(userId);
+        List<BookDetail> data=new ArrayList<>();
+        for(String rsvIsbn : reservations)
+        {
+            data.add(bookService.getBookDetailByExactIsbn(rsvIsbn));
+        }
+        return Result.success(data,"Success: get /user/reservation");
     }
 }

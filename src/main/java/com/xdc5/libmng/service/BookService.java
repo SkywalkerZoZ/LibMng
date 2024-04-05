@@ -113,7 +113,15 @@ public class BookService {
 
         return booklist;
     }
+    public BookDetail getBookDetailByExactIsbn(String isbn){
 
+        List<BookDetail> booklist = bookDetailMapper.getBookDetailByIsbn(isbn);
+        if(booklist==null || booklist.isEmpty())
+        {
+            return null;
+        }
+        return booklist.get(0);
+    }
     public boolean deleteBookInstance(Integer instanceId) {
         return bookInstanceMapper.delBookInstanceById(instanceId) > 0;
     }

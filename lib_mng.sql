@@ -61,6 +61,7 @@ CREATE TABLE Reservation
 (
     rsvId  INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
+    # 是否要unique
     isbn   VARCHAR(17),
     FOREIGN KEY (userId) REFERENCES User (userId),
     FOREIGN KEY (isbn) REFERENCES BookInfo (isbn) ON DELETE CASCADE

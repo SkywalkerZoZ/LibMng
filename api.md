@@ -2061,6 +2061,46 @@ tip: borrowDate为当前时间
 
 
 
+## 取消预约
+
+
+
+## 预约图书
+
+**接口地址**
+
+| 方法 | 地址                            |
+| ---- | ------------------------------- |
+| PUT  | /user/reservation/cancel/{isbn} |
+
+
+
+**请求体参数**
+
+无
+
+
+
+**响应参数**
+
+| 参数    | 类型   | 描述     |
+| ------- | ------ | -------- |
+| code    | int    | 状态码   |
+| message | string | 提示信息 |
+| data    | object | null     |
+
+
+
+```json
+{
+    "code": 200,
+    "message": "Success: put /user/reservation/cancel/{isbn}",
+    "data": null
+}
+```
+
+
+
 # 游客
 
 
