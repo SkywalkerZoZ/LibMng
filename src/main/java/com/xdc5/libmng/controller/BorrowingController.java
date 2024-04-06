@@ -2,9 +2,11 @@ package com.xdc5.libmng.controller;
 
 import com.xdc5.libmng.entity.BookInstance;
 import com.xdc5.libmng.entity.Borrowing;
+import com.xdc5.libmng.entity.Reservation;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.service.BookService;
 import com.xdc5.libmng.service.BorrowingService;
+import com.xdc5.libmng.service.ReservationService;
 import com.xdc5.libmng.service.UserService;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import org.apache.ibatis.annotations.Mapper;
@@ -24,6 +26,8 @@ public class BorrowingController {
     BookService bookService;
     @Autowired
     UserService userService;
+    @Autowired
+    ReservationService reservationService;
     @GetMapping("/admin/borrowing/applications")
     public Result showBorrowAprv(@RequestParam Integer approved) {
         if (borrowingService.getBorrowAprv(approved) == null || borrowingService.getBorrowAprv(approved).isEmpty()) {
@@ -159,8 +163,25 @@ public class BorrowingController {
         //添加借阅信息 更改 BookInstance borrowStatus
         borrowingService.addBorrowing(bInfo);
 
+        //同时删除对应的reservation
+        Reservation reservation = new Reservation();
+        reservation.setIsbn(isbn);
+        reservation.setUserId(userId);
+
         //返回数据信息
         HashMap<String,Object> data = new HashMap<>();
+
+        //加入是否删除了预约
+        if(!reservationService.checkIfReserved(reservation))
+        {
+//            data.put("ReservationInfo","not Reserved");
+        }
+        if(reservationService.checkIfReserved(reservation))
+        {
+//            data.put("ReservationInfo","cancel Reserved");
+            reservationService.cancelReservation(reservation);
+        }
+
         data.put("instanceId",availableBook);
         data.put("location",bookService.getLocation(availableBook));
         return Result.success(data,"Success: post /user/borrowing");

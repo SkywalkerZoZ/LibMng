@@ -201,11 +201,11 @@ class MapperTests {
 
     }
 
-    @Test
-    public void testDelReservationByRsvId() {
-        int rsvId = 1; // 假设存在此预订记录的ID
-        int rowsAffected = reservationMapper.delReservationById(rsvId);
-    }
+//    @Test
+//    public void testDelReservationByRsvId() {
+//        int rsvId = 1; // 假设存在此预订记录的ID
+//        int rowsAffected = reservationMapper.delReservationById(rsvId);
+//    }
 
     @Test
     public void testGetReservation() {

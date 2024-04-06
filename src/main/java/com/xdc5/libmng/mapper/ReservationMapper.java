@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReservationMapper {
     List<Reservation> getReservation(Reservation reservation);
     //返回影响的行数
-    int delReservationById(@Param("userId") Integer userId);
+    int delReservationById(@Param("rsvId") Integer rsvId);
     //返回影响的行数
     int addReservation(Reservation reservation);
     int updateReservation(Reservation reservation);

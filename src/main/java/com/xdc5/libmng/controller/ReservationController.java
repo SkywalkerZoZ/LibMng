@@ -51,4 +51,17 @@ public class ReservationController {
         }
         return Result.success(data,"Success: get /user/reservation");
     }
+    @PutMapping("/user/reservation/cancel/{isbn}")
+    public  Result cancelReservation(HttpServletRequest request,@PathVariable String isbn){
+        Integer userId = (Integer) request.getAttribute("userId");
+        Reservation reservation = new Reservation();
+        reservation.setUserId(userId);
+        reservation.setIsbn(isbn);
+        if(!reservationService.checkIfReserved(reservation))
+        {
+            return Result.error("Fail: not reserved");
+        }
+        reservationService.cancelReservation(reservation);
+        return Result.success("Success: put /user/reservation/cancel/{isbn}");
+    }
 }

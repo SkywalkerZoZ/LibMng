@@ -25,4 +25,11 @@ public class ReservationService {
     public List<String> getReservation(Integer userId) {
         return reservationMapper.getRsvIsbnByUserId(userId);
     }
+
+    public boolean cancelReservation(Reservation reservation){
+
+        Integer rsvId = reservationMapper.getReservation(reservation).get(0).getRsvId();
+        reservationMapper.delReservationById(rsvId);
+        return !reservationMapper.getReservation(reservation).isEmpty();
+    }
 }
