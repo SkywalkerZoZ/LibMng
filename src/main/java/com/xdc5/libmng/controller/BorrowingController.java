@@ -71,7 +71,8 @@ public class BorrowingController {
     }
 
     @PutMapping("/admin/borrowing/applications/{borrowingId}")
-    public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree) {
+    public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
+        int agree= (int) requestBody.get("agree");
         if (agree != 0 && agree != 1 ) {
             return Result.error("Fail: input error");
         }
