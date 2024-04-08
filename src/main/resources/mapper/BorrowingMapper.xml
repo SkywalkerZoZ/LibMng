@@ -99,6 +99,26 @@
         WHERE b.returnDate IS NULL;
 
     </select>
+    <select id="getRetBorrowing" resultType="com.xdc5.libmng.entity.Borrowing">
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,lateRetDate,borrowAprvStatus,lateRetAprvStatus,returnDate
+        FROM Borrowing
+        <where>
+            userId=#{userId}
+            <if test="returned==1">
+                AND returnDate IS NOT null
+            </if>
+            <if test="returned==0">
+                AND returnDate IS null
+            </if>
+            <if test="lateret==0">
+                AND lateRetAprvStatus!=1
+            </if>
+            <if test="lateret==1">
+                AND lateRetAprvStatus=1
+            </if>
+            AND borrowAprvStatus=1
+        </where>
+    </select>
 
 
 </mapper>

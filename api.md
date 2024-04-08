@@ -685,6 +685,71 @@ TODO 提供实体列表用来删除
 
 ## 图书实体列表
 
+**接口地址**
+
+
+
+| 方法 | 地址                              |
+| ---- | --------------------------------- |
+| GET  | /admin/books/instance-list/{isbn} |
+
+
+
+**请求参数**
+
+| 参数 | 类型   | 是否必需 | 描述     |
+| ---- | ------ | -------- | -------- |
+| isbn | string | 是       | 图书ISBN |
+
+
+
+**Params**
+
+```
+/admin/books/instance-list?isbn=978-3-16-148410-0
+```
+
+
+
+**响应参数**
+
+| 参数                 | 类型     | 描述         |
+| -------------------- | -------- | ------------ |
+| code                 | int      | 状态码       |
+| message              | string   | 提示信息     |
+| data                 | array    | 图书实体数组 |
+| data[i].instanceId   | int      | 图书实体ID   |
+| data[i].isbn         | string   | 图书ISBN     |
+| data[i].borrowStatus | int      | 图书借阅状态 |
+| data[i].addTime      | datetime | 图书添加时间 |
+
+```
+{
+    "code": 200,
+    "message": "Success: get /admin/books/instance-list/{isbn}",
+    "data": [
+        {
+            "instanceId": 1,
+            "isbn": "978-3-16-148410-0",
+            "borrowStatus": 1,
+            "addTime": "2024-04-08T11:19:08"
+        },
+        {
+            "instanceId": 2,
+            "isbn": "978-3-16-148410-0",
+            "borrowStatus": 1,
+            "addTime": null
+        },
+        {
+            "instanceId": 3,
+            "isbn": "978-3-16-148410-0",
+            "borrowStatus": 1,
+            "addTime": null
+        }
+    ]
+}
+```
+
 
 
 ## 图书借阅信息目录
@@ -1817,6 +1882,48 @@ TODO
 
 
 
+**接口地址**
+
+| 方法 | 地址                        |
+| ---- | --------------------------- |
+| POST | /user/books/lateret-request |
+
+
+
+**请求体参数**
+
+| 参数        | 类型   | 是否必需 | 描述         |
+| ----------- | ------ | -------- | ------------ |
+| borrowId    | int    | 是       | 借阅记录Id   |
+| lateRetDate | string | 是       | 预计迟还日期 |
+
+```json
+{
+    "borrowId": 2,
+    "lateRetDate": "2024-04-29"
+}
+```
+
+### 响应参数
+
+| 参数    | 类型   | 描述     |
+| ------- | ------ | -------- |
+| code    | int    | 状态码   |
+| message | string | 提示信息 |
+| data    | object | 数据     |
+
+### 响应示例
+
+```json
+{
+    "code": 200,
+    "message": "Success: post /admin/books/lateret-request",
+    "data": null
+}
+```
+
+
+
 ## 预约图书
 
 **接口地址**
@@ -1877,7 +1984,7 @@ TODO
 
 ## 用户查看自己的借阅记录
 
-TODO: 未审批、未通过、已经归还、未归还（可归还、可迟还）
+TODO: 未审批（0）、未通过（1）、已经归还（2）、未归还（不可迟还（3）、可迟还（4））
 
 **接口地址**
 

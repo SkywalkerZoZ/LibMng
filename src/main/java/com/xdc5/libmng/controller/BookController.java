@@ -3,6 +3,7 @@ package com.xdc5.libmng.controller;
 import com.xdc5.libmng.entity.*;
 import com.xdc5.libmng.service.BookService;
 import com.xdc5.libmng.service.BorrowingService;
+import com.xdc5.libmng.service.ReservationService;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,4 +155,15 @@ public class BookController {
         return Result.success("Success: delete /admin/books/instances/{instanceId}");
 
     }
+    @GetMapping("/admin/books/instance-list/{isbn}")
+    public Result bookInstanceList(@PathVariable String isbn){
+        BookInstance bookInstance = new BookInstance();
+        bookInstance.setIsbn(isbn);
+        List<BookInstance> data = bookService.getBookInstanceList(bookInstance);
+        if (data == null || data.isEmpty()){
+            return Result.error("Fail: no instance exist");
+        }
+        return Result.success(data,"Success: get /admin/books/instance-list/{isbn}");
+    }
+
 }

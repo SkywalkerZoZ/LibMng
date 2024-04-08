@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -149,6 +150,10 @@ public class BookService {
     }
     public BookInstance getInstanceById(Integer instanceId){
         return bookInstanceMapper.getInstanceById(instanceId);
+    }
+
+    public List<BookInstance> getBookInstanceList(BookInstance bookInstance){
+        return bookInstanceMapper.getBookInstances(bookInstance);
     }
 }
 

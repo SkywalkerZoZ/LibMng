@@ -10,6 +10,7 @@ import com.xdc5.libmng.service.ReservationService;
 import com.xdc5.libmng.service.UserService;
 import com.xdc5.libmng.utils.DateTimeUtils;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -188,9 +189,16 @@ public class BorrowingController {
     }
 
     @GetMapping("/user/borrowing/records")
-    public Result selectBorrowingInfo(HttpServletRequest request) {
+    public Result selectBorrowingInfo(HttpServletRequest request,@RequestParam Integer status) {
         Integer userId = (Integer) request.getAttribute("userId");
-        return Result.success(borrowingService.getBorrowingInfoByUid(userId),"Success: get /user/borrowing/records");
+
+        List<Borrowing> borrowingList = borrowingService.getBorrowingByStatus(userId,status);
+        if (borrowingList == null || borrowingList.isEmpty()){
+            return  Result.error("Fail: no borrowing");
+        }
+        return Result.success(borrowingList,"Success: get /user/borrowing/records");
+
+        //return Result.success(borrowingService.getBorrowingInfoByUid(userId),"Success: get /user/borrowing/records");
 
     }
 
@@ -217,6 +225,32 @@ public class BorrowingController {
         borrowing.setReturnDate(LocalDate.now());
         borrowingService.updateBorrowing(borrowing);
         return Result.success("Success: put /user/borrowing/return/{instanceId}");
+    }
+    @PostMapping("/user/books/lateret-request")
+    public Result lateRetRequest(@RequestBody Map<String, Object> requestBody){
+        if (requestBody == null || requestBody.isEmpty()){
+            return Result.error("Fail: invalid input");
+        }
+        String lateRetDate=(String)requestBody.get("lateRetDate");
+        LocalDate date=DateTimeUtils.strToDate(lateRetDate,"yyyy-MM-dd");
+        Integer borrowId= (Integer) requestBody.get("borrowId");
+        Borrowing borrowingInfo = borrowingService.getBorrowingInfo(borrowId);
+        if (borrowingInfo == null){
+            return Result.error("Fail: borrowing info is null");
+        }
+        Integer aprvStatus = borrowingInfo.getBorrowAprvStatus();
+        if (aprvStatus==0 || aprvStatus==2){
+            return Result.error("Fail: not agreed borrow");
+        }
+        Integer status = borrowingInfo.getLateRetAprvStatus();
+        if(status == null){
+            status = -1;
+        }
+        if (status == 0 || status == 1 || status == 2){
+            return Result.error("Fail: already request");
+        }
+        borrowingService.lateRetAprv(date,borrowId);
+        return Result.success("Success: post /admin/books/lateret-request");
     }
 
 }

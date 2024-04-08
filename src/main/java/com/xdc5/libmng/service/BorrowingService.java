@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,12 +77,12 @@ public class BorrowingService {
         return allBorrowingInfo; // 返回列表中的所有元素，可能为空
     }
 
-    public List<Borrowing> getBorrowingInfoByUid(Integer uid) {
-        List<Borrowing> allBorrowingInfo = new ArrayList<>();
-        Borrowing borrowing = new Borrowing();
-        borrowing.setUserId(uid);
-        return borrowingMapper.getBorrowing(borrowing);
-    }
+//    public List<Borrowing> getBorrowingInfoByUid(Integer uid) {
+//        List<Borrowing> allBorrowingInfo = new ArrayList<>();
+//        Borrowing borrowing = new Borrowing();
+//        borrowing.setUserId(uid);
+//        return borrowingMapper.getBorrowing(borrowing);
+//    }
     public HashMap<String, Object> extractAprvInfo(Borrowing request, String userName, String isbn) {
         HashMap<String, Object> infoList = new HashMap<>();
         infoList.put("borrowingId", request.getBorrowingId());
@@ -129,5 +130,37 @@ public class BorrowingService {
     //获取未归还的读者列表
     public List<HashMap<String,Object>> getUNretReader(){
         return borrowingMapper.getUnretReader();
+    }
+
+    public void lateRetAprv(LocalDate date,Integer borrowingId){
+        Borrowing borrowing = new Borrowing();
+        borrowing.setLateRetDate(date);
+        borrowing.setBorrowingId(borrowingId);
+        borrowing.setLateRetAprvStatus(0);
+        borrowingMapper.updateBorrowing(borrowing);
+    }
+    public List<Borrowing> getBorrowingByStatus(Integer userId,Integer status){
+        if (status == 0){
+            Borrowing borrowing = new Borrowing();
+            borrowing.setBorrowAprvStatus(0);
+            borrowing.setUserId(userId);
+            return borrowingMapper.getBorrowing(borrowing);
+        }
+        if (status == 1){
+            Borrowing borrowing = new Borrowing();
+            borrowing.setBorrowAprvStatus(2);
+            borrowing.setUserId(userId);
+            return borrowingMapper.getBorrowing(borrowing);
+        }
+        if (status == 2){
+            return borrowingMapper.getRetBorrowing(null, 1,userId);
+        }
+        if (status == 3){
+            return borrowingMapper.getRetBorrowing(0,0,userId);
+        }
+        if (status == 4){
+            return borrowingMapper.getRetBorrowing(1,0,userId);
+        }
+        return null;
     }
 }
