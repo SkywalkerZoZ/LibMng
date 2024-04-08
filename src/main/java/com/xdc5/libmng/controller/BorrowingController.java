@@ -51,9 +51,9 @@ public class BorrowingController {
 
     @GetMapping("/admin/borrowing/late-returns")
     public Result showlateRetAprv(@RequestParam Integer approved) {
-        if (borrowingService.getLateRetAprv(approved) == null || borrowingService.getLateRetAprv(approved).isEmpty()) {
-            return Result.error("Fail: late return approval is null or empty");
-        }
+//        if (borrowingService.getLateRetAprv(approved) == null || borrowingService.getLateRetAprv(approved).isEmpty()) {
+//            return Result.error("Fail: late return approval is null or empty");
+//        }
 
         List<Borrowing> LateRetAprv = borrowingService.getLateRetAprv(approved);
         List<HashMap<String, Object>> allInfoLists = new ArrayList<>();
@@ -135,7 +135,6 @@ public class BorrowingController {
 
 
 
-    // TODO 考虑删除相应reservation
     @PostMapping("/user/borrowing")
     public Result borrowBook(HttpServletRequest request,@RequestBody Map<String, Object> requestBody) {
         Integer userId = (Integer) request.getAttribute("userId");
@@ -173,10 +172,10 @@ public class BorrowingController {
         HashMap<String,Object> data = new HashMap<>();
 
         //加入是否删除了预约
-        if(!reservationService.checkIfReserved(reservation))
-        {
-//            data.put("ReservationInfo","not Reserved");
-        }
+//        if(!reservationService.checkIfReserved(reservation))
+//        {
+////            data.put("ReservationInfo","not Reserved");
+//        }
         if(reservationService.checkIfReserved(reservation))
         {
 //            data.put("ReservationInfo","cancel Reserved");

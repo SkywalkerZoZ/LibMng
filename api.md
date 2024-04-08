@@ -585,8 +585,6 @@ export default {
 
 ## 图书信息检索
 
-
-
 **接口地址**
 
 
@@ -680,6 +678,12 @@ export default {
 }
 
 ```
+
+
+
+TODO 提供实体列表用来删除
+
+## 图书实体列表
 
 
 
@@ -1439,6 +1443,8 @@ export default {
 
 
 
+TODO 未归还的申请？
+
 ## 查看未归还的读者列表
 
 **接口地址**
@@ -1803,6 +1809,14 @@ tip: borrowDate为当前时间
 
 
 
+
+
+TODO
+
+## 迟还申请
+
+
+
 ## 预约图书
 
 **接口地址**
@@ -1862,6 +1876,8 @@ tip: borrowDate为当前时间
 
 
 ## 用户查看自己的借阅记录
+
+TODO: 未审批、未通过、已经归还、未归还（可归还、可迟还）
 
 **接口地址**
 
@@ -2093,6 +2109,18 @@ tip: borrowDate为当前时间
 {
     "code": 200,
     "message": "Success: put /user/reservation/cancel/{isbn}",
+    "data": null
+}
+```
+
+
+
+
+
+```json
+{
+    "code": 200,
+    "message": "Fail: not reserved",
     "data": null
 }
 ```
