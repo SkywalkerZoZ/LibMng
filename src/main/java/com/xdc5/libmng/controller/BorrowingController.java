@@ -173,10 +173,6 @@ public class BorrowingController {
         HashMap<String,Object> data = new HashMap<>();
 
         //加入是否删除了预约
-//        if(!reservationService.checkIfReserved(reservation))
-//        {
-////            data.put("ReservationInfo","not Reserved");
-//        }
         if(reservationService.checkIfReserved(reservation))
         {
 //            data.put("ReservationInfo","cancel Reserved");
@@ -194,7 +190,7 @@ public class BorrowingController {
 
         List<Borrowing> borrowingList = borrowingService.getBorrowingByStatus(userId,status);
         if (borrowingList == null || borrowingList.isEmpty()){
-            return  Result.error("Fail: no borrowing");
+            return  Result.error("Fail: no such borrowing");
         }
         return Result.success(borrowingList,"Success: get /user/borrowing/records");
 
@@ -226,7 +222,7 @@ public class BorrowingController {
         borrowingService.updateBorrowing(borrowing);
         return Result.success("Success: put /user/borrowing/return/{instanceId}");
     }
-    @PostMapping("/user/books/lateret-request")
+    @PostMapping("/user/borrowing/lateret-request")
     public Result lateRetRequest(@RequestBody Map<String, Object> requestBody){
         if (requestBody == null || requestBody.isEmpty()){
             return Result.error("Fail: invalid input");
@@ -243,14 +239,11 @@ public class BorrowingController {
             return Result.error("Fail: not agreed borrow");
         }
         Integer status = borrowingInfo.getLateRetAprvStatus();
-        if(status == null){
-            status = -1;
-        }
-        if (status == 0 || status == 1 || status == 2){
+        if(status != null){
             return Result.error("Fail: already request");
         }
         borrowingService.lateRetAprv(date,borrowId);
-        return Result.success("Success: post /admin/books/lateret-request");
+        return Result.success("Success: post /admin/borrowing/lateret-request");
     }
 
 }

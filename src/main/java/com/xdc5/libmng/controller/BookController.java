@@ -160,7 +160,7 @@ public class BookController {
         BookInstance bookInstance = new BookInstance();
         bookInstance.setIsbn(isbn);
         List<BookInstance> data = bookService.getBookInstanceList(bookInstance);
-        if (data == null || data.isEmpty()){
+        if (data == null){
             return Result.error("Fail: no instance exist");
         }
         return Result.success(data,"Success: get /admin/books/instance-list/{isbn}");

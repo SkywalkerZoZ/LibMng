@@ -140,27 +140,35 @@ public class BorrowingService {
         borrowingMapper.updateBorrowing(borrowing);
     }
     public List<Borrowing> getBorrowingByStatus(Integer userId,Integer status){
+        //未审批
         if (status == 0){
             Borrowing borrowing = new Borrowing();
             borrowing.setBorrowAprvStatus(0);
             borrowing.setUserId(userId);
             return borrowingMapper.getBorrowing(borrowing);
         }
-        if (status == 1){
+        //未通过
+        else if (status == 1){
             Borrowing borrowing = new Borrowing();
             borrowing.setBorrowAprvStatus(2);
             borrowing.setUserId(userId);
             return borrowingMapper.getBorrowing(borrowing);
         }
-        if (status == 2){
+        //已经归还
+        else if (status == 2){
             return borrowingMapper.getRetBorrowing(null, 1,userId);
         }
-        if (status == 3){
+        //不可迟还
+        else if (status == 3){
             return borrowingMapper.getRetBorrowing(0,0,userId);
         }
-        if (status == 4){
+        //可迟还
+        else if (status == 4){
             return borrowingMapper.getRetBorrowing(1,0,userId);
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
 }
