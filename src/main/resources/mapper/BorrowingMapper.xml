@@ -105,10 +105,10 @@
         <where>
             userId=#{userId}
             <if test="returned==1">
-                AND returnDate IS NOT null
+                AND returnDate IS NOT NULL
             </if>
             <if test="returned==0">
-                AND returnDate IS null
+                AND returnDate IS NULL
             </if>
             <if test="lateret==0">
                 AND lateRetAprvStatus!=1

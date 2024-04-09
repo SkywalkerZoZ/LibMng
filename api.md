@@ -1498,7 +1498,7 @@ export default {
 
 
 
-TODO 未归还的申请？
+TODO 改名未归还的申请？或者修改方法？
 
 ## 查看未归还的读者列表
 
@@ -1976,7 +1976,7 @@ tip: borrowDate为当前时间
 
 ## 用户查看自己的借阅记录
 
-TODO: 未审批（0）、未通过（1）、已经归还（2）、未归还（不可迟还（3）、可迟还（4））
+
 
 **接口地址**
 
@@ -1997,6 +1997,45 @@ TODO: 未审批（0）、未通过（1）、已经归还（2）、未归还（�
 | 参数   | 类型 | 是否必需 | 描述                                                         |
 | ------ | ---- | -------- | ------------------------------------------------------------ |
 | status | int  | 是       | 借阅状态<br />未审批（0）、未通过（1）、已经归还（2）、未归还（不可迟还（3）、可迟还（4）） |
+
+```
+未审批(0)
+已审批
+	未通过(1)
+	已通过
+		已经归还(2)
+		未归还
+			不可迟还(3)
+				包括迟还被拒绝和迟还未审批
+			可迟还(4)
+			
+```
+
+
+
+情况分类
+
+```
+未审批(0)
+borrowAprvStatus=0
+
+未通过(1)
+borrowAprvStatus=2
+
+已经归还(2)
+returnDate IS NOT NULL
+(borrowAprvStatus=1)
+
+不可迟还(3)
+lateRetAprvStatus!=1
+returnDate IS NULL
+(borrowAprvStatus=1)
+
+可迟还(4)
+lateRetAprvStatus=1
+returnDate IS NULL
+(borrowAprvStatus=1)
+```
 
 
 
