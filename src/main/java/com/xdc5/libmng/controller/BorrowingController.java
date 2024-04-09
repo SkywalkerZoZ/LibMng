@@ -189,7 +189,7 @@ public class BorrowingController {
         Integer userId = (Integer) request.getAttribute("userId");
 
         List<Borrowing> borrowingList = borrowingService.getBorrowingByStatus(userId,status);
-        if (borrowingList == null || borrowingList.isEmpty()){
+        if (borrowingList == null){
             return  Result.error("Fail: no such borrowing");
         }
         return Result.success(borrowingList,"Success: get /user/borrowing/records");
