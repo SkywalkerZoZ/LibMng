@@ -96,7 +96,8 @@ public class BorrowingController {
     }
 
     @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
-    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestParam Integer agree) {
+    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
+        int agree= (int) requestBody.get("agree");
         Borrowing borrowingInfo=borrowingService.getBorrowingInfo(borrowingId);
         if (agree != 0 && agree != 1) {
             return Result.error("Fail: input error");

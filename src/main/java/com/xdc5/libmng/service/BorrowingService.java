@@ -159,7 +159,6 @@ public class BorrowingService {
         }
         //已经归还
         else if (status == 2){
-            // TODO
             return borrowingMapper.getRetBorrowing(null, 1,userId);
         }
         //不可迟还
