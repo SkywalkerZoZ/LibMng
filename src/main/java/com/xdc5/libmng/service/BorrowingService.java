@@ -42,16 +42,19 @@ public class BorrowingService {
         borrowingMapper.updateBorrowing(borrowing);
     }
 
-    public void updateLateRetStatus(Integer agree, Integer borrowingId){
+    public void processLateRetAprv(Integer agree, Integer borrowingId, LocalDate date){
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowingId(borrowingId);
         if (agree == 1){
             borrowing.setLateRetAprvStatus(1);
+            borrowing.setDueDate(date);
         }else if(agree == 0){
             borrowing.setLateRetAprvStatus(2);
+            borrowingMapper.updateLateRetDateToNULL(borrowingId);
         }
         borrowingMapper.updateBorrowing(borrowing);
     }
+
 
     public Borrowing getBorrowingInfo(Integer borrowingId){
         Borrowing borrowId = new Borrowing();

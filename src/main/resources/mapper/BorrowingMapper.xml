@@ -50,11 +50,17 @@
     <update id="updateBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing">
         UPDATE Borrowing
         <set>
+            <if test="dueDate != null">dueDate = #{dueDate},</if>
             <if test="lateRetDate != null">lateRetDate = #{lateRetDate},</if>
             <if test="borrowAprvStatus != null">borrowAprvStatus = #{borrowAprvStatus},</if>
             <if test="lateRetAprvStatus != null">lateRetAprvStatus = #{lateRetAprvStatus},</if>
             <if test="returnDate != null">returnDate = #{returnDate},</if>
         </set>
+        WHERE borrowingId = #{borrowingId}
+    </update>
+    <update id="updateLateRetDateToNULL">
+        UPDATE Borrowing
+        set lateRetDate = NULL
         WHERE borrowingId = #{borrowingId}
     </update>
 
@@ -111,10 +117,10 @@
                 AND returnDate IS NULL
             </if>
             <if test="lateret==0">
-                AND lateRetAprvStatus!=1
+                AND lateRetAprvStatus IS NOT NULL
             </if>
             <if test="lateret==1">
-                AND lateRetAprvStatus=1
+                AND lateRetAprvStatus IS NULL
             </if>
             AND borrowAprvStatus=1
         </where>

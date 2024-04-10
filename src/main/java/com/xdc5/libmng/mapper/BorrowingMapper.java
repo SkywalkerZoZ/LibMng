@@ -20,5 +20,6 @@ public interface BorrowingMapper {
     List<Borrowing> getLateRetAprv(@Param("approved") Integer approved);
 
     List<HashMap<String,Object>> getUnretReader();
+    int updateLateRetDateToNULL(@Param("borrowingId") Integer borrowingId);
     List<Borrowing> getRetBorrowing(@Param("lateret") Integer lateret, @Param("returned") Integer returned,@Param("userId") Integer userId);
 }

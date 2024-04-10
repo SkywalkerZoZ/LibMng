@@ -1996,7 +1996,7 @@ tip: borrowDate为当前时间
 
 | 参数   | 类型 | 是否必需 | 描述                                                         |
 | ------ | ---- | -------- | ------------------------------------------------------------ |
-| status | int  | 是       | 借阅状态<br />未审批（0）、未通过（1）、已经归还（2）、未归还（不可迟还（3）、可迟还（4）） |
+| status | int  | 是       | 借阅状态<br />未审批（0）、未通过（1）、已经归还（2）、未归还（不可申请迟还（3）、可申请迟还（4）） |
 
 ```
 未审批(0)
@@ -2005,9 +2005,9 @@ tip: borrowDate为当前时间
 	已通过
 		已经归还(2)
 		未归还
-			不可迟还(3)
-				包括迟还被拒绝和迟还未审批
-			可迟还(4)
+			不可申请迟还(3)
+				包括迟还被拒绝和迟还未审批和迟还同意
+			可申请迟还(4)
 			
 ```
 
@@ -2026,13 +2026,13 @@ borrowAprvStatus=2
 returnDate IS NOT NULL
 (borrowAprvStatus=1)
 
-不可迟还(3)
-lateRetAprvStatus!=1
+不可申请迟还(3)
+lateRetAprvStatus IS NOT NULL
 returnDate IS NULL
 (borrowAprvStatus=1)
 
-可迟还(4)
-lateRetAprvStatus=1
+可申请迟还(4)
+lateRetAprvStatus IS NULL
 returnDate IS NULL
 (borrowAprvStatus=1)
 ```

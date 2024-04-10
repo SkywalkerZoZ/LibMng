@@ -111,7 +111,7 @@ public class BorrowingController {
         if (Objects.equals(borrowingInfo.getLateRetAprvStatus(), agree+1)) {
             return Result.error("Fail: already processed");
         }
-        borrowingService.updateLateRetStatus(agree, borrowingId);
+        borrowingService.processLateRetAprv(agree, borrowingId, borrowingInfo.getLateRetDate());
         return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
     }
 
@@ -233,6 +233,9 @@ public class BorrowingController {
         Borrowing borrowingInfo = borrowingService.getBorrowingInfo(borrowId);
         if (borrowingInfo == null){
             return Result.error("Fail: borrowing info is null");
+        }
+        if (borrowingInfo.getReturnDate()!=null){
+            return Result.error("Fail: already return");
         }
         Integer aprvStatus = borrowingInfo.getBorrowAprvStatus();
         if (aprvStatus==0 || aprvStatus==2){
