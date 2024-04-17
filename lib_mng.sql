@@ -95,50 +95,5 @@ CREATE EVENT update_borrow_perms_event
     END;
 
 
-INSERT INTO User (username, password, email, userRole)
-VALUES ('jia', '123456', 'admin@example.com', 'admin');
 
-INSERT INTO User (username, password, email, userRole)
-VALUES ('user1', 'password1', 'user1@example.com', 'user'),
-       ('user2', 'password2', 'user2@example.com', 'user'),
-       ('user3', 'password3', 'user3@example.com', 'user');
 
-INSERT INTO BookInfo (isbn, title, author, description)
-VALUES ('978-3-16-148410-0', 'Book 1', 'Author 1', 'Description of Book 1'),
-       ('978-3-16-148410-1', 'Book 2', 'Author 2', 'Description of Book 2'),
-       ('978-3-16-148410-2', 'Book 3', 'Author 3', 'Description of Book 3'),
-       ('978-3-16-148410-3', 'Book 4', 'Author 4', 'Description of Book 4'),
-       ('978-3-16-148410-4', 'Book 5', 'Author 5', 'Description of Book 5'),
-       ('978-3-16-148410-5', 'Book 6', 'Author 6', 'Description of Book 6'),
-       ('978-3-16-148410-6', 'Book 7', 'Author 7', 'Description of Book 7');
-
-INSERT INTO BookInstance (isbn)
-VALUES ('978-3-16-148410-0'),
-       ('978-3-16-148410-0'),
-       ('978-3-16-148410-0'),
-       ('978-3-16-148410-1'),
-       ('978-3-16-148410-1'),
-       ('978-3-16-148410-1'),
-       ('978-3-16-148410-2'),
-       ('978-3-16-148410-2'),
-       ('978-3-16-148410-2'),
-       ('978-3-16-148410-3'),
-       ('978-3-16-148410-3'),
-       ('978-3-16-148410-3'),
-       ('978-3-16-148410-4'),
-       ('978-3-16-148410-4'),
-       ('978-3-16-148410-4'),
-       ('978-3-16-148410-5'),
-       ('978-3-16-148410-5'),
-       ('978-3-16-148410-5'),
-       ('978-3-16-148410-6'),
-       ('978-3-16-148410-6'),
-       ('978-3-16-148410-6');
-
-INSERT INTO Borrowing (userId, instanceId, borrowDate, dueDate)
-VALUES (2, 1, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY)),
-       (2, 4, NOW(), DATE_ADD(NOW(), INTERVAL 8 DAY)),
-       (2, 7, NOW(), DATE_ADD(NOW(), INTERVAL 9 DAY)),
-       (3, 10, NOW(), DATE_ADD(NOW(), INTERVAL 10 DAY)),
-       (3, 13, NOW(), DATE_ADD(NOW(), INTERVAL 11 DAY)),
-       (3, 16, NOW(), DATE_ADD(NOW(), INTERVAL 12 DAY));
