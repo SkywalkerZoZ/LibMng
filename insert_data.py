@@ -125,7 +125,7 @@ if __name__ == "__main__":
     ]
 
     users_data = [
-            ('zhangsan', '1234', '123456789@qq.com', 'admin'),
+            ('jia', '1234', '123456789@qq.com', 'admin'),
             ('lisi', '123456', '987654321@qq.com', 'user'),
             ('wangwu', '123', '333222@qq.com', 'user')
         ]
