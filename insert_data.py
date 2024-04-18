@@ -105,7 +105,7 @@ if __name__ == "__main__":
         ('978-7-04-036307-7', 'Advanced Mathematics', 'Tongji University Mathematics Department', 'Advanced mathematics textbook', '高等数学.jpg'),
         ('978-7-11-537885-0', 'Data Structures', 'Yan Weimin, Wu Weimin', 'Data structures textbook', '数据结构.jpg'),
         ('978-7-11-121382-6', 'Modern Operating Systems', 'Andrew S. Tanenbaum', 'Operating systems textbook', '现代操作系统.jpg'),
-        # ('978-7-11-137725-4', 'Principles of Compilation', 'Liu Jian', 'Compilation principles textbook', '编译原理.jpg'),
+        ('978-7-11-137725-4', 'Principles of Compilation', 'Liu Jian', 'Compilation principles textbook', '编译原理.jpg'),
         ('978-7-54-463720-6', 'College English', 'Li Yinhua, Wang Deming', 'College English textbook', '大学英语.jpg'),
         ('978-0-30-727211-9', '1984', 'George Orwell', 'A utopian social science fiction novel', '1984.jpg'),
         ('978-7-02-000220-7', 'Dream of the Red Chamber', 'Cao Xueqin', 'A chapter-based novel describing the dark feudal society', '红楼梦.jpg'),
@@ -117,10 +117,10 @@ if __name__ == "__main__":
         ('978-7-56-952101-6', 'Politics', 'Aristotle', 'A work studying political regimes', '政治学.jpg'),
         ('7-100-02270-3', 'General Theory of Law', 'Justinian', 'A legally effective work', '法学总论.jpg'),
         ('978-7-20-006699-9', 'Compendium of Materia Medica', 'Li Shizhen', 'A great work on medical science', '本草纲目.jpg'),
-        # ('978-7-01-019167-6', 'Das Kapital', 'Karl Marx', 'A work that reveals the laws of capitalist society development through deep analysis of the capitalist mode of production', '资本论.jpg'),
+        ('978-7-01-019167-6', 'Das Kapital', 'Karl Marx', 'A work that reveals the laws of capitalist society development through deep analysis of the capitalist mode of production', '资本论.jpg'),
         ('978-7-80-593998-8', 'One Thousand and One Nights', 'Arab', 'A gem of Arabian folklore literature', '一千零一夜.jpg'),
         ('978-7-50-014646-9', 'Hamlet', 'Shakespeare', 'The story of Prince Hamlet avenging his father in Denmark', '哈姆雷特.jpg'),
-        # ('978-7-53-871984-0', 'Robinson Crusoe', 'Defoe', 'A novel showing the emerging bourgeoisie', '鲁滨逊漂流记.jpg'),
+        ('978-7-53-871984-0', 'Robinson Crusoe', 'Defoe', 'A novel showing the emerging bourgeoisie', '鲁滨逊漂流记.jpg'),
         ('978-7-54-477734-6', 'Les Misérables', 'Hugo', 'A literature of sincere humanitarianism', '悲惨世界.jpg')
     ]
 
