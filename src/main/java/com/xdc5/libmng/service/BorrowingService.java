@@ -132,7 +132,14 @@ public class BorrowingService {
 
     //获取未归还的读者列表
     public List<HashMap<String,Object>> getUNretReader(){
-        return borrowingMapper.getUnretReader();
+        List<HashMap<String,Object>> data = borrowingMapper.getUnretReader();
+        for (HashMap<String,Object> result : data){
+            Integer borrowingId = (Integer) result.get("borrowingId");
+            result.put("instanceId",borrowingMapper.getInstanceId(borrowingId));
+            result.put("isbn",bookInstanceMapper.getIsbnByInstanceId(borrowingId));
+            result.remove("borrowingId");
+        }
+        return data;
     }
 
     public void lateRetAprv(LocalDate date,Integer borrowingId){

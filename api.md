@@ -1528,6 +1528,8 @@ TODO 改名未归还的申请？或者修改方法？
 | data[i].email      | string | 邮箱地址       |
 | data[i].borrowDate | string | 借阅日期       |
 | data[i].dueDate    | string | 应归还日期     |
+| data[i].isbn       | string | isbn           |
+| data[i].instanceId | int    | 书籍实体编号   |
 
 
 

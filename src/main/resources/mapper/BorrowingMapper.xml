@@ -99,7 +99,7 @@
         </where>
     </select>
     <select id="getUnretReader" resultType="java.util.HashMap">
-        SELECT u.userId, u.username, u.email, b.borrowDate, b.dueDate
+        SELECT u.userId, u.username, u.email, b.borrowDate, b.dueDate, b.borrowingId
         FROM USER u
                  JOIN Borrowing b ON u.userId = b.userId
         WHERE b.returnDate IS NULL;
@@ -124,6 +124,11 @@
             </if>
             AND borrowAprvStatus=1
         </where>
+    </select>
+    <select id="getInstanceId" resultType="java.lang.Integer">
+        SELECT instanceId
+        FROM Borrowing
+        WHERE borrowingId = #{borrowingId}
     </select>
 
 
