@@ -26,4 +26,5 @@ public interface UserMapper {
 
     //更改用户perms
     void changeReaderPerms(Integer userId);
+    List<User> login(@Param("username") String username, @Param("password") String password);
 }

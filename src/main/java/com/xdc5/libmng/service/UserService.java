@@ -21,13 +21,13 @@ public class UserService {
         return userMapper.getUsers(null);
     }
 
-    public User auth(User user) {
-        // 通过用户名密码找
-        List<User> users = userMapper.getUsers(user);
+    public User auth(HashMap<String, Object> user) {
+        // 通过用户名或邮箱和密码找
+        List<User> users = userMapper.login((String) user.get("username"),(String) user.get("password"));
         int size = users.size();
         if (size == 0) {
             return new User();
-        } else if (size == 1) {
+        } else if (size == 1){
             return users.get(0);
         } else {
             log.info("duplicated username " + users.get(0).getUsername());

@@ -17,9 +17,10 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
-        user=userService.auth(user);
-        if((user.getUserId() != null) && (user.getUsername() != null) && (user.getPassword() != null))
+    public Result login(@RequestBody HashMap<String, Object> users) {
+        //用户名或邮箱登录都可
+        User user = userService.auth(users);
+        if((user.getUserId() != null) && ((user.getUsername() != null) || (user.getEmail() != null)) && (user.getPassword() != null))
         {
             HashMap<String, Object> claims = new HashMap<>();
             claims.put("userId",user.getUserId());

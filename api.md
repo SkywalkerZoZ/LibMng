@@ -212,31 +212,21 @@ export default {
 
 **请求体参数**
 
-| 参数     | 类型   | 是否必需 | 描述                                                         |
-| -------- | ------ | -------- | ------------------------------------------------------------ |
-| username | string | 否       | 用户名                                                       |
-| password | string | 否       | 密码                                                         |
-| userRole | string | 是       | 用户角色，{"user", "admin", "guest"}，<br />无username和password则用"guest" |
+| 参数     | 类型   | 是否必需 | 描述         |
+| -------- | ------ | -------- | ------------ |
+| account  | string | 是       | 用户名或邮箱 |
+| password | string | 是       | 密码         |
 
 
 
 ```json
 {
-	"username":"test1",
+	"account":"test1",
 	"password":"1234",
-	"userRole":"user"
 }
 ```
 
 
-
-```json
-{
-	"username": null,
-	"password": null,
-	"userRole":"guest"
-}
-```
 
 
 

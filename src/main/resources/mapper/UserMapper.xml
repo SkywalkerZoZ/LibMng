@@ -90,4 +90,11 @@
 
     </select>
 
+    <select id="login" resultType="com.xdc5.libmng.entity.User">
+        SELECT userId, username, password, email, avatar, borrowPerms, userRole
+        FROM User
+        WHERE (username = #{username} OR email = #{username})
+          AND password = #{password}
+    </select>
+
 </mapper>
