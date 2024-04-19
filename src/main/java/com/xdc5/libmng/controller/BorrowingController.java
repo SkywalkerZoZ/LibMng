@@ -31,8 +31,8 @@ public class BorrowingController {
     ReservationService reservationService;
     @GetMapping("/admin/borrowing/applications")
     public Result showBorrowAprv(@RequestParam Integer approved) {
-        if (borrowingService.getBorrowAprv(approved) == null || borrowingService.getBorrowAprv(approved).isEmpty()) {
-            return Result.error("Fail: borrowing approval is null or empty");
+        if (borrowingService.getBorrowAprv(approved) == null) {
+            return Result.error("Fail: borrowing approval is null");
         }
 
         List<Borrowing> BorrowingRequest = borrowingService.getBorrowAprv(approved);
