@@ -133,13 +133,13 @@ if __name__ == "__main__":
     current_datetime = datetime.now()
     current_date = datetime.now().date()
     book_instances_data = [
-            ('978-7-04-036307-7', 1, current_datetime),
             ('978-7-04-036307-7', 0, current_datetime),
-            ('978-7-11-121382-6', 1, current_datetime),
+            ('978-7-04-036307-7', 0, current_datetime),
+            ('978-7-11-121382-6', 0, current_datetime),
             ('978-7-54-463720-6', 0, current_datetime),
-            ('978-7-54-463720-6', 1, current_datetime),
-            ('978-0-30-727211-9', 1, current_datetime),
-            ('978-0-30-727211-9', 1, current_datetime)
+            ('978-7-54-463720-6', 0, current_datetime),
+            ('978-0-30-727211-9', 0, current_datetime),
+            ('978-0-30-727211-9', 0, current_datetime)
         ]
     borrowing_data = [
             (2, 3, current_date, current_date + timedelta(days=7)),
