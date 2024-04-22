@@ -214,14 +214,14 @@ export default {
 
 | 参数     | 类型   | 是否必需 | 描述         |
 | -------- | ------ | -------- | ------------ |
-| account  | string | 是       | 用户名或邮箱 |
+| username | string | 是       | 用户名或邮箱 |
 | password | string | 是       | 密码         |
 
 
 
 ```json
 {
-	"account":"test1",
+	"username":"test1",
 	"password":"1234",
 }
 ```
