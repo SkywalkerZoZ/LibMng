@@ -1,4 +1,4 @@
-# ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
+ ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
 DROP DATABASE IF EXISTS lib_mng;
 CREATE DATABASE IF NOT EXISTS lib_mng;
 USE lib_mng;
