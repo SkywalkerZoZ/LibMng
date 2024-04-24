@@ -1,5 +1,5 @@
 INSERT INTO user (username, password, email, userRole)
-VALUES ('zhangsan', '1234', '123456789@qq.com', 'admin'),
+VALUES ('jia', '1234', '123456789@qq.com', 'admin'),
        ('lisi', '123456', '987654321@qq.com', 'user'),
        ('wangwu', '123', '333222@qq.com', 'user');
 
