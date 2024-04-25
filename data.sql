@@ -31,21 +31,21 @@ VALUES ('978-7-04-036307-7', 'Advanced Mathematics', 'Tongji University Mathemat
        ('978-7-54-477734-6', 'Les Misérables', 'Hugo', 'A literature of sincere humanitarianism');
 
 INSERT INTO BookInstance (isbn, borrowStatus, addTime)
-VALUES ('978-7-04-036307-7', 1, NOW()),
+VALUES ('978-7-04-036307-7', 0, NOW()),
        ('978-7-04-036307-7', 0, NOW()),
-       ('978-7-11-121382-6', 1, NOW()),
+       ('978-7-11-121382-6', 0, NOW()),
        ('978-7-54-463720-6', 0, NOW()),
-       ('978-7-54-463720-6', 1, NOW()),
-       ('978-0-30-727211-9', 1, NOW()),
-       ('978-0-30-727211-9', 1, NOW());
+       ('978-7-54-463720-6', 0, NOW()),
+       ('978-0-30-727211-9', 0, NOW()),
+       ('978-0-30-727211-9', 0, NOW());
 
-INSERT INTO Borrowing (userId, instanceId, borrowDate, dueDate)
-VALUES (2, 3, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY)),
-       (2, 1, NOW(), DATE_ADD(NOW(), INTERVAL 8 DAY)),
-       (2, 6, NOW(), DATE_ADD(NOW(), INTERVAL 9 DAY)),
-       (3, 7, NOW(), DATE_ADD(NOW(), INTERVAL 10 DAY)),
-       (3, 5, NOW(), DATE_ADD(NOW(), INTERVAL 11 DAY));
-
-INSERT INTO Reservation (userId, isbn)
-VALUES (2, '978-0-30-727211-9'),
-       (3, '978-7-11-121382-6');
+# INSERT INTO Borrowing (userId, instanceId, borrowDate, dueDate)
+# VALUES (2, 3, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY)),
+#        (2, 1, NOW(), DATE_ADD(NOW(), INTERVAL 8 DAY)),
+#        (2, 6, NOW(), DATE_ADD(NOW(), INTERVAL 9 DAY)),
+#        (3, 7, NOW(), DATE_ADD(NOW(), INTERVAL 10 DAY)),
+#        (3, 5, NOW(), DATE_ADD(NOW(), INTERVAL 11 DAY));
+#
+# INSERT INTO Reservation (userId, isbn)
+# VALUES (2, '978-0-30-727211-9'),
+#        (3, '978-7-11-121382-6');
