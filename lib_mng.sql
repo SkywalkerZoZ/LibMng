@@ -8,10 +8,10 @@ CREATE TABLE User
     username    VARCHAR(255)           NOT NULL UNIQUE,
     password    VARCHAR(255)           NOT NULL,
     email       VARCHAR(255) UNIQUE,
-    money       INT DEFAULT 0,
+    money       DECIMAL(10, 2) DEFAULT 0,
     avatar      MEDIUMBLOB,
     # 借阅权限, 1表示正常,0表示不能借阅所有书籍
-    borrowPerms INT DEFAULT 1,
+    borrowPerms INT            DEFAULT 1,
     userRole    ENUM ('user', 'admin') NOT NULL
 );
 # 不同ISBN的书籍信息
@@ -32,8 +32,8 @@ CREATE TABLE BookInstance
     instanceId   INT AUTO_INCREMENT PRIMARY KEY,
     isbn         VARCHAR(17),
     # 借阅状态, 0为未借阅, 1为已借阅
-    borrowStatus INT DEFAULT 0,
-    addTime      DATETIME,
+    borrowStatus INT      DEFAULT 0,
+    addTime      DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (isbn) REFERENCES BookInfo (isbn)
 );
 
@@ -79,6 +79,21 @@ CREATE TABLE Penalty
     FOREIGN KEY (userId) REFERENCES User (userId)
 );
 
+CREATE TABLE Bill
+(
+    billId   INT AUTO_INCREMENT PRIMARY KEY,
+    userId      INT            NOT NULL,
+    # 0表示扣费，1表示充值
+    billSubject ENUM('recharge', 'penalty') NOT NULL,
+    billAmount  DECIMAL(10, 2) NOT NULL,
+    billDate    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    # 0表示未结算，1表示已结算
+    billStatus  INT      DEFAULT 0,
+    FOREIGN KEY (userId) REFERENCES User (userId)
+);
+
+
+
 SET GLOBAL event_scheduler = ON;
 CREATE EVENT update_borrow_perms_event
     ON SCHEDULE EVERY 1 DAY -- 或根据需要调整频率
@@ -96,5 +111,9 @@ CREATE EVENT update_borrow_perms_event
     END;
 
 
+INSERT INTO user (username, password, email, userRole)
+VALUES ('jia', '1234', '123456789@qq.com', 'admin'),
+       ('lisi', '123456', '987654321@qq.com', 'user'),
+       ('wangwu', '123', '333222@qq.com', 'user');
 
 

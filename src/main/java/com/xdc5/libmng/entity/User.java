@@ -2,6 +2,7 @@ package com.xdc5.libmng.entity;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Base64;
 
 @Data
@@ -13,5 +14,5 @@ public class User {
     private byte[] avatar;
     private Integer borrowPerms;
     private String userRole;
-    private Integer money;
+    private BigDecimal money;
 }

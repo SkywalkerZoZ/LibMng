@@ -1,4 +1,4 @@
-package com.xdc5.libmng.intercepter;
+package com.xdc5.libmng.interceptor;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
