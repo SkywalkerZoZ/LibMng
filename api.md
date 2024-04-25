@@ -390,20 +390,24 @@ export default {
 | email    | string | 邮箱地址                 |
 | avatar   | blob   | 头像图片数据，base64编码 |
 | userRole | string | 用户角色                 |
+| money    | int    | 用户余额                 |
 
 
 
 ```json
 {
     "code": 200,
-    "message": "Success:get /user/profile",
+    "message": "Success: get /user/profile",
     "data": {
-    	"userId": 123,
-    	"username": "test1",
-    	"email": "test1@example.com",
-    	"avatar": "/9j/4AAQSkZJRgABAQEAYABgAAD/...",
-    	"userRole": "admin"
-	}
+        "userId": 1,
+        "username": "jia",
+        "password": "1234",
+        "email": "123456789@qq.com",
+        "avatar": null,
+        "borrowPerms": 1,
+        "userRole": "admin",
+        "money": 0
+    }
 }
 ```
 
@@ -1727,17 +1731,15 @@ TODO 改名未归还的申请？或者修改方法？
 
 **请求体参数**
 
-| 参数    | 类型   | 是否必需 | 描述       |
-| ------- | ------ | -------- | ---------- |
-| isbn    | string | 是       |            |
-| dueDate | string | 是       | 应归还日期 |
+| 参数 | 类型   | 是否必需 | 描述 |
+| ---- | ------ | -------- | ---- |
+| isbn | string | 是       |      |
 
 
 
 ```json
 {
-    "isbn": "978-3-16-148410-0",
-    "dueDate": "2024-04-20"
+    "isbn": "978-3-16-148410-0"
 }
 ```
 
@@ -1872,15 +1874,13 @@ tip: borrowDate为当前时间
 
 **请求体参数**
 
-| 参数        | 类型   | 是否必需 | 描述         |
-| ----------- | ------ | -------- | ------------ |
-| borrowId    | int    | 是       | 借阅记录Id   |
-| lateRetDate | string | 是       | 预计迟还日期 |
+| 参数     | 类型 | 是否必需 | 描述       |
+| -------- | ---- | -------- | ---------- |
+| borrowId | int  | 是       | 借阅记录Id |
 
 ```json
 {
-    "borrowId": 2,
-    "lateRetDate": "2024-04-29"
+    "borrowId": 2
 }
 ```
 

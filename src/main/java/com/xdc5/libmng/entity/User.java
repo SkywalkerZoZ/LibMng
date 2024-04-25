@@ -13,4 +13,5 @@ public class User {
     private byte[] avatar;
     private Integer borrowPerms;
     private String userRole;
+    private Integer money;
 }

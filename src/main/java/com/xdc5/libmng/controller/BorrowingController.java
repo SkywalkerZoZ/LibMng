@@ -19,6 +19,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+
+
 @RestController
 public class BorrowingController {
     @Autowired
@@ -140,7 +142,7 @@ public class BorrowingController {
     @PostMapping("/user/borrowing")
     public Result borrowBook(HttpServletRequest request,@RequestBody Map<String, Object> requestBody) {
         Integer userId = (Integer) request.getAttribute("userId");
-        String dueDate=(String)requestBody.get("dueDate");
+        LocalDate dueDate=LocalDate.now().plusDays(Borrowing.Borrow);
         String isbn= (String) requestBody.get("isbn");
         //检查用户权限
         if(!userService.checkPermsByID(userId)) {
@@ -154,13 +156,7 @@ public class BorrowingController {
         Borrowing bInfo = new Borrowing();
         bInfo.setUserId(userId);
         bInfo.setInstanceId(availableBook);
-        //转换data格式
-        LocalDate date=DateTimeUtils.strToDate(dueDate,"yyyy-MM-dd");
-        if(date==null)
-        {
-            return Result.error("Fail: invalid date");
-        }
-        bInfo.setDueDate(date);
+        bInfo.setDueDate(dueDate);
 
         //添加借阅信息 更改 BookInstance borrowStatus
         borrowingService.addBorrowing(bInfo);
@@ -228,13 +224,13 @@ public class BorrowingController {
         if (requestBody == null || requestBody.isEmpty()){
             return Result.error("Fail: invalid input");
         }
-        String lateRetDate=(String)requestBody.get("lateRetDate");
-        LocalDate date=DateTimeUtils.strToDate(lateRetDate,"yyyy-MM-dd");
         Integer borrowId= (Integer) requestBody.get("borrowId");
         Borrowing borrowingInfo = borrowingService.getBorrowingInfo(borrowId);
         if (borrowingInfo == null){
             return Result.error("Fail: borrowing info is null");
         }
+        LocalDate lateRetDate=borrowingInfo.getDueDate().plusDays(Borrowing.Lateret);
+
         if (borrowingInfo.getReturnDate()!=null){
             return Result.error("Fail: already return");
         }
@@ -246,7 +242,7 @@ public class BorrowingController {
         if(status != null){
             return Result.error("Fail: already request");
         }
-        borrowingService.lateRetAprv(date,borrowId);
+        borrowingService.lateRetAprv(lateRetDate,borrowId);
         return Result.success("Success: post /admin/borrowing/lateret-request");
     }
 

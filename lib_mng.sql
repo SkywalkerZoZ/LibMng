@@ -1,4 +1,4 @@
- ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
+#ALTER USER 'root'@'localhost' IDENTIFIED BY 'qwer4396';
 DROP DATABASE IF EXISTS lib_mng;
 CREATE DATABASE IF NOT EXISTS lib_mng;
 USE lib_mng;
@@ -8,6 +8,7 @@ CREATE TABLE User
     username    VARCHAR(255)           NOT NULL UNIQUE,
     password    VARCHAR(255)           NOT NULL,
     email       VARCHAR(255) UNIQUE,
+    money       INT DEFAULT 0,
     avatar      MEDIUMBLOB,
     # 借阅权限, 1表示正常,0表示不能借阅所有书籍
     borrowPerms INT DEFAULT 1,

@@ -28,15 +28,16 @@
             <if test="password != null">password = #{password},</if>
             <if test="email != null">email = #{email},</if>
             <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="money != null">money = #{money},</if>
             <if test="borrowPerms != null">borrowPerms = #{borrowPerms},</if>
         </set>
         WHERE userId = #{userId}
     </update>
+
     <update id="changeReaderPerms">
         UPDATE USER
         SET borrowPerms = 0
         WHERE userId = #{userId};
-
     </update>
 
 
@@ -48,7 +49,7 @@
     </delete>
 
     <select id="getUsers" parameterType="com.xdc5.libmng.entity.User" resultType="com.xdc5.libmng.entity.User">
-        SELECT userId,username,password,email,avatar,borrowPerms,userRole
+        SELECT userId,username,password,email,avatar,borrowPerms,userRole,money
         FROM user
         <where>
             <if test="userId != null">
@@ -66,7 +67,7 @@
         </where>
     </select>
     <select id="getUserById" resultType="com.xdc5.libmng.entity.User">
-        SELECT userId,username,password,email,avatar,borrowPerms,userRole
+        SELECT userId,username,password,email,avatar,borrowPerms,userRole,money
         FROM user
         WHERE userId=#{userId}
     </select>
@@ -77,14 +78,14 @@
         userId=#{userId}
     </select>
     <select id="getReaderByName" resultType="java.util.HashMap">
-        SELECT userId, username, email, avatar, borrowPerms
+        SELECT userId, username, email, avatar, borrowPerms,money
         FROM USER
         WHERE username LIKE #{userName};
 
 
     </select>
     <select id="getReaderById" resultType="java.util.HashMap">
-        SELECT userId, username, email, avatar, borrowPerms
+        SELECT userId, username, email, avatar, borrowPerms,money
         FROM USER
         WHERE userId = #{userId};
 

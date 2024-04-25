@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 @Data
 public class Borrowing {
+    public static final int Borrow = 7;
+    public static final int Lateret = 7;
     private Integer borrowingId;
     private Integer userId;
     private Integer instanceId;
