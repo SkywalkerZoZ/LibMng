@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Param;
 public interface BillMapper {
     int addBill(Bill bill);
     int updateStatusById(@Param("billId") Integer billId,@Param("billStatus") Integer billStatus);
+    int getUserIdByBillId(int billId);
 }

@@ -9,22 +9,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-//    @Autowired
-//    private TokenInterceptor tokenInterceptor;
-//
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(tokenInterceptor)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/","/login", "/register");
-//    }
+    @Autowired
+    private TokenInterceptor tokenInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/login/**", "/api/register/**", "/api/alipay/**");
+    }
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 // 指定具体的前端应用URL
-                .allowedOrigins("http://localhost:5173")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOriginPatterns("*")
                 // 是否允许cookie
                 .allowCredentials(true)
                 // 允许所有的请求方式

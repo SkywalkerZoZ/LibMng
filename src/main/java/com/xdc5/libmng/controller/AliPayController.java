@@ -8,23 +8,24 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.xdc5.libmng.config.AliPayConfig;
 import com.xdc5.libmng.entity.Bill;
-import com.xdc5.libmng.entity.Payment;
 import com.xdc5.libmng.entity.Result;
-import com.xdc5.libmng.mapper.BillMapper;
+import com.xdc5.libmng.service.BillService;
+import com.xdc5.libmng.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Slf4j
 @RestController
-@RequestMapping("/alipay")
+@RequestMapping("/api")
 public class AliPayController {
 
     private static final String GATEWAY_URL = "https://openapi-sandbox.dl.alipaydev.com/gateway.do";
@@ -36,28 +37,29 @@ public class AliPayController {
     @Resource
     private AliPayConfig aliPayConfig;
 
-    @Resource
-    private BillMapper billMapper;
+    @Autowired
+    BillService billService;
+
+    @Autowired
+    UserService userService;
 
     //totalAmount subject
-    @GetMapping("/pay") // &subject=xxx&traceNo=xxx&totalAmount=xxx
-    public void pay(HttpServletRequest httpRequest, HttpServletResponse httpResponse,Payment payment) throws Exception {
-        Integer userId = (Integer) httpRequest.getAttribute("userId");
-        if(userId==null)
-        {
-            userId=1;
-        }
+    @GetMapping("/alipay/pay")
+    public void pay(HttpServletRequest httpRequest,
+                    HttpServletResponse httpResponse,
+                    @RequestParam BigDecimal totalAmount,
+                    @RequestParam String subject,
+                    @RequestParam Integer userId) throws Exception {
         Bill bill = new Bill();
         bill.setUserId(userId);
-        bill.setBillAmount(payment.getTotalAmount());
-        bill.setBillSubject(payment.getSubject());
+        bill.setBillAmount(totalAmount);
+        bill.setBillSubject(subject);
 
         //创建bill
-        billMapper.addBill(bill);
-        log.info("billId:{}",bill.getBillId());
+        billService.addBill(bill);
+        log.info("billId:{}", bill.getBillId());
         // 1. 创建Client，通用SDK提供的Client，负责调用支付宝的API
-        AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, aliPayConfig.getAppId(),
-                aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET, aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
+        AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, aliPayConfig.getAppId(), aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET, aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
 
         // 2. 创建 Request并设置Request参数
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();  // 发送请求的 Request类
@@ -78,12 +80,12 @@ public class AliPayController {
             e.printStackTrace();
         }
         httpResponse.setContentType("text/html;charset=" + CHARSET);
-        httpResponse.getWriter().write(form);// 直接将完整的表单html输出到页面
+        httpResponse.getWriter().write(form);
         httpResponse.getWriter().flush();
         httpResponse.getWriter().close();
     }
 
-    @PostMapping("/notify")  // 注意这里必须是POST接口
+    @PostMapping("/alipay/notify")
     public Result payNotify(HttpServletRequest request) throws Exception {
         if (request.getParameter("trade_status").equals("TRADE_SUCCESS")) {
             log.info("=========支付宝异步回调========");
@@ -109,12 +111,15 @@ public class AliPayController {
                 log.info("买家在支付宝唯一id: {}", params.get("buyer_id"));
                 log.info("买家付款时间: {}", params.get("gmt_payment"));
                 log.info("买家付款金额: {}", params.get("buyer_pay_amount"));
-                if(billMapper.updateStatusById(Integer.parseInt(outTradeNo),1)==0)
-                {
-                    log.info("error no:{}",outTradeNo);
-                }else
-                {
-                    log.info("success update status:{}",outTradeNo);
+                int billId=Integer.parseInt(outTradeNo);
+                String total_amount=params.get("buyer_pay_amount");
+                if (billService.updateStatusById(billId, 1) == 0) {
+                    log.info("error no:{}", outTradeNo);
+
+                } else {
+                    log.info("success update status:{}", outTradeNo);
+                    int userId= billService.getUserIdByBillId(billId);
+                    userService.increaseUserMoney(userId,new BigDecimal(total_amount));
                 }
             }
         }

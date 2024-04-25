@@ -22,6 +22,7 @@ import java.util.*;
 
 
 @RestController
+@RequestMapping("/api")
 public class BorrowingController {
     @Autowired
     BorrowingService borrowingService;

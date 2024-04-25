@@ -15,6 +15,7 @@ import java.util.Base64;
 
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class UserInfoController {
     @Autowired
     private UserService userService;

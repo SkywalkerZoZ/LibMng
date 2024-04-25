@@ -15,6 +15,7 @@ import java.util.*;
 
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class BookController {
     @Autowired
     private BookService bookService;

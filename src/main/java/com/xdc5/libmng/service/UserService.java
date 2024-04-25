@@ -4,9 +4,11 @@ import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.entity.User;
 import com.xdc5.libmng.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,4 +86,9 @@ public class UserService {
     public void changeReasderPerms(Integer userId){
         userMapper.changeReaderPerms(userId);
     }
+    public int increaseUserMoney(int userId,BigDecimal billAmount)
+    {
+        return userMapper.increaseUserMoney(userId,billAmount);
+    }
+
 }

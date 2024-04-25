@@ -16,4 +16,9 @@
         SET billStatus = #{billStatus}
         WHERE billId = #{billId}
     </update>
+    <select id="getUserIdByBillId" resultType="int" parameterType="int">
+        SELECT userId
+        FROM Bill
+        WHERE billId = #{billId}
+    </select>
 </mapper>

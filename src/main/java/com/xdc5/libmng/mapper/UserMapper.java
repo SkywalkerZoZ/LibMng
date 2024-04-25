@@ -4,6 +4,7 @@ import com.xdc5.libmng.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,4 +28,6 @@ public interface UserMapper {
     //更改用户perms
     void changeReaderPerms(Integer userId);
     List<User> login(@Param("username") String username, @Param("password") String password);
+    int increaseUserMoney(@Param("userId") int userId, @Param("billAmount") BigDecimal billAmount);
+
 }

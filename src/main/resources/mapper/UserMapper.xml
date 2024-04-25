@@ -98,4 +98,9 @@
           AND password = #{password}
     </select>
 
+    <update id="increaseUserMoney">
+        UPDATE User
+        SET money = money + #{billAmount}
+        WHERE userId = #{userId}
+    </update>
 </mapper>
