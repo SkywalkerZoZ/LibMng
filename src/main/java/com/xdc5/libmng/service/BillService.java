@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BillService {
@@ -19,11 +20,11 @@ public class BillService {
     {
         return billMapper.addBill(bill);
     }
-    public int updateStatusById(Integer billId,Integer billStatus)
+    public int updateStatusById(String billId, Integer billStatus)
     {
         return billMapper.updateStatusById(billId,billStatus);
     }
-    public int getUserIdByBillId(int billId)
+    public int getUserIdByBillId(String billId)
     {
         return billMapper.getUserIdByBillId(billId);
     }

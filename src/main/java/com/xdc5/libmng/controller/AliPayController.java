@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -55,7 +55,7 @@ public class AliPayController {
         bill.setUserId(userId);
         bill.setBillAmount(totalAmount);
         bill.setBillSubject(subject);
-
+        bill.setBillId(UUID.randomUUID().toString());
         //创建bill
         billService.addBill(bill);
         log.info("billId:{}", bill.getBillId());
@@ -112,14 +112,13 @@ public class AliPayController {
                 log.info("买家在支付宝唯一id: {}", params.get("buyer_id"));
                 log.info("买家付款时间: {}", params.get("gmt_payment"));
                 log.info("买家付款金额: {}", params.get("buyer_pay_amount"));
-                int billId=Integer.parseInt(outTradeNo);
                 String total_amount=params.get("buyer_pay_amount");
-                if (billService.updateStatusById(billId, 1) == 0) {
+                if (billService.updateStatusById(outTradeNo, 1) == 0) {
                     log.info("error no:{}", outTradeNo);
 
                 } else {
                     log.info("success update status:{}", outTradeNo);
-                    int userId= billService.getUserIdByBillId(billId);
+                    int userId= billService.getUserIdByBillId(outTradeNo);
                     userService.increaseUserMoney(userId,new BigDecimal(total_amount));
                 }
             }

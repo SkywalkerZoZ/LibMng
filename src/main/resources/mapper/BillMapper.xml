@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xdc5.libmng.mapper.BillMapper">
-    <insert id="addBill" parameterType="com.xdc5.libmng.entity.Bill" useGeneratedKeys="true" keyProperty="billId">
-        INSERT INTO Bill (userId, billSubject, billAmount
+    <insert id="addBill" parameterType="com.xdc5.libmng.entity.Bill">
+        INSERT INTO Bill (billId,userId, billSubject, billAmount
         <if test="billDate != null">, billDate</if>
         <if test="billStatus != null">, billStatus</if>)
-        VALUES (#{userId}, #{billSubject}, #{billAmount}
+        VALUES (#{billId},#{userId}, #{billSubject}, #{billAmount}
         <if test="billDate != null">, #{billDate}</if>
         <if test="billStatus != null">, #{billStatus}</if>)
     </insert>
@@ -16,7 +16,7 @@
         SET billStatus = #{billStatus}
         WHERE billId = #{billId}
     </update>
-    <select id="getUserIdByBillId" resultType="int" parameterType="int">
+    <select id="getUserIdByBillId" resultType="int">
         SELECT userId
         FROM Bill
         WHERE billId = #{billId}

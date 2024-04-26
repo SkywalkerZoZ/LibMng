@@ -4,10 +4,11 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 public class Bill {
-    Integer billId;
+    String billId;
     Integer userId;
     String billSubject;
     BigDecimal billAmount;

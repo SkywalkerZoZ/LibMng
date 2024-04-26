@@ -81,16 +81,19 @@ CREATE TABLE Penalty
 
 CREATE TABLE Bill
 (
-    billId   INT AUTO_INCREMENT PRIMARY KEY,
+    billId      CHAR(36) PRIMARY KEY,
     userId      INT            NOT NULL,
-    # 0表示扣费，1表示充值
+    -- 0表示扣费，1表示充值
     billSubject ENUM('recharge', 'penalty') NOT NULL,
     billAmount  DECIMAL(10, 2) NOT NULL,
     billDate    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    # 0表示未结算，1表示已结算
+    -- 0表示未结算，1表示已结算
     billStatus  INT      DEFAULT 0,
-    FOREIGN KEY (userId) REFERENCES User (userId)
+    FOREIGN KEY (userId) REFERENCES User (userId),
+    INDEX (userId),
+    INDEX (billDate)
 );
+
 
 
 
