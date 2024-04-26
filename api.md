@@ -2271,6 +2271,62 @@ returnDate IS NULL
 }
 ```
 
+## 用户查看自己的订单
+
+**接口地址**
+
+| 方法  | 地址              |
+|-----|-----------------|
+| GET | /alipay/getBill |
+
+
+**请求体参数**
+
+| 参数     | 类型 | 是否必需 | 描述   |
+|--------| ---- | -------- |------|
+| userId | int  | 是       | 用户Id |
+
+**响应参数**
+
+
+| 参数                   | 类型            | 描述       |
+|----------------------|---------------|----------|
+| code                 | int           | 状态码      |
+| message              | string        | 提示信息     |
+| data                 | array         | 订单记录列表   |
+| data[i].billId       | int           | 订单记录ID   |
+| data[i].userId       | int           | 用户ID     |
+| data[i].billSubject  | string        | 订单主题     |
+| data[i].billAmount   | BigDecimal    | 订单金额     |
+| data[i].billDate     | LocalDateTime | 订单时间     |
+| data[i].billStatus   | int           | 订单状态     |
+
+```json
+{
+    "code": 200,
+    "message": "Success: all user Bill",
+    "data": [
+      {
+        "billId": 1,
+        "userId":1,
+        "billSubject": "xxx",
+        "billAmount":"xxx",
+        "billDate":"2024-04-26T06:44:55",
+        "billStatus":1
+      },
+      {
+        "billId": 2,
+        "userId":2,
+        "billSubject": "xxx",
+        "billAmount":"xxx",
+        "billDate":"2024-04-26T06:44:55",
+        "billStatus":1
+      }
+    ]
+}
+```
+
+
 
 
 # 游客
@@ -2280,6 +2336,7 @@ returnDate IS NULL
 ## 图书目录
 
 ## 图书检索
+
 
 以上同管理员
 

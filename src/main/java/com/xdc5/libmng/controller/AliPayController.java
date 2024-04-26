@@ -130,6 +130,6 @@ public class AliPayController {
     @GetMapping("/alipay/getBill")
     public Result getUserBill(@RequestParam int userId){
         List<Bill> userBillList = billService.getBillByUserId(userId);
-        return Result.success(userBillList,"success: all user Bill");
+        return Result.success(userBillList,"Success: all user Bill");
     }
 }
