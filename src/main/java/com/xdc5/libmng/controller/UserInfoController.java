@@ -2,6 +2,7 @@ package com.xdc5.libmng.controller;
 
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.entity.User;
+import com.xdc5.libmng.service.BillService;
 import com.xdc5.libmng.service.UserService;
 import com.xdc5.libmng.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Base64;
 
@@ -86,5 +88,6 @@ public class UserInfoController {
         userService.updateUserInfo(user);
         return Result.success("Success: put /user/profile");
     }
+
 
 }

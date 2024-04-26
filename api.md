@@ -222,7 +222,7 @@ export default {
 ```json
 {
 	"username":"test1",
-	"password":"1234",
+	"password":"1234"
 }
 ```
 
@@ -2297,6 +2297,68 @@ returnDate IS NULL
 
 
 
+## 用户查看自己的订单
+
+**接口地址**
+
+| 方法 | 地址  |
+| ---- | ----- |
+| GET  | /bill |
+
+
+
+
+**响应参数**
+
+
+| 参数                   | 类型            | 描述       |
+|----------------------|---------------|----------|
+| code                 | int           | 状态码      |
+| message              | string        | 提示信息     |
+| data                 | array         | 订单记录列表   |
+| data[i].billId       | int           | 订单记录ID   |
+| data[i].userId       | int           | 用户ID     |
+| data[i].billSubject  | string        | 订单主题     |
+| data[i].billAmount   | BigDecimal    | 订单金额     |
+| data[i].billDate     | LocalDateTime | 订单时间     |
+| data[i].billStatus   | int           | 订单状态     |
+
+```json
+{
+    "code": 200,
+    "message": "Success: get /bill",
+    "data": [
+        {
+            "billId": 1,
+            "userId": 1,
+            "billSubject": "recharge",
+            "billAmount": 10.99,
+            "billDate": "2024-04-25T21:35:33",
+            "billStatus": 0
+        },
+        {
+            "billId": 2,
+            "userId": 1,
+            "billSubject": "recharge",
+            "billAmount": 10.99,
+            "billDate": "2024-04-25T21:39:17",
+            "billStatus": 1
+        },
+        {
+            "billId": 3,
+            "userId": 1,
+            "billSubject": "recharge",
+            "billAmount": 20.00,
+            "billDate": "2024-04-26T13:24:56",
+            "billStatus": 0
+        }
+    ]
+}
+```
+
+
+
+
 # 游客
 
 
@@ -2304,6 +2366,7 @@ returnDate IS NULL
 ## 图书目录
 
 ## 图书检索
+
 
 以上同管理员
 
