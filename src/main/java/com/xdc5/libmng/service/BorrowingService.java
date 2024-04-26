@@ -109,22 +109,24 @@ public class BorrowingService {
         update.setInstanceId(bInfo.getInstanceId());
         bookInstanceMapper.updateStatus(update);
     }
-    public Borrowing getUnreturnedBorrowing(Integer userId,Integer instanceId){
-        Borrowing searchBorrowing=new Borrowing();
-        searchBorrowing.setUserId(userId);
-        searchBorrowing.setInstanceId(instanceId);
-        List<Borrowing> borrowinglist = borrowingMapper.getBorrowing(searchBorrowing);
-        Borrowing borrowing=null;
-        for (Borrowing bo :borrowinglist)
-        {
-            //还未归还
-            if (bo.getReturnDate()==null)
-            {
-                borrowing=bo;
-            }
-        }
-        return borrowing;
-    }
+
+//    public Borrowing getUnreturnedBorrowing(Integer userId,Integer instanceId){
+//        Borrowing searchBorrowing=new Borrowing();
+//        searchBorrowing.setUserId(userId);
+//        searchBorrowing.setInstanceId(instanceId);
+//        List<Borrowing> borrowinglist = borrowingMapper.getBorrowing(searchBorrowing);
+//        Borrowing borrowing=null;
+//        for (Borrowing bo :borrowinglist)
+//        {
+//            //还未归还
+//            if (bo.getReturnDate()==null)
+//            {
+//                borrowing=bo;
+//            }
+//        }
+//        return borrowing;
+//    }
+
     public void updateBorrowing(Borrowing borrowing)
     {
         borrowingMapper.updateBorrowing(borrowing);
@@ -180,5 +182,9 @@ public class BorrowingService {
         {
             return null;
         }
+    }
+    public Borrowing getBorrowingByInstanceId(Integer instanceId){
+        Borrowing borrowing = borrowingMapper.getBorrowingByInstanceId(instanceId);
+        return borrowingMapper.getBorrowingByInstanceId(instanceId);
     }
 }

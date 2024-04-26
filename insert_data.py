@@ -34,8 +34,8 @@ def insert_book_with_cover(mysql_config, book_data, asset_folder):
     conn.close()
     print("Books and covers have been inserted successfully.")
 
-
-def insert_others(mysql_config,users_data,book_instances_data,borrowing_data,reservations_data):
+# def insert_others(mysql_config,users_data,book_instances_data,borrowing_data,reservations_data):
+def insert_others(mysql_config,users_data,book_instances_data):
     try:
         conn = mysql.connector.connect(**mysql_config)
         cursor = conn.cursor()
@@ -57,21 +57,21 @@ def insert_others(mysql_config,users_data,book_instances_data,borrowing_data,res
         
         cursor.executemany(insert_book_instances, book_instances_data)
 
-        # Insert borrowing details
-        insert_borrowing = """
-        INSERT INTO Borrowing (userId, instanceId, borrowDate, dueDate)
-        VALUES (%s, %s, %s, %s)
-        """
-        
-        cursor.executemany(insert_borrowing, borrowing_data)
-
-        # Insert reservations
-        insert_reservations = """
-        INSERT INTO Reservation (userId, isbn)
-        VALUES (%s, %s)
-        """
-        
-        cursor.executemany(insert_reservations, reservations_data)
+#         # Insert borrowing details
+#         insert_borrowing = """
+#         INSERT INTO Borrowing (userId, instanceId, borrowDate, dueDate)
+#         VALUES (%s, %s, %s, %s)
+#         """
+#
+#         cursor.executemany(insert_borrowing, borrowing_data)
+#
+#         # Insert reservations
+#         insert_reservations = """
+#         INSERT INTO Reservation (userId, isbn)
+#         VALUES (%s, %s)
+#         """
+#
+#         cursor.executemany(insert_reservations, reservations_data)
 
         # Commit changes
         conn.commit()
@@ -139,19 +139,25 @@ if __name__ == "__main__":
             ('978-7-54-463720-6', 0, current_datetime),
             ('978-7-54-463720-6', 0, current_datetime),
             ('978-0-30-727211-9', 0, current_datetime),
+            ('978-0-30-727211-9', 0, current_datetime),
+            ('978-0-30-727211-9', 0, current_datetime),
+            ('978-0-30-727211-9', 0, current_datetime),
+            ('978-0-30-727211-9', 0, current_datetime),
+            ('978-0-30-727211-9', 0, current_datetime),
             ('978-0-30-727211-9', 0, current_datetime)
         ]
-    borrowing_data = [
-            (2, 3, current_date, current_date + timedelta(days=7)),
-            (2, 1, current_date, current_date + timedelta(days=8)),
-            (2, 6, current_date, current_date + timedelta(days=9)),
-            (3, 7, current_date, current_date + timedelta(days=10)),
-            (3, 5, current_date, current_date + timedelta(days=11))
-        ]
-    reservations_data = [
-            (2, '978-0-30-727211-9'),
-            (3, '978-7-11-121382-6')
-        ]
+#     borrowing_data = [
+#             (2, 3, current_date, current_date + timedelta(days=7)),
+#             (2, 1, current_date, current_date + timedelta(days=8)),
+#             (2, 6, current_date, current_date + timedelta(days=9)),
+#             (3, 7, current_date, current_date + timedelta(days=10)),
+#             (3, 5, current_date, current_date + timedelta(days=11))
+#         ]
+#     reservations_data = [
+#             (2, '978-0-30-727211-9'),
+#             (3, '978-7-11-121382-6')
+#         ]
     insert_book_with_cover(mysql_config, book_info, assets_path)
     # Error: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`lib_mng`.`borrowing`, CONSTRAINT `borrowing_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`))
-    insert_others(mysql_config,users_data,book_instances_data,borrowing_data,reservations_data)
+    insert_others(mysql_config,users_data,book_instances_data)
+#     #     insert_others(mysql_config,users_data,book_instances_data,borrowing_data,reservations_data)

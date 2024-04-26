@@ -196,30 +196,30 @@ public class BorrowingController {
 
     }
 
-    @PutMapping("/user/borrowing/return/{instanceId}")
-    public Result returnBook(HttpServletRequest request,@PathVariable Integer instanceId)
-    {
-        Integer userId = (Integer) request.getAttribute("userId");
-        if(instanceId==null)
-        {
-            return Result.error("Fail: instanceId not found");
-        }
-        BookInstance instance = bookService.getInstanceById(instanceId);
-        if(instance==null)
-        {
-            return Result.error("Fail: instanceId not found");
-        }
-        instance.setBorrowStatus(0);
-        bookService.updateStatus(instance);
-        Borrowing borrowing=borrowingService.getUnreturnedBorrowing(userId,instanceId);
-        if(borrowing==null)
-        {
-            return Result.error("Fail: borrowing not found");
-        }
-        borrowing.setReturnDate(LocalDate.now());
-        borrowingService.updateBorrowing(borrowing);
-        return Result.success("Success: put /user/borrowing/return/{instanceId}");
-    }
+//    @PutMapping("/user/borrowing/return/{instanceId}")
+//    public Result returnBook(HttpServletRequest request,@PathVariable Integer instanceId)
+//    {
+//        Integer userId = (Integer) request.getAttribute("userId");
+//        if(instanceId==null)
+//        {
+//            return Result.error("Fail: instanceId not found");
+//        }
+//        BookInstance instance = bookService.getInstanceById(instanceId);
+//        if(instance==null)
+//        {
+//            return Result.error("Fail: instanceId not found");
+//        }
+//        instance.setBorrowStatus(0);
+//        bookService.updateStatus(instance);
+//        Borrowing borrowing=borrowingService.getUnreturnedBorrowing(userId,instanceId);
+//        if(borrowing==null)
+//        {
+//            return Result.error("Fail: borrowing not found");
+//        }
+//        borrowing.setReturnDate(LocalDate.now());
+//        borrowingService.updateBorrowing(borrowing);
+//        return Result.success("Success: put /user/borrowing/return/{instanceId}");
+//    }
     @PostMapping("/user/borrowing/lateret-request")
     public Result lateRetRequest(@RequestBody Map<String, Object> requestBody){
         if (requestBody == null || requestBody.isEmpty()){
@@ -247,4 +247,25 @@ public class BorrowingController {
         return Result.success("Success: post /admin/borrowing/lateret-request");
     }
 
+    @PutMapping("/admin/borrowing/return/{instanceId}")
+    public Result returnConfirm(@PathVariable Integer instanceId){
+        if(instanceId==null)
+        {
+            return Result.error("Fail: instanceId not found");
+        }
+        Borrowing borrowing = borrowingService.getBorrowingByInstanceId(instanceId);
+        if (borrowing == null){
+            return Result.error("Fail: borrowing info is null");
+        }
+        BookInstance instance = bookService.getInstanceById(instanceId);
+        if(instance==null)
+        {
+            return Result.error("Fail: instanceId not found");
+        }
+        instance.setBorrowStatus(0);
+        bookService.updateStatus(instance);
+        borrowing.setReturnDate(LocalDate.now());
+        borrowingService.updateBorrowing(borrowing);
+        return Result.success(borrowing,"Success: put /admin/borrowing/return/{instanceId}");
+    }
 }
