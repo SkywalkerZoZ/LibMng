@@ -2271,20 +2271,18 @@ returnDate IS NULL
 }
 ```
 
+
+
 ## 用户查看自己的订单
 
 **接口地址**
 
-| 方法  | 地址              |
-|-----|-----------------|
-| GET | /alipay/getBill |
+| 方法 | 地址  |
+| ---- | ----- |
+| GET  | /bill |
 
 
-**请求体参数**
 
-| 参数     | 类型 | 是否必需 | 描述   |
-|--------| ---- | -------- |------|
-| userId | int  | 是       | 用户Id |
 
 **响应参数**
 
@@ -2304,24 +2302,32 @@ returnDate IS NULL
 ```json
 {
     "code": 200,
-    "message": "Success: all user Bill",
+    "message": "Success: get /bill",
     "data": [
-      {
-        "billId": 1,
-        "userId":1,
-        "billSubject": "xxx",
-        "billAmount":"xxx",
-        "billDate":"2024-04-26T06:44:55",
-        "billStatus":1
-      },
-      {
-        "billId": 2,
-        "userId":2,
-        "billSubject": "xxx",
-        "billAmount":"xxx",
-        "billDate":"2024-04-26T06:44:55",
-        "billStatus":1
-      }
+        {
+            "billId": 1,
+            "userId": 1,
+            "billSubject": "recharge",
+            "billAmount": 10.99,
+            "billDate": "2024-04-25T21:35:33",
+            "billStatus": 0
+        },
+        {
+            "billId": 2,
+            "userId": 1,
+            "billSubject": "recharge",
+            "billAmount": 10.99,
+            "billDate": "2024-04-25T21:39:17",
+            "billStatus": 1
+        },
+        {
+            "billId": 3,
+            "userId": 1,
+            "billSubject": "recharge",
+            "billAmount": 20.00,
+            "billDate": "2024-04-26T13:24:56",
+            "billStatus": 0
+        }
     ]
 }
 ```

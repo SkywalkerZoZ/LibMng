@@ -22,7 +22,7 @@
         WHERE billId = #{billId}
     </select>
     <select id="getBillByUserId" resultType="com.xdc5.libmng.entity.Bill" parameterType="int">
-        SELECT *
+        SELECT billId,billId, userId, billSubject, billAmount, billDate, billStatus
         FROM Bill
         WHERE userId = #{userId}
     </select>
