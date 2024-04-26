@@ -1,9 +1,6 @@
 package com.xdc5.libmng.controller;
 
-import com.xdc5.libmng.entity.BookInstance;
-import com.xdc5.libmng.entity.Borrowing;
-import com.xdc5.libmng.entity.Reservation;
-import com.xdc5.libmng.entity.Result;
+import com.xdc5.libmng.entity.*;
 import com.xdc5.libmng.service.BookService;
 import com.xdc5.libmng.service.BorrowingService;
 import com.xdc5.libmng.service.ReservationService;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -220,32 +218,34 @@ public class BorrowingController {
 //        borrowingService.updateBorrowing(borrowing);
 //        return Result.success("Success: put /user/borrowing/return/{instanceId}");
 //    }
-    @PostMapping("/user/borrowing/lateret-request")
-    public Result lateRetRequest(@RequestBody Map<String, Object> requestBody){
-        if (requestBody == null || requestBody.isEmpty()){
-            return Result.error("Fail: invalid input");
-        }
-        Integer borrowId= (Integer) requestBody.get("borrowId");
-        Borrowing borrowingInfo = borrowingService.getBorrowingInfo(borrowId);
-        if (borrowingInfo == null){
-            return Result.error("Fail: borrowing info is null");
-        }
-        LocalDate lateRetDate=borrowingInfo.getDueDate().plusDays(Borrowing.Lateret);
 
-        if (borrowingInfo.getReturnDate()!=null){
-            return Result.error("Fail: already return");
-        }
-        Integer aprvStatus = borrowingInfo.getBorrowAprvStatus();
-        if (aprvStatus==0 || aprvStatus==2){
-            return Result.error("Fail: not agreed borrow");
-        }
-        Integer status = borrowingInfo.getLateRetAprvStatus();
-        if(status != null){
-            return Result.error("Fail: already request");
-        }
-        borrowingService.lateRetAprv(lateRetDate,borrowId);
-        return Result.success("Success: post /admin/borrowing/lateret-request");
-    }
+
+//    @PostMapping("/user/borrowing/lateret-request")
+//    public Result lateRetRequest(@RequestBody Map<String, Object> requestBody){
+//        if (requestBody == null || requestBody.isEmpty()){
+//            return Result.error("Fail: invalid input");
+//        }
+//        Integer borrowId= (Integer) requestBody.get("borrowId");
+//        Borrowing borrowingInfo = borrowingService.getBorrowingInfo(borrowId);
+//        if (borrowingInfo == null){
+//            return Result.error("Fail: borrowing info is null");
+//        }
+//        LocalDate lateRetDate=borrowingInfo.getDueDate().plusDays(Borrowing.Lateret);
+//
+//        if (borrowingInfo.getReturnDate()!=null){
+//            return Result.error("Fail: already return");
+//        }
+//        Integer aprvStatus = borrowingInfo.getBorrowAprvStatus();
+//        if (aprvStatus==0 || aprvStatus==2){
+//            return Result.error("Fail: not agreed borrow");
+//        }
+//        Integer status = borrowingInfo.getLateRetAprvStatus();
+//        if(status != null){
+//            return Result.error("Fail: already request");
+//        }
+//        borrowingService.lateRetAprv(lateRetDate,borrowId);
+//        return Result.success("Success: post /admin/borrowing/lateret-request");
+//    }
 
     @PutMapping("/admin/borrowing/return/{instanceId}")
     public Result returnConfirm(@PathVariable Integer instanceId){
@@ -268,4 +268,29 @@ public class BorrowingController {
         borrowingService.updateBorrowing(borrowing);
         return Result.success(borrowing,"Success: put /admin/borrowing/return/{instanceId}");
     }
+
+    @PostMapping("/user/borrowing/lateretBorrow")
+    public Result lateretBorrow(@RequestBody Map<String, Object> requestBody){
+        if (requestBody == null || requestBody.isEmpty()){
+            return Result.error("Fail: invalid input");
+        }
+        Integer borrowId= (Integer) requestBody.get("borrowId");
+        Borrowing borrowingInfo = borrowingService.getBorrowingInfo(borrowId);
+        if (borrowingInfo == null){
+            return Result.error("Fail: borrowing info is null");
+        }
+        User user =userService.getUserByBorrowingId(borrowId);
+        BigDecimal money = new BigDecimal(String.valueOf(user.getMoney()));
+
+        if (money.compareTo(BigDecimal.TEN) < 0){
+            return Result.error("Fail: not enough money");
+        }
+        LocalDate dueDate=borrowingInfo.getDueDate().plusDays(Borrowing.Lateret);
+        Borrowing bInfo = new Borrowing();
+        bInfo.setDueDate(dueDate);
+        bInfo.setBorrowingId(borrowId);
+        borrowingService.updateBorrowing(bInfo);
+        return Result.success("Success: post /admin/borrowing/lateretBorrow");
+    }
+
 }

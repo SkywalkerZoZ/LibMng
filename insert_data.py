@@ -42,8 +42,8 @@ def insert_others(mysql_config,users_data,book_instances_data):
 
         # Insert users
         insert_users = """
-        INSERT INTO user (username, password, email, userRole)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO user (username, password, email, userRole, money)
+        VALUES (%s, %s, %s, %s, %s)
         """
         
         cursor.executemany(insert_users, users_data)
@@ -125,9 +125,9 @@ if __name__ == "__main__":
     ]
 
     users_data = [
-            ('jia', '1234', '123456789@qq.com', 'admin'),
-            ('lisi', '123456', '987654321@qq.com', 'user'),
-            ('wangwu', '123', '333222@qq.com', 'user')
+            ('jia', '1234', '123456789@qq.com', 'admin', 100),
+            ('lisi', '123456', '987654321@qq.com', 'user', 0),
+            ('wangwu', '123', '333222@qq.com', 'user', 0)
         ]
     
     current_datetime = datetime.now()

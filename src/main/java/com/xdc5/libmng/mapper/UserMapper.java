@@ -29,5 +29,4 @@ public interface UserMapper {
     void changeReaderPerms(Integer userId);
     List<User> login(@Param("username") String username, @Param("password") String password);
     int increaseUserMoney(@Param("userId") int userId, @Param("billAmount") BigDecimal billAmount);
-
 }

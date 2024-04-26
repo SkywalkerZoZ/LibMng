@@ -1,7 +1,9 @@
 package com.xdc5.libmng.service;
 
+import com.xdc5.libmng.entity.Borrowing;
 import com.xdc5.libmng.entity.Result;
 import com.xdc5.libmng.entity.User;
+import com.xdc5.libmng.mapper.BorrowingMapper;
 import com.xdc5.libmng.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -18,6 +20,8 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private BorrowingMapper borrowingMapper;
 
     public List<User> getAllUsers() {
         return userMapper.getUsers(null);
@@ -89,6 +93,12 @@ public class UserService {
     public int increaseUserMoney(int userId,BigDecimal billAmount)
     {
         return userMapper.increaseUserMoney(userId,billAmount);
+    }
+    public User getUserByBorrowingId(Integer borrowingId){
+        Borrowing borrowing = new Borrowing();
+        borrowing.setBorrowingId(borrowingId);
+        List<Borrowing> borrowings = borrowingMapper.getBorrowing(borrowing);
+        return userMapper.getUserById(borrowings.get(0).getUserId());
     }
 
 }
