@@ -11,6 +11,7 @@ CREATE TABLE User
     money       DECIMAL(10, 2) DEFAULT 0,
     avatar      MEDIUMBLOB,
     # 借阅权限, 1表示正常,0表示不能借阅所有书籍
+    # TODO borrowPerms修改为能借阅书籍的数量
     borrowPerms INT            DEFAULT 1,
     userRole    ENUM ('user', 'admin') NOT NULL
 );
@@ -49,12 +50,17 @@ CREATE TABLE Borrowing
     dueDate           DATE NOT NULL,
     # 归还时间
     returnDate        DATE DEFAULT NULL,
+
     # 延期日期, 为NULL则不延期
+    # FIXME 暂时弃用
     lateRetDate       DATE DEFAULT NULL,
     # 借阅的审批状态,0为未审批, 1为同意, 2为拒绝
+    # FIXME 考虑弃用，改为减少borrowPerms
     borrowAprvStatus  INT  DEFAULT 0,
     # 延期的审批状态,Null为未申请, 0为未审批, 1为同意, 2为拒绝
+    # FIXME 暂时弃用
     lateRetAprvStatus INT  DEFAULT NULL,
+
     FOREIGN KEY (userId) REFERENCES User (userId),
     FOREIGN KEY (instanceId) REFERENCES BookInstance (instanceId) ON DELETE CASCADE
 );
@@ -62,7 +68,6 @@ CREATE TABLE Reservation
 (
     rsvId  INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
-    # 是否要unique
     isbn   VARCHAR(17),
     FOREIGN KEY (userId) REFERENCES User (userId),
     FOREIGN KEY (isbn) REFERENCES BookInfo (isbn) ON DELETE CASCADE
@@ -113,10 +118,28 @@ CREATE EVENT update_borrow_perms_event
           AND u.borrowPerms = 0; -- 仅更新当前不能借阅的用户
     END;
 
+-- 启用事件调度器
+SET GLOBAL event_scheduler = ON;
 
-# INSERT INTO user (username, password, email, userRole)
-# VALUES ('jia', '1234', '123456789@qq.com', 'admin'),
-#        ('lisi', '123456', '987654321@qq.com', 'user'),
-#        ('wangwu', '123', '333222@qq.com', 'user');
+-- 创建每日自动扣款事件
+CREATE EVENT IF NOT EXISTS auto_deduct_fees_event
+    ON SCHEDULE EVERY 1 DAY
+        STARTS CURRENT_TIMESTAMP
+    DO
+    BEGIN
+        -- 查找逾期未还的借阅记录并扣除对应用户的余额
+        UPDATE User
+        SET money = money - 1
+        WHERE userId IN (
+            SELECT userId
+            FROM Borrowing
+            WHERE dueDate < CURRENT_DATE() AND returnDate IS NULL
+        );
 
+        -- 为每个逾期用户生成一条扣费账单
+        INSERT INTO Bill (billId, userId, billSubject, billAmount, billDate, billStatus)
+        SELECT UUID(), b.userId, 'penalty', -1, NOW(), 1
+        FROM Borrowing b
+        WHERE b.dueDate < CURRENT_DATE() AND b.returnDate IS NULL;
+    END;
 

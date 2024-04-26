@@ -247,6 +247,7 @@ public class BorrowingController {
 //        return Result.success("Success: post /admin/borrowing/lateret-request");
 //    }
 
+    //TODO borrowPerms
     @PutMapping("/admin/borrowing/return/{instanceId}")
     public Result returnConfirm(@PathVariable Integer instanceId){
         if(instanceId==null)
@@ -269,6 +270,7 @@ public class BorrowingController {
         return Result.success(borrowing,"Success: put /admin/borrowing/return/{instanceId}");
     }
 
+    //TODO 修改latereturn不需要审批，改为每次申请扣1元
     @PostMapping("/user/borrowing/lateretBorrow")
     public Result lateretBorrow(@RequestBody Map<String, Object> requestBody){
         if (requestBody == null || requestBody.isEmpty()){
