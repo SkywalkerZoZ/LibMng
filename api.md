@@ -222,7 +222,7 @@ export default {
 ```json
 {
 	"username":"test1",
-	"password":"1234",
+	"password":"1234"
 }
 ```
 

@@ -4,9 +4,12 @@ import com.xdc5.libmng.entity.Bill;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface BillMapper {
     int addBill(Bill bill);
     int updateStatusById(@Param("billId") Integer billId,@Param("billStatus") Integer billStatus);
     int getUserIdByBillId(int billId);
+    List<Bill> getBillByUserId(int userId);
 }

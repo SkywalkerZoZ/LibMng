@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -124,5 +125,11 @@ public class AliPayController {
             }
         }
         return Result.success("success");
+    }
+
+    @GetMapping("/alipay/getBill")
+    public Result getUserBill(@RequestParam int userId){
+        List<Bill> userBillList = billService.getBillByUserId(userId);
+        return Result.success(userBillList,"success: all user Bill");
     }
 }

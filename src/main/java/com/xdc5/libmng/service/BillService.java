@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class BillService {
@@ -25,6 +26,10 @@ public class BillService {
     public int getUserIdByBillId(int billId)
     {
         return billMapper.getUserIdByBillId(billId);
+    }
+
+    public List<Bill> getBillByUserId(int userId){
+        return billMapper.getBillByUserId(userId);
     }
 
 

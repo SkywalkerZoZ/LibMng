@@ -21,4 +21,9 @@
         FROM Bill
         WHERE billId = #{billId}
     </select>
+    <select id="getBillByUserId" resultType="com.xdc5.libmng.entity.Bill" parameterType="int">
+        SELECT *
+        FROM Bill
+        WHERE userId = #{userId}
+    </select>
 </mapper>
