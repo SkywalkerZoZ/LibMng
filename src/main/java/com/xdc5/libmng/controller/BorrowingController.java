@@ -87,6 +87,10 @@ public class BorrowingController {
         }
         borrowingService.updateBorrowAprvStatus(agree, borrowingId);
         if(agree == 0){
+            User user = userService.getUserByBorrowingId(borrowingId);
+            user.setBorrowPerms(user.getBorrowPerms() + 1);
+            userService.updateUserInfo(user);
+
             BookInstance update = new BookInstance();
             update.setBorrowStatus(0);
             update.setInstanceId(borrowingInfo.getInstanceId());
@@ -151,6 +155,11 @@ public class BorrowingController {
         if (availableBook==null){
             return Result.error("Fail: no available instance exists");
         }
+
+        //借阅数量暂时减1，若未通过，加回来
+        User user = userService.getUserInfo(userId);
+        user.setBorrowPerms(user.getBorrowPerms() - 1);
+        userService.updateUserInfo(user);
 
         Borrowing bInfo = new Borrowing();
         bInfo.setUserId(userId);
@@ -258,11 +267,17 @@ public class BorrowingController {
         if (borrowing == null){
             return Result.error("Fail: borrowing info is null");
         }
+        User user = userService.getUserByBorrowingId(borrowing.getBorrowingId());
+        if (user == null){
+            return Result.error("Fail: user info is null");
+        }
         BookInstance instance = bookService.getInstanceById(instanceId);
         if(instance==null)
         {
             return Result.error("Fail: instanceId not found");
         }
+        user.setBorrowPerms(user.getBorrowPerms() + 1);
+        userService.updateUserInfo(user);
         instance.setBorrowStatus(0);
         bookService.updateStatus(instance);
         borrowing.setReturnDate(LocalDate.now());
@@ -281,7 +296,7 @@ public class BorrowingController {
         if (borrowingInfo == null){
             return Result.error("Fail: borrowing info is null");
         }
-        User user =userService.getUserByBorrowingId(borrowId);
+        User user = userService.getUserByBorrowingId(borrowId);
         BigDecimal money = new BigDecimal(String.valueOf(user.getMoney()));
 
         if (money.compareTo(BigDecimal.TEN) < 0){

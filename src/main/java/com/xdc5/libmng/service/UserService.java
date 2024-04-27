@@ -69,12 +69,13 @@ public class UserService {
     public void addUser(User user){
         userMapper.addUser(user);
     }
+
     public boolean checkPermsByID(Integer uid) {
         User user = userMapper.getUserById(uid);
         //检查用户存在
         if(user == null)
             return false;
-        return user.getBorrowPerms() == 1;
+        return user.getBorrowPerms() > 0;
     }
 
     //按照姓名模糊查找读者情况
