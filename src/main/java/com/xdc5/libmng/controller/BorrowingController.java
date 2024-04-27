@@ -298,15 +298,15 @@ public class BorrowingController {
         User user = userService.getUserByBorrowingId(borrowId);
         BigDecimal money = new BigDecimal(String.valueOf(user.getMoney()));
 
-        if (money.compareTo(BigDecimal.ZERO) < 0){
+        if (money.compareTo(BigDecimal.ONE) < 0){
             return Result.error("Fail: not enough money");
         }
         LocalDate DueDate = borrowingInfo.getDueDate();
-
-        LocalDate borrowDate = borrowingInfo.getBorrowDate();
-        if (borrowDate.plusDays(Borrowing.MaxBorrowDate).isBefore(DueDate)){
-            return Result.error("Fail: can't overdue return");
-        }
+//        //借阅最长时间限制
+//        LocalDate borrowDate = borrowingInfo.getBorrowDate();
+//        if (borrowDate.plusDays(Borrowing.MaxBorrowDate).isBefore(DueDate)){
+//            return Result.error("Fail: can't overdue return");
+//        }
         //每次延期减1元
         money = money.subtract(BigDecimal.ONE);
         user.setMoney(money);
