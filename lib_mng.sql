@@ -52,14 +52,12 @@ CREATE TABLE Borrowing
     returnDate        DATE DEFAULT NULL,
 
     # 延期日期, 为NULL则不延期
-    # FIXME 暂时弃用
-    lateRetDate       DATE DEFAULT NULL,
+    # lateRetDate       DATE DEFAULT NULL,
     # 借阅的审批状态,0为未审批, 1为同意, 2为拒绝
     # FIXME 考虑弃用，改为减少borrowPerms
     borrowAprvStatus  INT  DEFAULT 0,
     # 延期的审批状态,Null为未申请, 0为未审批, 1为同意, 2为拒绝
-    # FIXME 暂时弃用
-    lateRetAprvStatus INT  DEFAULT NULL,
+    # lateRetAprvStatus INT  DEFAULT NULL,
 
     FOREIGN KEY (userId) REFERENCES User (userId),
     FOREIGN KEY (instanceId) REFERENCES BookInstance (instanceId) ON DELETE CASCADE

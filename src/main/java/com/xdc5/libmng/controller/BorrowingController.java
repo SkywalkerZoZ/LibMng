@@ -51,26 +51,26 @@ public class BorrowingController {
     }
 
 
-    @GetMapping("/admin/borrowing/late-returns")
-    public Result showlateRetAprv(@RequestParam Integer approved) {
-//        if (borrowingService.getLateRetAprv(approved) == null || borrowingService.getLateRetAprv(approved).isEmpty()) {
-//            return Result.error("Fail: late return approval is null or empty");
+//    @GetMapping("/admin/borrowing/late-returns")
+//    public Result showlateRetAprv(@RequestParam Integer approved) {
+////        if (borrowingService.getLateRetAprv(approved) == null || borrowingService.getLateRetAprv(approved).isEmpty()) {
+////            return Result.error("Fail: late return approval is null or empty");
+////        }
+//
+//        List<Borrowing> LateRetAprv = borrowingService.getLateRetAprv(approved);
+//        List<HashMap<String, Object>> allInfoLists = new ArrayList<>();
+//        for (Borrowing request : LateRetAprv) {
+//
+//            String userName = bookService.getUserName(request.getUserId());
+//            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
+//            HashMap<String, Object> infoList = borrowingService.extractAprvInfo(request, userName, isbn);
+//            String lateRetDate = DateTimeUtils.dateToStr(request.getLateRetDate(), "yyyy-MM-dd");
+//            infoList.put("lateRetDate", lateRetDate);
+//            infoList.put("lateRetAprvStatus", request.getLateRetAprvStatus());
+//            allInfoLists.add(infoList);
 //        }
-
-        List<Borrowing> LateRetAprv = borrowingService.getLateRetAprv(approved);
-        List<HashMap<String, Object>> allInfoLists = new ArrayList<>();
-        for (Borrowing request : LateRetAprv) {
-
-            String userName = bookService.getUserName(request.getUserId());
-            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
-            HashMap<String, Object> infoList = borrowingService.extractAprvInfo(request, userName, isbn);
-            String lateRetDate = DateTimeUtils.dateToStr(request.getLateRetDate(), "yyyy-MM-dd");
-            infoList.put("lateRetDate", lateRetDate);
-            infoList.put("lateRetAprvStatus", request.getLateRetAprvStatus());
-            allInfoLists.add(infoList);
-        }
-        return Result.success(allInfoLists, "Success : get /admin/borrowing/late-returns");
-    }
+//        return Result.success(allInfoLists, "Success : get /admin/borrowing/late-returns");
+//    }
 
     @PutMapping("/admin/borrowing/applications/{borrowingId}")
     public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
@@ -96,26 +96,26 @@ public class BorrowingController {
         return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
     }
 
-    @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
-    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
-        int agree= (int) requestBody.get("agree");
-        Borrowing borrowingInfo=borrowingService.getBorrowingInfo(borrowingId);
-        if (agree != 0 && agree != 1) {
-            return Result.error("Fail: input error");
-        }
-        if (borrowingInfo==null) {
-            return Result.error("Fail: borrow approval not found");
-        }
-        int borrowAprvStatus=borrowingInfo.getBorrowAprvStatus();
-        if (borrowAprvStatus==0) {
-            return Result.error("Fail: approval has not processed");
-        }
-        if (Objects.equals(borrowingInfo.getLateRetAprvStatus(), agree+1)) {
-            return Result.error("Fail: already processed");
-        }
-        borrowingService.processLateRetAprv(agree, borrowingId, borrowingInfo.getLateRetDate());
-        return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
-    }
+//    @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
+//    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
+//        int agree= (int) requestBody.get("agree");
+//        Borrowing borrowingInfo=borrowingService.getBorrowingInfo(borrowingId);
+//        if (agree != 0 && agree != 1) {
+//            return Result.error("Fail: input error");
+//        }
+//        if (borrowingInfo==null) {
+//            return Result.error("Fail: borrow approval not found");
+//        }
+//        int borrowAprvStatus=borrowingInfo.getBorrowAprvStatus();
+//        if (borrowAprvStatus==0) {
+//            return Result.error("Fail: approval has not processed");
+//        }
+//        if (Objects.equals(borrowingInfo.getLateRetAprvStatus(), agree+1)) {
+//            return Result.error("Fail: already processed");
+//        }
+//        borrowingService.processLateRetAprv(agree, borrowingId, borrowingInfo.getLateRetDate());
+//        return Result.success("Success: put /admin/borrowing/late-returns/{borrowingId}");
+//    }
 
     //查看未归还的读者列表
     @GetMapping("/admin/borrowing/overdue-readers")
@@ -254,7 +254,7 @@ public class BorrowingController {
         {
             return Result.error("Fail: instanceId not found");
         }
-        Borrowing borrowing = borrowingService.getBorrowingByInstanceId(instanceId);
+        Borrowing borrowing = borrowingService.getUnretByInstanceId(instanceId);
         if (borrowing == null){
             return Result.error("Fail: borrowing info is null");
         }

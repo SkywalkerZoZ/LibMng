@@ -222,7 +222,7 @@ export default {
 ```json
 {
 	"username":"test1",
-	"password":"1234"
+	"password":"1234",
 }
 ```
 
@@ -1265,7 +1265,7 @@ export default {
 
 
 
-## 查看迟还申请
+## ~~查看迟还申请~~
 
 **接口地址**
 
@@ -1450,7 +1450,7 @@ export default {
 
 
 
-## 处理迟还申请
+## ~~处理迟还申请~~
 
 **接口地址**
 
@@ -1826,7 +1826,7 @@ tip: borrowDate为当前时间
 
 
 
-## 归还图书
+## ~~归还图书~~
 
 **接口地址**
 
@@ -1882,9 +1882,51 @@ tip: borrowDate为当前时间
 
 
 
+## 迟还图书
 
 
-## 迟还申请
+
+**接口地址**
+
+| 方法 | 地址                          |
+| ---- | ----------------------------- |
+| POST | /user/borrowing/lateretBorrow |
+
+
+
+**请求体参数**
+
+| 参数     | 类型 | 是否必需 | 描述       |
+| -------- | ---- | -------- | ---------- |
+| borrowId | int  | 是       | 借阅记录Id |
+
+```json
+{
+    "borrowId": 2
+}
+```
+
+**响应参数**
+
+| 参数    | 类型   | 描述     |
+| ------- | ------ | -------- |
+| code    | int    | 状态码   |
+| message | string | 提示信息 |
+| data    | object | 数据     |
+
+
+
+```json
+{
+    "code": 200,
+    "message": "Success: post /admin/borrowing/lateret-request",
+    "data": null
+}
+```
+
+
+
+## ~~迟还申请~~
 
 
 
@@ -2012,7 +2054,7 @@ tip: borrowDate为当前时间
 
 | 参数   | 类型 | 是否必需 | 描述                                                         |
 | ------ | ---- | -------- | ------------------------------------------------------------ |
-| status | int  | 是       | 借阅状态<br />未审批（0）、未通过（1）、已经归还（2）、未归还（不可申请迟还（3）、可申请迟还（4）） |
+| status | int  | 是       | 借阅状态<br />未审批（0）、未通过（1）、已经归还（2）、未归还（3） |
 
 ```
 未审批(0)
@@ -2020,10 +2062,7 @@ tip: borrowDate为当前时间
 	未通过(1)
 	已通过
 		已经归还(2)
-		未归还
-			不可申请迟还(3)
-				包括迟还被拒绝和迟还未审批和迟还同意
-			可申请迟还(4)
+		未归还(3)
 			
 ```
 
@@ -2042,15 +2081,7 @@ borrowAprvStatus=2
 returnDate IS NOT NULL
 (borrowAprvStatus=1)
 
-不可申请迟还(3)
-lateRetAprvStatus IS NOT NULL
-returnDate IS NULL
-(borrowAprvStatus=1)
-
-可申请迟还(4)
-lateRetAprvStatus IS NULL
-returnDate IS NULL
-(borrowAprvStatus=1)
+未归还(3)
 ```
 
 
@@ -2297,68 +2328,6 @@ returnDate IS NULL
 
 
 
-## 用户查看自己的订单
-
-**接口地址**
-
-| 方法 | 地址  |
-| ---- | ----- |
-| GET  | /bill |
-
-
-
-
-**响应参数**
-
-
-| 参数                   | 类型            | 描述       |
-|----------------------|---------------|----------|
-| code                 | int           | 状态码      |
-| message              | string        | 提示信息     |
-| data                 | array         | 订单记录列表   |
-| data[i].billId       | int           | 订单记录ID   |
-| data[i].userId       | int           | 用户ID     |
-| data[i].billSubject  | string        | 订单主题     |
-| data[i].billAmount   | BigDecimal    | 订单金额     |
-| data[i].billDate     | LocalDateTime | 订单时间     |
-| data[i].billStatus   | int           | 订单状态     |
-
-```json
-{
-    "code": 200,
-    "message": "Success: get /bill",
-    "data": [
-        {
-            "billId": 1,
-            "userId": 1,
-            "billSubject": "recharge",
-            "billAmount": 10.99,
-            "billDate": "2024-04-25T21:35:33",
-            "billStatus": 0
-        },
-        {
-            "billId": 2,
-            "userId": 1,
-            "billSubject": "recharge",
-            "billAmount": 10.99,
-            "billDate": "2024-04-25T21:39:17",
-            "billStatus": 1
-        },
-        {
-            "billId": 3,
-            "userId": 1,
-            "billSubject": "recharge",
-            "billAmount": 20.00,
-            "billDate": "2024-04-26T13:24:56",
-            "billStatus": 0
-        }
-    ]
-}
-```
-
-
-
-
 # 游客
 
 
@@ -2366,7 +2335,6 @@ returnDate IS NULL
 ## 图书目录
 
 ## 图书检索
-
 
 以上同管理员
 

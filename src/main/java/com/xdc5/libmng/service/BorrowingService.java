@@ -28,9 +28,9 @@ public class BorrowingService {
     public List<Borrowing> getBorrowAprv(Integer approved){
         return borrowingMapper.getBorrowAprv(approved);
     }
-    public List<Borrowing> getLateRetAprv(Integer approved){
-        return borrowingMapper.getLateRetAprv(approved);
-    }
+//    public List<Borrowing> getLateRetAprv(Integer approved){
+//        return borrowingMapper.getLateRetAprv(approved);
+//    }
     public void updateBorrowAprvStatus(Integer agree, Integer borrowingId){
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowingId(borrowingId);
@@ -42,18 +42,18 @@ public class BorrowingService {
         borrowingMapper.updateBorrowing(borrowing);
     }
 
-    public void processLateRetAprv(Integer agree, Integer borrowingId, LocalDate date){
-        Borrowing borrowing = new Borrowing();
-        borrowing.setBorrowingId(borrowingId);
-        if (agree == 1){
-            borrowing.setLateRetAprvStatus(1);
-            borrowing.setDueDate(date);
-        }else if(agree == 0){
-            borrowing.setLateRetAprvStatus(2);
-            borrowingMapper.updateLateRetDateToNULL(borrowingId);
-        }
-        borrowingMapper.updateBorrowing(borrowing);
-    }
+//    public void processLateRetAprv(Integer agree, Integer borrowingId, LocalDate date){
+//        Borrowing borrowing = new Borrowing();
+//        borrowing.setBorrowingId(borrowingId);
+//        if (agree == 1){
+//            borrowing.setLateRetAprvStatus(1);
+//            borrowing.setDueDate(date);
+//        }else if(agree == 0){
+//            borrowing.setLateRetAprvStatus(2);
+//            borrowingMapper.updateLateRetDateToNULL(borrowingId);
+//        }
+//        borrowingMapper.updateBorrowing(borrowing);
+//    }
 
 
     public Borrowing getBorrowingInfo(Integer borrowingId){
@@ -144,13 +144,14 @@ public class BorrowingService {
         return data;
     }
 
-    public void lateRetAprv(LocalDate date,Integer borrowingId){
-        Borrowing borrowing = new Borrowing();
-        borrowing.setLateRetDate(date);
-        borrowing.setBorrowingId(borrowingId);
-        borrowing.setLateRetAprvStatus(0);
-        borrowingMapper.updateBorrowing(borrowing);
-    }
+//    public void lateRetAprv(LocalDate date,Integer borrowingId){
+//        Borrowing borrowing = new Borrowing();
+//        borrowing.setLateRetDate(date);
+//        borrowing.setBorrowingId(borrowingId);
+//        borrowing.setLateRetAprvStatus(0);
+//        borrowingMapper.updateBorrowing(borrowing);
+//    }
+
     public List<Borrowing> getBorrowingByStatus(Integer userId,Integer status){
         //未审批
         if (status == 0){
@@ -168,23 +169,30 @@ public class BorrowingService {
         }
         //已经归还
         else if (status == 2){
-            return borrowingMapper.getRetBorrowing(null, 1,userId);
+            return borrowingMapper.getRetBorrowing(1,userId);
         }
-        //不可迟还
+        //未归还
         else if (status == 3){
-            return borrowingMapper.getRetBorrowing(0,0,userId);
+            return borrowingMapper.getRetBorrowing(0,userId);
         }
-        //可迟还
-        else if (status == 4){
-            return borrowingMapper.getRetBorrowing(1,0,userId);
-        }
+//        //已经归还
+//        else if (status == 2){
+//            return borrowingMapper.getRetBorrowing(null, 1,userId);
+//        }
+//        //未归还
+//        else if (status == 3){
+//            return borrowingMapper.getRetBorrowing(0,0,userId);
+//        }
+//        //可迟还
+//        else if (status == 4){
+//            return borrowingMapper.getRetBorrowing(1,0,userId);
+//        }
         else
         {
             return null;
         }
     }
-    public Borrowing getBorrowingByInstanceId(Integer instanceId){
-        Borrowing borrowing = borrowingMapper.getBorrowingByInstanceId(instanceId);
-        return borrowingMapper.getBorrowingByInstanceId(instanceId);
+    public Borrowing getUnretByInstanceId(Integer instanceId){
+        return borrowingMapper.getUnretByInstanceId(instanceId);
     }
 }
