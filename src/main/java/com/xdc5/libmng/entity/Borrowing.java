@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class Borrowing {
     public static final int Borrow = 5;
     public static final int Lateret = 2;
+    public static final int MaxBorrowDate = 30;
     private Integer borrowingId;
     private Integer userId;
     private Integer instanceId;

@@ -406,7 +406,7 @@ export default {
         "avatar": null,
         "borrowPerms": 1,
         "userRole": "admin",
-        "money": 0
+        "money": 100
     }
 }
 ```
@@ -1778,6 +1778,7 @@ TODO 改名未归还的申请？或者修改方法？
 | data            | object | 数据                     |
 | data.instanceId | int    | 借阅的书实体ID（哪一本） |
 | data.location   | string | 借阅图书位置             |
+| data.duedate    | string | 借阅到期时间             |
 
 
 
@@ -1786,8 +1787,9 @@ TODO 改名未归还的申请？或者修改方法？
     "code": 200,
     "message": "Success: post /user/borrowing",
     "data": {
-        "instanceId":6,
-        "location":"B333"
+        "instanceId": 6,
+        "dueDate": "2024-05-02",
+        "location": "A-6"
     }
 }
 ```
@@ -1908,19 +1910,30 @@ tip: borrowDate为当前时间
 
 **响应参数**
 
-| 参数    | 类型   | 描述     |
-| ------- | ------ | -------- |
-| code    | int    | 状态码   |
-| message | string | 提示信息 |
-| data    | object | 数据     |
+| 参数          | 类型       | 描述         |
+| ------------- | ---------- | ------------ |
+| code          | int        | 状态码       |
+| message       | string     | 提示信息     |
+| data          | object     | 数据         |
+| data.username | string     | 用户名字     |
+| data.money    | BigDecimal | 用户剩余金额 |
 
 
 
 ```json
 {
     "code": 200,
-    "message": "Success: post /admin/borrowing/lateret-request",
-    "data": null
+    "message": "Success: post /admin/borrowing/lateretBorrow",
+    "data": {
+        "userId": 1,
+        "username": "jia",
+        "password": "1234",
+        "email": "123456789@qq.com",
+        "avatar": null,
+        "borrowPerms": 0,
+        "userRole": "admin",
+        "money": 99.00
+    }
 }
 ```
 

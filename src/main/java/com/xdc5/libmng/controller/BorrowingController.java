@@ -180,12 +180,13 @@ public class BorrowingController {
         //加入是否删除了预约
         if(reservationService.checkIfReserved(reservation))
         {
-//            data.put("ReservationInfo","cancel Reserved");
+//          data.put("ReservationInfo","cancel Reserved");
             reservationService.cancelReservation(reservation);
         }
 
         data.put("instanceId",availableBook);
         data.put("location",bookService.getLocation(availableBook));
+        data.put("dueDate",dueDate);
         return Result.success(data,"Success: post /user/borrowing");
     }
 
@@ -256,7 +257,6 @@ public class BorrowingController {
 //        return Result.success("Success: post /admin/borrowing/lateret-request");
 //    }
 
-    //TODO borrowPerms
     @PutMapping("/admin/borrowing/return/{instanceId}")
     public Result returnConfirm(@PathVariable Integer instanceId){
         if(instanceId==null)
@@ -282,10 +282,9 @@ public class BorrowingController {
         bookService.updateStatus(instance);
         borrowing.setReturnDate(LocalDate.now());
         borrowingService.updateBorrowing(borrowing);
-        return Result.success(borrowing,"Success: put /admin/borrowing/return/{instanceId}");
+        return Result.success("Success: put /admin/borrowing/return/{instanceId}");
     }
 
-    //TODO 修改latereturn不需要审批，改为每次申请扣1元
     @PostMapping("/user/borrowing/lateretBorrow")
     public Result lateretBorrow(@RequestBody Map<String, Object> requestBody){
         if (requestBody == null || requestBody.isEmpty()){
@@ -299,15 +298,25 @@ public class BorrowingController {
         User user = userService.getUserByBorrowingId(borrowId);
         BigDecimal money = new BigDecimal(String.valueOf(user.getMoney()));
 
-        if (money.compareTo(BigDecimal.TEN) < 0){
+        if (money.compareTo(BigDecimal.ZERO) < 0){
             return Result.error("Fail: not enough money");
         }
-        LocalDate dueDate=borrowingInfo.getDueDate().plusDays(Borrowing.Lateret);
+        LocalDate DueDate = borrowingInfo.getDueDate();
+
+        LocalDate borrowDate = borrowingInfo.getBorrowDate();
+        if (borrowDate.plusDays(Borrowing.MaxBorrowDate).isBefore(DueDate)){
+            return Result.error("Fail: can't overdue return");
+        }
+        //每次延期减1元
+        money = money.subtract(BigDecimal.ONE);
+        user.setMoney(money);
+        userService.updateUserInfo(user);
+        DueDate = DueDate.plusDays(Borrowing.Lateret);
         Borrowing bInfo = new Borrowing();
-        bInfo.setDueDate(dueDate);
+        bInfo.setDueDate(DueDate);
         bInfo.setBorrowingId(borrowId);
         borrowingService.updateBorrowing(bInfo);
-        return Result.success("Success: post /admin/borrowing/lateretBorrow");
+        return Result.success(user,"Success: post /admin/borrowing/lateretBorrow");
     }
 
 }
