@@ -1925,14 +1925,7 @@ tip: borrowDate为当前时间
     "code": 200,
     "message": "Success: post /admin/borrowing/lateretBorrow",
     "data": {
-        "userId": 1,
-        "username": "jia",
-        "password": "1234",
-        "email": "123456789@qq.com",
-        "avatar": null,
-        "borrowPerms": 0,
-        "userRole": "admin",
-        "money": 99.00
+        "money": 86.00
     }
 }
 ```
