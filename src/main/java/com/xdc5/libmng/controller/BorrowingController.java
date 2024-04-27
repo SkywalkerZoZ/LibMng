@@ -156,9 +156,14 @@ public class BorrowingController {
         if (availableBook==null){
             return Result.error("Fail: no available instance exists");
         }
-
-        //可借阅数量减1
         User user = userService.getUserInfo(userId);
+        if (user==null){
+            return Result.error("Fail: no user exists");
+        }
+        if (user.getMoney().compareTo(BigDecimal.ZERO) <= 0){
+            return Result.error("Fail: not enough money");
+        }
+        //可借阅数量减1
         user.setBorrowPerms(user.getBorrowPerms() - 1);
         userService.updateUserInfo(user);
 

@@ -89,5 +89,14 @@ public class UserInfoController {
         return Result.success("Success: put /user/profile");
     }
 
+    @GetMapping("/user/status")
+    public Result showUserStatus(HttpServletRequest request) {
+        Integer userId = (Integer) request.getAttribute("userId");
+        User user = userService.getUserInfo(userId);
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("money", user.getMoney());
+        data.put("borrowPerms", user.getBorrowPerms());
+        return Result.success(data, "Success: get /user/status");
+    }
 
 }

@@ -12,7 +12,7 @@ CREATE TABLE User
     avatar      MEDIUMBLOB,
     # 借阅权限, 1表示正常,0表示不能借阅所有书籍
     # TODO borrowPerms修改为能借阅书籍的数量
-    borrowPerms INT            DEFAULT 1,
+    borrowPerms INT            DEFAULT 3,
     userRole    ENUM ('user', 'admin') NOT NULL
 );
 # 不同ISBN的书籍信息
@@ -54,7 +54,6 @@ CREATE TABLE Borrowing
     # 延期日期, 为NULL则不延期
     # lateRetDate       DATE DEFAULT NULL,
     # 借阅的审批状态,0为未审批, 1为同意, 2为拒绝
-    # FIXME 考虑弃用，改为减少borrowPerms
     # borrowAprvStatus  INT  DEFAULT 0,
     # 延期的审批状态,Null为未申请, 0为未审批, 1为同意, 2为拒绝
     # lateRetAprvStatus INT  DEFAULT NULL,
