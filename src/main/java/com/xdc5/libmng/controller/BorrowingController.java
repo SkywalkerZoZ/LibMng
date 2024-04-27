@@ -316,7 +316,9 @@ public class BorrowingController {
         bInfo.setDueDate(DueDate);
         bInfo.setBorrowingId(borrowId);
         borrowingService.updateBorrowing(bInfo);
-        return Result.success(user,"Success: post /admin/borrowing/lateretBorrow");
+        HashMap<String,Object> data = new HashMap<>();
+        data.put("money",money);
+        return Result.success(data,"Success: post /admin/borrowing/lateretBorrow");
     }
 
 }
