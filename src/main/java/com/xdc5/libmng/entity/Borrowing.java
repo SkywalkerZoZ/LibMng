@@ -13,8 +13,8 @@ public class Borrowing {
     private Integer instanceId;
     private LocalDate borrowDate;
     private LocalDate dueDate;
-    //private LocalDate lateRetDate;
     private LocalDate returnDate;
-    private Integer borrowAprvStatus;
+    //private LocalDate lateRetDate;
+    //private Integer borrowAprvStatus;
     //private Integer lateRetAprvStatus;
 }

@@ -30,25 +30,26 @@ public class BorrowingController {
     UserService userService;
     @Autowired
     ReservationService reservationService;
-    @GetMapping("/admin/borrowing/applications")
-    public Result showBorrowAprv(@RequestParam Integer approved) {
-        if (borrowingService.getBorrowAprv(approved) == null) {
-            return Result.error("Fail: borrowing approval is null");
-        }
 
-        List<Borrowing> BorrowingRequest = borrowingService.getBorrowAprv(approved);
-        List<HashMap<String, Object>> allInfoLists = new ArrayList<>();
-        for (Borrowing request : BorrowingRequest) {
-            String userName = bookService.getUserName(request.getUserId());
-            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
-            String location = bookService.getLocationByIsbn(isbn);
-            HashMap<String, Object> info = borrowingService.extractAprvInfo(request, userName, isbn);
-            info.put("borrowAprvStatus", request.getBorrowAprvStatus());
-            info.put("location", location);
-            allInfoLists.add(info);
-        }
-        return Result.success(allInfoLists, "Success: get /admin/borrowing/applications");
-    }
+//    @GetMapping("/admin/borrowing/applications")
+//    public Result showBorrowAprv(@RequestParam Integer approved) {
+//        if (borrowingService.getBorrowAprv(approved) == null) {
+//            return Result.error("Fail: borrowing approval is null");
+//        }
+//
+//        List<Borrowing> BorrowingRequest = borrowingService.getBorrowAprv(approved);
+//        List<HashMap<String, Object>> allInfoLists = new ArrayList<>();
+//        for (Borrowing request : BorrowingRequest) {
+//            String userName = bookService.getUserName(request.getUserId());
+//            String isbn = bookService.getIsbnByInstanceId(request.getInstanceId());
+//            String location = bookService.getLocationByIsbn(isbn);
+//            HashMap<String, Object> info = borrowingService.extractAprvInfo(request, userName, isbn);
+//            info.put("borrowAprvStatus", request.getBorrowAprvStatus());
+//            info.put("location", location);
+//            allInfoLists.add(info);
+//        }
+//        return Result.success(allInfoLists, "Success: get /admin/borrowing/applications");
+//    }
 
 
 //    @GetMapping("/admin/borrowing/late-returns")
@@ -72,33 +73,33 @@ public class BorrowingController {
 //        return Result.success(allInfoLists, "Success : get /admin/borrowing/late-returns");
 //    }
 
-    @PutMapping("/admin/borrowing/applications/{borrowingId}")
-    public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
-        int agree= (int) requestBody.get("agree");
-        if (agree != 0 && agree != 1 ) {
-            return Result.error("Fail: input error");
-        }
-        Borrowing borrowingInfo=borrowingService.getBorrowingInfo(borrowingId);
-        if (borrowingInfo == null) {
-            return Result.error("Fail: this borrow approval not found");
-        }
-        if (Objects.equals(borrowingInfo.getBorrowAprvStatus(), agree+1)) {
-            return Result.error("Fail: already processed");
-        }
-        borrowingService.updateBorrowAprvStatus(agree, borrowingId);
-        if(agree == 0){
-            User user = userService.getUserByBorrowingId(borrowingId);
-            user.setBorrowPerms(user.getBorrowPerms() + 1);
-            userService.updateUserInfo(user);
-
-            BookInstance update = new BookInstance();
-            update.setBorrowStatus(0);
-            update.setInstanceId(borrowingInfo.getInstanceId());
-            bookService.updateStatus(update);
-        }
-
-        return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
-    }
+//    @PutMapping("/admin/borrowing/applications/{borrowingId}")
+//    public Result processBorrowAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
+//        int agree= (int) requestBody.get("agree");
+//        if (agree != 0 && agree != 1 ) {
+//            return Result.error("Fail: input error");
+//        }
+//        Borrowing borrowingInfo=borrowingService.getBorrowingInfo(borrowingId);
+//        if (borrowingInfo == null) {
+//            return Result.error("Fail: this borrow approval not found");
+//        }
+//        if (Objects.equals(borrowingInfo.getBorrowAprvStatus(), agree+1)) {
+//            return Result.error("Fail: already processed");
+//        }
+//        borrowingService.updateBorrowAprvStatus(agree, borrowingId);
+//        if(agree == 0){
+//            User user = userService.getUserByBorrowingId(borrowingId);
+//            user.setBorrowPerms(user.getBorrowPerms() + 1);
+//            userService.updateUserInfo(user);
+//
+//            BookInstance update = new BookInstance();
+//            update.setBorrowStatus(0);
+//            update.setInstanceId(borrowingInfo.getInstanceId());
+//            bookService.updateStatus(update);
+//        }
+//
+//        return Result.success("Success: put /admin/borrowing/applications/{borrowingId}");
+//    }
 
 //    @PutMapping("/admin/borrowing/late-returns/{borrowingId}")
 //    public Result processLateRetAprv(@PathVariable Integer borrowingId, @RequestBody Map<String, Object> requestBody) {
@@ -156,7 +157,7 @@ public class BorrowingController {
             return Result.error("Fail: no available instance exists");
         }
 
-        //借阅数量暂时减1，若未通过，加回来
+        //可借阅数量减1
         User user = userService.getUserInfo(userId);
         user.setBorrowPerms(user.getBorrowPerms() - 1);
         userService.updateUserInfo(user);
@@ -174,9 +175,6 @@ public class BorrowingController {
         reservation.setIsbn(isbn);
         reservation.setUserId(userId);
 
-        //返回数据信息
-        HashMap<String,Object> data = new HashMap<>();
-
         //加入是否删除了预约
         if(reservationService.checkIfReserved(reservation))
         {
@@ -184,6 +182,8 @@ public class BorrowingController {
             reservationService.cancelReservation(reservation);
         }
 
+        //返回数据信息
+        HashMap<String,Object> data = new HashMap<>();
         data.put("instanceId",availableBook);
         data.put("location",bookService.getLocation(availableBook));
         data.put("dueDate",dueDate);

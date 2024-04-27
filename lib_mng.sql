@@ -55,7 +55,7 @@ CREATE TABLE Borrowing
     # lateRetDate       DATE DEFAULT NULL,
     # 借阅的审批状态,0为未审批, 1为同意, 2为拒绝
     # FIXME 考虑弃用，改为减少borrowPerms
-    borrowAprvStatus  INT  DEFAULT 0,
+    # borrowAprvStatus  INT  DEFAULT 0,
     # 延期的审批状态,Null为未申请, 0为未审批, 1为同意, 2为拒绝
     # lateRetAprvStatus INT  DEFAULT NULL,
 

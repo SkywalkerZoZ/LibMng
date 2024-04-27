@@ -17,8 +17,8 @@
     </delete>
 
     <select id="getBorrowing" parameterType="com.xdc5.libmng.entity.Borrowing" resultType="com.xdc5.libmng.entity.Borrowing">
-        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,borrowAprvStatus,returnDate
-        <!-- ,lateRetDate,lateRetAprvStatus -->
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,returnDate
+        <!-- ,lateRetDate,lateRetAprvStatus,borrowAprvStatus -->
         FROM Borrowing
         <where>
             <if test="borrowingId != null">
@@ -39,9 +39,9 @@
 <!--            <if test="lateRetDate !=null">-->
 <!--                AND lateRetDate=#{lateRetDate}-->
 <!--            </if>-->
-            <if test="borrowAprvStatus !=null">
-                AND borrowAprvStatus=#{borrowAprvStatus}
-            </if>
+<!--            <if test="borrowAprvStatus !=null">-->
+<!--                AND borrowAprvStatus=#{borrowAprvStatus}-->
+<!--            </if>-->
 <!--            <if test="lateRetAprvStatus !=null">-->
 <!--                AND lateRetAprvStatus=#{lateRetAprvStatus}-->
 <!--            </if>-->
@@ -52,13 +52,14 @@
         UPDATE Borrowing
         <set>
             <if test="dueDate != null">dueDate = #{dueDate},</if>
-<!--            <if test="lateRetDate != null">lateRetDate = #{lateRetDate},</if>-->
-            <if test="borrowAprvStatus != null">borrowAprvStatus = #{borrowAprvStatus},</if>
-<!--            <if test="lateRetAprvStatus != null">lateRetAprvStatus = #{lateRetAprvStatus},</if>-->
             <if test="returnDate != null">returnDate = #{returnDate},</if>
+<!--            <if test="lateRetDate != null">lateRetDate = #{lateRetDate},</if>-->
+<!--            <if test="borrowAprvStatus != null">borrowAprvStatus = #{borrowAprvStatus},</if>-->
+<!--            <if test="lateRetAprvStatus != null">lateRetAprvStatus = #{lateRetAprvStatus},</if>-->
         </set>
         WHERE borrowingId = #{borrowingId}
     </update>
+
 <!--    <update id="updateLateRetDateToNULL">-->
 <!--        UPDATE Borrowing-->
 <!--        set lateRetDate = NULL-->
@@ -75,19 +76,21 @@
         </where>
     </select>
 
-    <select id="getBorrowAprv" resultType="com.xdc5.libmng.entity.Borrowing">
-        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,borrowAprvStatus
-        <!-- ,lateRetDate,lateRetAprvStatus -->
-        FROM Borrowing
-        <where>
-            <if test="approved==0">
-                AND borrowAprvStatus=0
-            </if>
-            <if test="approved==1">
-                AND borrowAprvStatus!=0
-            </if>
-        </where>
-    </select>
+<!--    <select id="getBorrowAprv" resultType="com.xdc5.libmng.entity.Borrowing">-->
+<!--        SELECT borrowingId,userId,instanceId,borrowDate,dueDate-->
+<!--        &lt;!&ndash; ,lateRetDate,lateRetAprvStatus,borrowAprvStatus &ndash;&gt;-->
+<!--        FROM Borrowing-->
+<!--        <where>-->
+<!--            <if test="approved==0">-->
+<!--                AND borrowAprvStatus=0-->
+<!--            </if>-->
+<!--            <if test="approved==1">-->
+<!--                AND borrowAprvStatus!=0-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+
 <!--    <select id="getLateRetAprv" resultType="com.xdc5.libmng.entity.Borrowing">-->
 <!--        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,borrowAprvStatus,lateRetAprvStatus-->
 <!--        &lt;!&ndash; ,lateRetDate &ndash;&gt;-->
@@ -101,6 +104,7 @@
 <!--            </if>-->
 <!--        </where>-->
 <!--    </select>-->
+
     <select id="getUnretReader" resultType="java.util.HashMap">
         SELECT u.userId, u.username, u.email, b.borrowDate, b.dueDate, b.borrowingId
         FROM USER u
@@ -108,9 +112,10 @@
         WHERE b.returnDate IS NULL;
 
     </select>
+
     <select id="getRetBorrowing" resultType="com.xdc5.libmng.entity.Borrowing">
-        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,borrowAprvStatus,returnDate
-        <!-- ,lateRetDate,lateRetAprvStatus -->
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,returnDate
+        <!-- ,lateRetDate,lateRetAprvStatus,borrowAprvStatus -->
         FROM Borrowing
         <where>
             userId=#{userId}
@@ -126,9 +131,10 @@
 <!--            <if test="lateret==1">-->
 <!--                AND lateRetAprvStatus IS NULL-->
 <!--            </if>-->
-            AND borrowAprvStatus=1
+--             AND borrowAprvStatus=1
         </where>
     </select>
+
     <select id="getInstanceId" resultType="java.lang.Integer">
         SELECT instanceId
         FROM Borrowing
@@ -136,15 +142,15 @@
     </select>
 
     <select id="getUnretByInstanceId" resultType="com.xdc5.libmng.entity.Borrowing">
-        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,borrowAprvStatus,returnDate
-        <!-- ,lateRetDate,lateRetAprvStatus -->
+        SELECT borrowingId,userId,instanceId,borrowDate,dueDate,returnDate
+        <!-- ,lateRetDate,lateRetAprvStatus,borrowAprvStatus -->
         FROM Borrowing
         <where>
             <if test="instanceId!=null">
                 AND instanceId=#{instanceId}
             </if>
             AND returnDate IS NULL
-            AND borrowAprvStatus = 1
+--             AND borrowAprvStatus = 1
         </where>
     </select>
 
