@@ -121,9 +121,12 @@ if __name__ == "__main__":
         ('9787506778435', 'Compendium of Materia Medica', 'Li Shizhen', 'A great work on medical science', '本草纲目.jpg', 'B-6'),
         ('9787010001722', 'Das Kapital', 'Karl Marx', 'A work that reveals the laws of capitalist society development through deep analysis of the capitalist mode of production', '资本论.jpg', 'B-7'),
         ('9789620865053', 'One Thousand and One Nights', 'Arab', 'A gem of Arabian folklore literature', '一千零一夜.jpg', 'B-8'),
+        # English Book
         ('9780743477123', 'Hamlet', 'Shakespeare', 'The story of Prince Hamlet avenging his father in Denmark', '哈姆雷特.jpg', 'B-9'),
         ('9787500142362', 'Robinson Crusoe', 'Defoe', 'A novel showing the emerging bourgeoisie', '鲁滨逊漂流记.jpg', 'C-1'),
         ('9789575457068', 'Les Misérables', 'Hugo', 'A literature of sincere humanitarianism', '悲惨世界.jpg', 'C-2')
+        # SPM Book
+#         ('9781337101356','Information Technology Project Management','Kathy Schwalbe','Develop a strong understanding of IT project management as you learn to apply today’s most effective project management tools and techniques with the unique approach found in Schwalbe\'s INFORMATION TECHNOLOGY PROJECT MANAGEMENT, 9E. Examine the latest developments and skills as you prepare for the Project Management Professional (PMP) or Certified Associate in Project Management (CAPM) exams. This edition reflects content from the latest PMBOK Guide, 6E and the Agile Practice Guide while providing a meaningful context for understanding project management. Hundreds of timely examples highlight IT projects, while discussion, exercises and cases reinforce learning. Examples from familiar companies featured in today\'s news, and a guide to using Microsoft Project 2016 help you master IT project management skills that are marketable across the globe. Important Notice: Media content referenced within the product description or the product text may not be available in the ebook version.')
     ]
 
     users_data = [

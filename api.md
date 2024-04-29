@@ -2062,14 +2062,13 @@ tip: borrowDate为当前时间
 
 
 
-| 参数     | 类型   | 描述                     |
-| -------- | ------ | ------------------------ |
-| userId   | int    | 用户ID                   |
-| username | string | 用户名                   |
-| email    | string | 邮箱地址                 |
-| avatar   | blob   | 头像图片数据，base64编码 |
-| userRole | string | 用户角色                 |
-| money    | int    | 用户余额                 |
+| 参数             | 类型       | 描述               |
+| ---------------- | ---------- | ------------------ |
+| userId           | int        | 用户ID             |
+| username         | string     | 用户名             |
+| email            | string     | 邮箱地址           |
+| data.money       | bigdecimal | 用户余额           |
+| data.borrowPerms | int        | 用户还能借阅几本书 |
 
 
 
@@ -2086,7 +2085,7 @@ tip: borrowDate为当前时间
 
 
 
-## 用户查看自己的借阅记录
+## ==用户查看自己的借阅记录==
 
 
 
@@ -2112,27 +2111,10 @@ tip: borrowDate为当前时间
 
 ```
 已经归还(0)
-未归还(1)
-			
+未归还(1)	
 ```
 
 
-
-情况分类
-
-```
-未审批(0)
-borrowAprvStatus=0
-
-未通过(1)
-borrowAprvStatus=2
-
-已经归还(2)
-returnDate IS NOT NULL
-(borrowAprvStatus=1)
-
-未归还(3)
-```
 
 
 
