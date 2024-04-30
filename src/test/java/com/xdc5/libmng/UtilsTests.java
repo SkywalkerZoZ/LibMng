@@ -13,23 +13,23 @@ import java.io.IOException;
 public class UtilsTests {
     @Autowired
     private UserMapper userMapper;
-    @Test
-    void addUserAvatar() throws IOException {
-        User user = new User();
-        user.setUserId(1);
-        byte[] img= ImageUtils.readImageAsBytes("C:/Users/SkywalkerzzZ/Pictures/Saved Pictures/edward.jpg");
-        user.setAvatar(img);
-        userMapper.updateUser(user);
-    }
-
-    @Test
-    void readUserAvatar() throws IOException {
-        User user=new User();
-        user.setUserId(1);
-        user=userMapper.getUsers(user).get(0);
-        byte[] imageBytes=user.getAvatar();
-        String formatName = "jpg";
-        String filePath = "C:/Users/SkywalkerzzZ/Pictures/Saved Pictures/sky."+formatName;
-        ImageUtils.saveImage(imageBytes, filePath, formatName);
-    }
+//    @Test
+//    void addUserAvatar() throws IOException {
+//        User user = new User();
+//        user.setUserId(1);
+//        byte[] img= ImageUtils.readImageAsBytes("C:/Users/SkywalkerzzZ/Pictures/Saved Pictures/edward.jpg");
+//        user.setAvatar(img);
+//        userMapper.updateUser(user);
+//    }
+//
+//    @Test
+//    void readUserAvatar() throws IOException {
+//        User user=new User();
+//        user.setUserId(1);
+//        user=userMapper.getUsers(user).get(0);
+//        byte[] imageBytes=user.getAvatar();
+//        String formatName = "jpg";
+//        String filePath = "C:/Users/SkywalkerzzZ/Pictures/Saved Pictures/sky."+formatName;
+//        ImageUtils.saveImage(imageBytes, filePath, formatName);
+//    }
 }

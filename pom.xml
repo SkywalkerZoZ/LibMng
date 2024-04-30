@@ -106,7 +106,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.xdc5.libmng.LibMngApplication</mainClass>
-                    <skip>true</skip>
+<!--                    <skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>

@@ -55,19 +55,19 @@ public class JwtUtils {
         return claimsJws.getBody().get(attr).toString();
     }
 
-    public static void main(String[] args) {
-        HashMap<String,Object> claims=new HashMap<>();
-        claims.put("username","skywalker");
-        claims.put("password","qwer4396");
-        String token = JwtUtils.generateToken(claims);
-        System.out.println("Generated Token: " + token);
-
-        if (JwtUtils.validateToken(token)) {
-            System.out.println("Token is valid");
-            String extracted = JwtUtils.extractAttribute(token,"username");
-            System.out.println("Extracted : " + extracted);
-        } else {
-            System.out.println("Token is invalid");
-        }
-    }
+//    public static void main(String[] args) {
+//        HashMap<String,Object> claims=new HashMap<>();
+//        claims.put("username","skywalker");
+//        claims.put("password","qwer4396");
+//        String token = JwtUtils.generateToken(claims);
+//        System.out.println("Generated Token: " + token);
+//
+//        if (JwtUtils.validateToken(token)) {
+//            System.out.println("Token is valid");
+//            String extracted = JwtUtils.extractAttribute(token,"username");
+//            System.out.println("Extracted : " + extracted);
+//        } else {
+//            System.out.println("Token is invalid");
+//        }
+//    }
 }
