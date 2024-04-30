@@ -23,7 +23,7 @@
         </insert>
 
     <update id="updateStatus">
-        UPDATE bookinstance
+        UPDATE BookInstance
         SET borrowStatus=#{borrowStatus}
         WHERE
             instanceId=#{instanceId}
@@ -77,7 +77,7 @@
     </select>
     <select id="getInstanceById" resultType="com.xdc5.libmng.entity.BookInstance">
         SELECT *
-        FROM bookinstance
+        FROM BookInstance
         WHERE instanceId=#{instanceId}
     </select>
 

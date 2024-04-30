@@ -107,7 +107,7 @@
 
     <select id="getUnretReader" resultType="java.util.HashMap">
         SELECT u.userId, u.username, u.email, b.borrowDate, b.dueDate, b.borrowingId
-        FROM USER u
+        FROM User u
                  JOIN Borrowing b ON u.userId = b.userId
         WHERE b.returnDate IS NULL;
 

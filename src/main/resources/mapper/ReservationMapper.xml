@@ -21,7 +21,7 @@
     </select>
     <select id="getRsvIsbnByUserId" resultType="java.lang.String">
         SELECT isbn
-        FROM reservation
+        FROM Reservation
         WHERE userId=#{userId}
     </select>
 

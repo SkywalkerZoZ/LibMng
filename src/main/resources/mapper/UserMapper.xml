@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xdc5.libmng.mapper.UserMapper">
     <insert id="addUser" parameterType="com.xdc5.libmng.entity.User" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO user (username, password, userRole
+        INSERT INTO User (username, password, userRole
         <trim prefix="," suffixOverrides=",">
             <if test="email != null">
                 email
@@ -35,22 +35,22 @@
     </update>
 
     <update id="changeReaderPerms">
-        UPDATE USER
+        UPDATE User
         SET borrowPerms = 0
         WHERE userId = #{userId};
     </update>
 
 
     <delete id="delUserById">
-        DELETE FROM user WHERE userId=#{userId}
+        DELETE FROM User WHERE userId=#{userId}
     </delete>
     <delete id="delUserByName">
-        DELETE FROM user WHERE username=#{username}
+        DELETE FROM User WHERE username=#{username}
     </delete>
 
     <select id="getUsers" parameterType="com.xdc5.libmng.entity.User" resultType="com.xdc5.libmng.entity.User">
         SELECT userId,username,password,email,avatar,borrowPerms,userRole,money
-        FROM user
+        FROM User
         <where>
             <if test="userId != null">
                 AND userId=#{userId}
@@ -68,18 +68,18 @@
     </select>
     <select id="getUserById" resultType="com.xdc5.libmng.entity.User">
         SELECT userId,username,password,email,avatar,borrowPerms,userRole,money
-        FROM user
+        FROM User
         WHERE userId=#{userId}
     </select>
     <select id="getUserNameById" resultType="java.lang.String">
         SELECT username
-        FROM user
+        FROM User
         where
         userId=#{userId}
     </select>
     <select id="getReaderByName" resultType="java.util.HashMap">
         SELECT userId, username, email, avatar, borrowPerms,money
-        FROM USER
+        FROM User
         WHERE username LIKE #{userName};
 
 
