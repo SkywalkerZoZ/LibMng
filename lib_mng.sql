@@ -99,11 +99,16 @@ CREATE TABLE Bill
 
 
 
+-- 启用事件调度器
 SET GLOBAL event_scheduler = ON;
-CREATE EVENT update_borrow_perms_event
+
+DELIMITER //
+-- 创建事件以更新借阅权限
+CREATE EVENT IF NOT EXISTS update_borrow_perms_event
     ON SCHEDULE EVERY 1 DAY -- 或根据需要调整频率
     DO
     BEGIN
+        -- 更新用户借阅权限
         UPDATE User u
         SET u.borrowPerms = 1
         WHERE NOT EXISTS (
@@ -111,13 +116,13 @@ CREATE EVENT update_borrow_perms_event
             SELECT 1
             FROM Penalty p
             WHERE p.userId = u.userId
-              AND p.endDate >= CURRENT_DATE())
+              AND p.endDate >= CURRENT_DATE()
+        )
           AND u.borrowPerms = 0; -- 仅更新当前不能借阅的用户
-    END;
+    END//
+DELIMITER ;
 
--- 启用事件调度器
-SET GLOBAL event_scheduler = ON;
-
+DELIMITER //
 -- 创建每日自动扣款事件
 CREATE EVENT IF NOT EXISTS auto_deduct_fees_event
     ON SCHEDULE EVERY 1 DAY
@@ -138,5 +143,6 @@ CREATE EVENT IF NOT EXISTS auto_deduct_fees_event
         SELECT UUID(), b.userId, 'penalty', -1, NOW(), 1
         FROM Borrowing b
         WHERE b.dueDate < CURRENT_DATE() AND b.returnDate IS NULL;
-    END;
+    END//
+DELIMITER ;
 
