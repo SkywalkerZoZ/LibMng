@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,23 +23,23 @@ public class PenaltyService {
     @Autowired
     private PenaltyDetailMapper penaltyDetailMapper;
     //插入新的处分信息
-    public void insertPenalty(Integer adminId, Integer userId, String reason, LocalDate endDate){
+    public void addPenalty(Integer adminId, Integer userId, String reason, BigDecimal money){
         Penalty penalty=new Penalty();
         penalty.setAdminId(adminId);
         penalty.setUserId(userId);
         penalty.setReason(reason);
-        penalty.setEndDate(endDate);
+        penalty.setMoney(money);
         penaltyMapper.addPenalty(penalty);
     }
-    //将adminId和userId确定下的Penalty的reason和endDate信息进行更新，同时要在动态SQl中更新处分时间。
-    public void updatePenaltyById(Integer adminId,Integer userId,String reason,LocalDate endDate){
-        Penalty penalty=new Penalty();
-        penalty.setAdminId(adminId);
-        penalty.setUserId(userId);
-        penalty.setReason(reason);
-        penalty.setEndDate(endDate);
-        penaltyMapper.updatePenalty(penalty);
-    }
+//    //将adminId和userId确定下的Penalty的reason和endDate信息进行更新，同时要在动态SQl中更新处分时间。
+//    public void updatePenaltyById(Integer adminId,Integer userId,String reason,LocalDate endDate){
+//        Penalty penalty=new Penalty();
+//        penalty.setAdminId(adminId);
+//        penalty.setUserId(userId);
+//        penalty.setReason(reason);
+//        penalty.setEndDate(endDate);
+//        penaltyMapper.updatePenalty(penalty);
+//    }
 
     public List<PenaltyDetail> getPenaltyByUserId(Integer userId) {
         return penaltyDetailMapper.getPenaltyDetailsByUserId(userId);

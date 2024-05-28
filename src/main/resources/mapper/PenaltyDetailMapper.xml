@@ -12,8 +12,7 @@
             p.userId,
             u.username,
             p.reason,
-            p.penaltyDate,
-            p.endDate
+            p.money
         FROM
             Penalty p
                 JOIN

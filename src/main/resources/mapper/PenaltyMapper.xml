@@ -5,7 +5,7 @@
 <mapper namespace="com.xdc5.libmng.mapper.PenaltyMapper">
 
     <insert id="addPenalty" parameterType="com.xdc5.libmng.entity.Penalty" useGeneratedKeys="true" keyProperty="penaltyId">
-        INSERT INTO Penalty (adminId, userId, penaltyDate, endDate
+        INSERT INTO Penalty (adminId, userId, money
         <trim prefix="," suffixOverrides=",">
             <if test="reason != null">
                 reason
@@ -13,7 +13,7 @@
         </trim>
         )
         VALUES (
-        #{adminId}, #{userId}, NOW(), #{endDate}
+        #{adminId}, #{userId}, #{money}
         <trim prefix="," suffixOverrides=",">
             <if test="reason != null">
                 #{reason}
@@ -24,7 +24,7 @@
     </insert>
 
     <select id="getPenalty" parameterType="com.xdc5.libmng.entity.Penalty" resultType="com.xdc5.libmng.entity.Penalty">
-        SELECT penaltyId,adminId,userId,reason,penaltyDate,endDate
+        SELECT penaltyId,adminId,userId,reason,money
         FROM Penalty
         <where>
             <if test="penaltyId != null">
@@ -39,16 +39,13 @@
             <if test="reason !=null">
                 AND reason=#{reason}
             </if>
-            <if test="penaltyDate !=null">
-                AND penaltyDate=#{penaltyDate}
-            </if>
-            <if test="endDate !=null">
-                AND endDate=#{endDate}
+            <if test="money !=null">
+                AND money=#{money}
             </if>
         </where>
     </select>
     <select id="getPenaltyByUserId" resultType="com.xdc5.libmng.entity.Penalty">
-        SELECT penaltyId,adminId,userId,reason,penaltyDate,endDate
+        SELECT penaltyId,adminId,userId,reason
         FROM Penalty
         WHERE userId=#{userId}
     </select>
@@ -57,15 +54,16 @@
         DELETE FROM Penalty WHERE penaltyId=#{penaltyId}
     </delete>
 
-    <update id="updatePenalty" parameterType="com.xdc5.libmng.entity.Penalty">
-        UPDATE Penalty
-        <set>
-            <if test="reason != null">reason = #{reason},</if>
-            <if test="endDate != null">endDate = #{endDate},</if>
-            penaltyDate = CURDATE()
-        </set>
-        WHERE adminId = #{adminId}
-        AND userId = #{userId}
-        AND endDate>CURDATE()
-    </update>
+<!--    <update id="updatePenalty" parameterType="com.xdc5.libmng.entity.Penalty">-->
+<!--        UPDATE Penalty-->
+<!--        <set>-->
+<!--            <if test="reason != null">reason = #{reason},</if>-->
+<!--            <if test="endDate != null">endDate = #{endDate},</if>-->
+<!--            penaltyDate = CURDATE()-->
+<!--        </set>-->
+<!--        WHERE adminId = #{adminId}-->
+<!--        AND userId = #{userId}-->
+<!--        AND endDate>CURDATE()-->
+<!--    </update>-->
+
 </mapper>

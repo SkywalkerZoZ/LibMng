@@ -75,8 +75,9 @@ CREATE TABLE Penalty
     adminId     INT,
     userId      INT,
     reason      VARCHAR(255),
-    penaltyDate DATE NOT NULL,
-    endDate     DATE NOT NULL,
+    money       DECIMAL(10, 2),
+    # penaltyDate DATE NOT NULL,
+    # endDate     DATE NOT NULL,
     FOREIGN KEY (adminId) REFERENCES User (userId),
     FOREIGN KEY (userId) REFERENCES User (userId)
 );

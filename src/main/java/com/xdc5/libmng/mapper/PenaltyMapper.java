@@ -13,5 +13,5 @@ public interface PenaltyMapper {
     int delPenaltyById(@Param("penaltyId") Integer penaltyId);
     //返回影响的行数
     int addPenalty(Penalty penalty);
-    int updatePenalty(Penalty penalty);
+//    int updatePenalty(Penalty penalty);
 }

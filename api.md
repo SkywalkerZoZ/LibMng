@@ -1350,7 +1350,7 @@ export default {
 
 
 
-## ==还书确认== ##
+## 还书确认 ##
 
 **接口地址**
 
@@ -1660,7 +1660,7 @@ TODO 改名未归还的申请？或者修改方法？
 
 
 
-## 处分读者
+## ==处分读者==
 
 **接口地址**
 
@@ -1672,17 +1672,17 @@ TODO 改名未归还的申请？或者修改方法？
 
 **请求体参数**
 
-| 参数    | 类型   | 是否必需 | 描述         |
-| ------- | ------ | -------- | ------------ |
-| reason  | string | 是       | 处分理由     |
-| endDate | string | 是       | 处分结束日期 |
+| 参数   | 类型   | 是否必需 | 描述     |
+| ------ | ------ | -------- | -------- |
+| reason | string | 是       | 扣钱理由 |
+| money  | string | 是       | 扣钱数额 |
 
 
 
 ```json
 {
-    "reason": "Late returns",
-    "endDate": "2024-05-01"
+  "reason": "Late return of books",
+  "money": 1
 }
 ```
 
@@ -1884,7 +1884,7 @@ tip: borrowDate为当前时间
 
 
 
-## ==迟还图书==
+## 迟还图书
 
 
 
@@ -2038,7 +2038,7 @@ tip: borrowDate为当前时间
 
 
 
-## ==用户状态==
+## 用户状态
 
 **接口地址**
 
@@ -2085,7 +2085,7 @@ tip: borrowDate为当前时间
 
 
 
-## ==用户查看自己的借阅记录==
+## 用户查看自己的借阅记录
 
 
 
@@ -2174,7 +2174,7 @@ tip: borrowDate为当前时间
 
 
 
-## 用户查看自己的处分记录
+## ==用户查看自己的处分记录==
 
 **接口地址**
 
@@ -2192,20 +2192,19 @@ tip: borrowDate为当前时间
 
 **响应参数**
 
-| 参数                | 类型   | 描述           |
-| ------------------- | ------ | -------------- |
-| code                | int    | 状态码         |
-| message             | string | 提示信息       |
-| data                | array  | 处分记录列表   |
-| data[i].penaltyId   | int    | 处分记录ID     |
-| data[i].adminId     | int    | 管理员ID       |
-| data[i].adminName   | string | 管理员用户名   |
-| data[i].adminEmail  | int    | 管理员邮箱     |
-| data[i].userId      | int    | 用户Id         |
-| data[i].username    | string | 被处分人用户名 |
-| data[i].reason      | string | 处分原因       |
-| data[i].penaltyDate | string | 处分日期       |
-| data[i].endDate     | string | 处分结束日期   |
+| 参数               | 类型       | 描述           |
+| ------------------ | ---------- | -------------- |
+| code               | int        | 状态码         |
+| message            | string     | 提示信息       |
+| data               | array      | 处分记录列表   |
+| data[i].penaltyId  | int        | 处分记录ID     |
+| data[i].adminId    | int        | 管理员ID       |
+| data[i].adminName  | string     | 管理员用户名   |
+| data[i].adminEmail | int        | 管理员邮箱     |
+| data[i].userId     | int        | 用户Id         |
+| data[i].username   | string     | 被处分人用户名 |
+| data[i].reason     | string     | 处分原因       |
+| data[i].money      | BigDecimal | 扣钱数量       |
 
 
 
@@ -2216,29 +2215,66 @@ tip: borrowDate为当前时间
     "data": [
         {
             "penaltyId": 1,
-            "adminId":1,
-            "adminName": "admin1",
-            "adminEmail":"xxx@qq.com",
-            "userId":2,
-            "username":"tester",
-            "reason": "Late return",
-            "penaltyDate": "2024-03-21",
-            "endDate": "2024-04-21"
+            "adminId": 1,
+            "adminName": "jia",
+            "adminEmail": "123456789@qq.com",
+            "userId": 1,
+            "username": "jia",
+            "reason": "Late return of books",
+            "money": 1
         },
         {
             "penaltyId": 2,
-            "adminId":1,
-            "adminName": "admin2",
-            "adminEmail":"xxx@qq.com",
-            "userId":2,
-            "username":"tester2",
-            "reason": "Damaged book",
-            "penaltyDate": "2024-03-22",
-            "endDate": "2024-04-22"
+            "adminId": 1,
+            "adminName": "jia",
+            "adminEmail": "123456789@qq.com",
+            "userId": 1,
+            "username": "jia",
+            "reason": "Late return of books",
+            "money": 1
+        },
+        {
+            "penaltyId": 3,
+            "adminId": 1,
+            "adminName": "jia",
+            "adminEmail": "123456789@qq.com",
+            "userId": 1,
+            "username": "jia",
+            "reason": "Late return of books",
+            "money": 1
+        },
+        {
+            "penaltyId": 4,
+            "adminId": 1,
+            "adminName": "jia",
+            "adminEmail": "123456789@qq.com",
+            "userId": 1,
+            "username": "jia",
+            "reason": "Late return of books",
+            "money": 1
+        },
+        {
+            "penaltyId": 5,
+            "adminId": 1,
+            "adminName": "jia",
+            "adminEmail": "123456789@qq.com",
+            "userId": 1,
+            "username": "jia",
+            "reason": "Late return of books",
+            "money": 1
+        },
+        {
+            "penaltyId": 6,
+            "adminId": 1,
+            "adminName": "jia",
+            "adminEmail": "123456789@qq.com",
+            "userId": 1,
+            "username": "jia",
+            "reason": "Late return of books",
+            "money": 1
         }
     ]
 }
-
 ```
 
 
