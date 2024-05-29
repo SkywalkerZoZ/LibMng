@@ -48,9 +48,9 @@ public class PenaltyController {
         BigDecimal currentMoney = new BigDecimal(user.getMoney().toString());
         BigDecimal updatedMoney = currentMoney.subtract(money);
 
-        if(updatedMoney.compareTo(BigDecimal.ZERO) < 0){
-            return Result.error("Fail: not enough money");
-        }
+//        if(updatedMoney.compareTo(BigDecimal.ZERO) < 0){
+//            return Result.error("Fail: not enough money");
+//        }
 
         penaltyService.addPenalty(adminId, userId, reason, money);
         user.setMoney(updatedMoney);
